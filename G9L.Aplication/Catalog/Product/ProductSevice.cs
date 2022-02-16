@@ -1,5 +1,4 @@
-﻿using G9L.Common.Sevices;
-using G9L.Data.EFs;
+﻿using G9L.Data.EFs;
 using G9L.Data.ViewModel.Catalog.Product;
 using G9L.Data.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace G9L.Aplication.Catalog.Product
         }
         //Check
         //Create
-        public async Task<bool> CreateToProvider(GetCreateProductRequest request, int CompanyIndex, string UpdateUser)
+        public async Task<bool> CreateToProduct(GetCreateProductRequest request, int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -34,7 +33,11 @@ namespace G9L.Aplication.Catalog.Product
                     Quantily = (int)(request.Quantily != null ? request.Quantily : 0),
                     StorageLocations = !string.IsNullOrEmpty(request.StorageLocations) ? request.StorageLocations : "",
                     Description = !string.IsNullOrEmpty(request.Description) ? request.Description : "",
-                   
+                    ProductTypeID = request.ProductTypeID,
+                    Image1 = !string.IsNullOrEmpty(request.Image1)? request.Image1:"",
+                    Image2 = !string.IsNullOrEmpty(request.Image2) ? request.Image2 : "",
+                    Image3 = !string.IsNullOrEmpty(request.Image3) ? request.Image3 : "",
+
                     UpdateDate = DateTime.Now,
                     CompanyIndex = CompanyIndex,
                     UpdateUser = UpdateUser
@@ -50,7 +53,7 @@ namespace G9L.Aplication.Catalog.Product
 
         }
         //Update
-        public async Task<bool> UpdateToProvider(GetUpdateProductRequest request, int CompanyIndex, string UpdateUser)
+        public async Task<bool> UpdateToProduct(GetUpdateProductRequest request, int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -64,6 +67,10 @@ namespace G9L.Aplication.Catalog.Product
                 rs.Quantily = (int)(request.Quantily != null ? request.Quantily : rs.Quantily);
                 rs.StorageLocations = !string.IsNullOrEmpty(request.StorageLocations) ? request.StorageLocations : rs.StorageLocations;
                 rs.Description = !string.IsNullOrEmpty(request.Description) ? request.Description : rs.Description;
+                rs.ProductTypeID = (int)(request.ProductTypeID != null ? request.ProductTypeID : rs.ProductTypeID);
+                rs.Image1 = !string.IsNullOrEmpty(request.Image1) ? request.Image1 : rs.Image1;
+                rs.Image2 = !string.IsNullOrEmpty(request.Image2) ? request.Image2 : rs.Image2;
+                rs.Image3 = !string.IsNullOrEmpty(request.Image3) ? request.Image3 : rs.Image3;
 
                 rs.UpdateUser = !string.IsNullOrEmpty(UpdateUser) ? UpdateUser : rs.UpdateUser;
                 rs.UpdateDate = DateTime.Now;
@@ -101,28 +108,38 @@ namespace G9L.Aplication.Catalog.Product
             try
             {
                 var query = await (from p in _context.Products
-                             join m in _context.Manufactures
-                             on p.ManufactureID equals m.ID
-                             where p.CompanyIndex == CompanyIndex
-                             select new
-                             {
-                                 p.ID,
-                                 p.Name,
-                                 p.CostPrice,
-                                 p.Description,
-                                 p.StorageLocations,
-                                 m.Local,
-                                 ManufactureName = m.Name,
-                                 p.Price,
-                                 p.Quantily,
-                                 ManufactureID = m.ID
-                             }).ToListAsync();
+                                   join m in _context.Manufactures
+                                   on p.ManufactureID equals m.ID
+                                   join pt in _context.ProductTypes
+                                   on p.ProductTypeID equals pt.ID
+                                   where p.CompanyIndex == CompanyIndex
+                                   select new
+                                   {
+                                       p.ID,
+                                       p.Name,
+                                       p.CostPrice,
+                                       p.Description,
+                                       p.StorageLocations,
+                                       m.Local,
+                                       ManufactureName = m.Name,
+                                       p.Price,
+                                       p.Quantily,
+                                       ManufactureID = m.ID,
+                                       ProcductTypeName = pt.Name,
+                                       ProductTypeID = pt.ID,
+                                       p.Image1,
+                                       p.Image2,
+                                       p.Image3
+                                   }).ToListAsync();
 
                 if (request.KeyWord != null)
                     query = query.Where(x => x.ID.ToString().Contains(request.KeyWord) || x.Name.Contains(request.KeyWord) || x.Description.Contains(request.KeyWord)).ToList();
 
                 if (request.ManufactureID != null)
                     query = query.Where(x => x.ManufactureID == request.ManufactureID).ToList();
+
+                if (request.ProductTypeID != null)
+                    query = query.Where(x => x.ProductTypeID == request.ProductTypeID).ToList();
 
                 if (request.StorageLocations != null)
                     query = query.Where(x => x.StorageLocations == request.StorageLocations).ToList();
@@ -141,6 +158,10 @@ namespace G9L.Aplication.Catalog.Product
                         ManufactureName = x.ManufactureName,
                         Price = x.Price,
                         Quantily = x.Quantily,
+                        ProductTypeName = x.ProcductTypeName,
+                        Image1 = x.Image1,
+                        Image2 = x.Image2,
+                        Image3 = x.Image3
                     }).ToList();
 
                 var pagedResult = new PagedResult<GetManagerProductViewModel>()
@@ -157,6 +178,58 @@ namespace G9L.Aplication.Catalog.Product
                 return null;
             }
         }
+        public async Task<GetManagerProductViewModel> GetToProduct(int ProductID, int CompanyIndex)
+        {
+            try
+            {
+                var query = await (from p in _context.Products
+                                   join m in _context.Manufactures
+                                   on p.ManufactureID equals m.ID
+                                   join pt in _context.ProductTypes
+                                   on p.ProductTypeID equals pt.ID
+                                   where p.CompanyIndex == CompanyIndex && p.ID == ProductID
+                                   select new
+                                   {
+                                       p.ID,
+                                       p.Name,
+                                       p.CostPrice,
+                                       p.Description,
+                                       p.StorageLocations,
+                                       m.Local,
+                                       ManufactureName = m.Name,
+                                       p.Price,
+                                       p.Quantily,
+                                       ManufactureID = m.ID,
+                                       ProcductTypeName = pt.Name,
+                                       ProductTypeID = pt.ID,
+                                       p.Image1,
+                                       p.Image2,
+                                       p.Image3
+                                   }).FirstOrDefaultAsync();
 
+                var data = new GetManagerProductViewModel()
+                {
+                    ID = query.ID,
+                    Name = query.Name,
+                    CostPrice = query.CostPrice,
+                    Description = query.Description,
+                    StorageLocations = query.StorageLocations,
+                    Local = query.Local,
+                    ManufactureName = query.ManufactureName,
+                    Price = query.Price,
+                    Quantily = query.Quantily,
+                    ProductTypeName = query.ProcductTypeName,
+                    Image1 = query.Image1,
+                    Image2 = query.Image2,
+                    Image3 = query.Image3
+                };
+
+                return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

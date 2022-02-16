@@ -9,5 +9,9 @@
         public decimal? Price { get; set; }
         public string StorageLocations { get; set; }//vị trí lưu kho
         public string Description { get; set; }//chú thích
+        public int? ProductTypeID { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
+        public string Image3 { get; set; }
     }
 }

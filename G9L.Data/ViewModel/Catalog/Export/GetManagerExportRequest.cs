@@ -4,7 +4,7 @@ using System;
 
 namespace G9L.Data.ViewModel.Catalog.Export
 {
-    public class GetManagerExportRequest : PagedResultBase
+    public class GetManagerExportRequest : PagingRequestBase
     {
         public string KeyWord { get; set; }
         public DateTime? DateFrom { get; set; }

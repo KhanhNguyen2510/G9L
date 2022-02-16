@@ -2,7 +2,6 @@
 using G9L.BackEndAPI.Common;
 using G9L.Data.ViewModel.Catalog.Export;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace G9L.BackEndAPI.Controllers
@@ -13,9 +12,9 @@ namespace G9L.BackEndAPI.Controllers
     {
         private readonly IExportSevice _exportSevice;
 
-        public ExportController(IServiceProvider pserviceProvider) : base(pserviceProvider)
+        public ExportController(IExportSevice exportSevice) : base()
         {
-            _exportSevice = TryResolve<IExportSevice>();
+            _exportSevice = exportSevice;
         }
         //Create
         [HttpPost("CreateToExport")]

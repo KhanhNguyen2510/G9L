@@ -1,5 +1,4 @@
-﻿using G9L.Common.Sevices;
-using G9L.Data.EFs;
+﻿using G9L.Data.EFs;
 using G9L.Data.ViewModel.Catalog.Provider;
 using G9L.Data.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +41,6 @@ namespace G9L.Aplication.Catalog.Provider
             {
                 return false;
             }
-
         }
         //Update
         public async Task<bool> UpdateToProvider(GetUpdateProviderRequest request, int CompanyIndex, string UpdateUser)
@@ -87,7 +85,6 @@ namespace G9L.Aplication.Catalog.Provider
                 return false;
             }
         }
-
         //List
         public async Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request , int CompanyIndex )
         {
@@ -119,6 +116,31 @@ namespace G9L.Aplication.Catalog.Provider
                     Items = data
                 };
                 return pagedResult;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<GetManuProviderViewModel> GetToProvider(int ProviderID, int CompanyIndex)
+        {
+            try
+            {
+                var query = await _context.Providers.Where(x => x.CompanyIndex == CompanyIndex && x.ID == ProviderID).FirstOrDefaultAsync();
+               
+                if (query == null) return null;
+
+                var data = new GetManuProviderViewModel()
+                {
+                    ID = query.ID,
+                    Address = query.Address,
+                    Name = query.Name,
+                    NumberPhone = query.NumberPhone,
+                    UpdateDate = query.UpdateDate,
+                    UpdateUser = query.UpdateUser
+                };
+
+                return data;
             }
             catch
             {

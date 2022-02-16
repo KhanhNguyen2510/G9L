@@ -3,7 +3,7 @@ using System;
 
 namespace G9L.Data.ViewModel.Catalog.Import
 {
-    public class GetManagerImportRequest : PagedResultBase
+    public class GetManagerImportRequest : PagingRequestBase
     {
         public string KeyWord { get; set; }
         public int? ProviderID { get; set; }

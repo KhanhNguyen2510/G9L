@@ -2,6 +2,7 @@ using G9L.Aplication.Catalog.Export;
 using G9L.Aplication.Catalog.Import;
 using G9L.Aplication.Catalog.Manufacture;
 using G9L.Aplication.Catalog.Product;
+using G9L.Aplication.Catalog.ProductType;
 using G9L.Aplication.Catalog.Provider;
 using G9L.Data.EFs;
 using Microsoft.AspNetCore.Builder;
@@ -30,11 +31,12 @@ namespace G9L.BackEndAPI
             
             services.AddControllers();
 
-            services.AddScoped<IProviderSevice, ProviderSevice>();
-            services.AddScoped<IManufactureSevice, ManufactureSevice>();
-            services.AddScoped<IProductSevice, ProductSevice>();
-            services.AddScoped<IImportSevice, ImportSevice>();
-            services.AddScoped<IExportSevice, ExportSevice>();
+            services.AddTransient<IProviderSevice, ProviderSevice>();
+            services.AddTransient<IManufactureSevice, ManufactureSevice>();
+            services.AddTransient<IProductSevice, ProductSevice>();
+            services.AddTransient<IImportSevice, ImportSevice>();
+            services.AddTransient<IExportSevice, ExportSevice>();
+            services.AddTransient<IProductTypeSevice, ProductTypeSevice>();
 
             services.AddSwaggerGen(c =>
             {
@@ -45,16 +47,19 @@ namespace G9L.BackEndAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseDeveloperExceptionPage();
+
             app.UseSwagger();
+
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "G9L.BackEndAPI v1"));
 
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

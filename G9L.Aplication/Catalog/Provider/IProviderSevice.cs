@@ -14,5 +14,6 @@ namespace G9L.Aplication.Catalog.Provider
         Task<bool> DeleteToProvider(int ProviderID, int CompanyIndex);
         //List
         Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request, int CompanyIndex);
+        Task<GetManuProviderViewModel> GetToProvider(int ProviderID, int CompanyIndex);
     }
 }

@@ -1,0 +1,354 @@
+﻿@using G9L.Data.ViewModel.Common
+@model PagedResult<G9L.Data.ViewModel.Catalog.Product.GetManagerProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
+                            Thêm
+                        </button>
+                        <button type="button" id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-2 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Nhà cung cấp</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Loại sản phẩm</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Vị trí</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Sản phẩm</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort text-center">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Vị trí</th>
+                                    <th scope="col">Tên nhà sản xuất</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá bán</th>
+                                    <th scope="col">Loại hàng</th>
+                                    <th scope="col">Note</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <th class="text-center">
+                                            <input type="checkbox">
+                                        </th>
+                                        <td class="budget">
+                                            1
+                                        </td>
+                                        <th>
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget  text-center text-sm ">
+                                            @Html.DisplayFor(modelItem => item.StorageLocations)
+                                        <td class="budget  text-center">
+                                            @Html.DisplayFor(modelItem => item.ManufactureName)
+                                        </td>
+                                        <td class="budget text-center">
+                                            @Html.DisplayFor(modelItem => item.Quantily)
+                                        </td>
+                                        <td class="budget text-sm">
+                                            @Html.DisplayFor(modelItem => item.Price)0
+                                        </td>
+                                        <td class="budget ">
+                                            @Html.DisplayFor(modelItem => item.ProductTypeName)
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                    data-target="#modal-notification">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Card footer -->
+                    @await Component.InvokeAsync("Pager", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Create content -->
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Thêm sản phẩm</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-0">
+                            <form role="form">
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên sản phẩm</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Vị trí</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Giá</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.000</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số lượng</span>
+                                        </div>
+                                        <input class="form-control" type="number" value="0" id="example-number-input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
+                                        </div>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên loại sản phẩm</span>
+                                        </div>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Chú thích</span>
+                                        </div>
+                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary ">Thêm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Update content -->
+    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Chỉnh sửa sản phẩm</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-0">
+                            <form role="form">
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên sản phẩm</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Vị trí</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Giá</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.000</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số lượng</span>
+                                        </div>
+                                        <input class="form-control" type="number" value="0" id="example-number-input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
+                                        </div>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên loại sản phẩm</span>
+                                        </div>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Chú thích</span>
+                                        </div>
+                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary mb-3">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

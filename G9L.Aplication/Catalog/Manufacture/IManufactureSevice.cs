@@ -15,5 +15,6 @@ namespace G9L.Aplication.Catalog.Manufacture
         Task<bool> DeleteToManufacture(int ManufactureID, int CompanyIndex);
         //List
         Task<PagedResult<GetManufactureViewModel>> GetListToManufacture(GetManagerManufactureRequest request, int CompanyIndex);
+        Task<GetManufactureViewModel> GetToManufacture(int ManufactureID, int CompanyIndex);
     }
 }

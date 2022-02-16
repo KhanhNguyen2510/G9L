@@ -1,0 +1,377 @@
+﻿@using G9L.Data.ViewModel.Common
+@using G9L.Common.SystemBase
+@model PagedResult<G9L.Data.ViewModel.Catalog.Provider.GetManuProviderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách nhà cung cấp</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
+                            Thêm
+                        </button>
+                        <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Nhà cung cấp</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort text-center">
+                                        <input type="checkbox" id="select-all" onclick="toggle(this);">
+                                    </th>
+                                    <th scope="col" class="sort" data-sort="budget">STT</th>
+                                    <th scope="col" class="sort" data-sort="name">Tên</th>
+                                    <th scope="col" class="sort" data-sort="name">Số điện thoại</th>
+                                    <th scope="col" class="sort" data-sort="name">Địa chỉ</th>
+                                    <th scope="col" class="sort" data-sort="budget">Ngày tạo</th>
+                                    <th scope="col" class="sort" data-sort="status">Người tạo</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <th class="text-center">
+                                            <input type="checkbox" id="@item.ID" onchange="addIDToArray('@item.ID')">
+                                        </th>
+                                        <td class="budget">
+                                            1
+                                        </td>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.NumberPhone)
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.UpdateDate)
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.UpdateUser)
+                                        </td>
+
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                    data-target="#modal-notification">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Card footer -->
+                    @await Component.InvokeAsync("Pager", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Thêm loại sản phẩm</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-5">
+
+                            <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Provider">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default" >Tên nhà cung cấp</span>
+                                        </div>
+                                        <input type="text" name="ProviderName" class="form-control" required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
+                                        </div>
+                                        <input type="text" name="NumberPhone" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default" >Địa chỉ</span>
+                                        </div>
+                                        <input type="text" name="Address" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Chỉnh sửa nhà cung cấp</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-5">
+                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Provider" >
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+    listID = [];
+
+    function deleteItemInArray(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                arr.splice(i, 1);
+                i--;
+            }
+        }
+    };
+
+    function findID(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+    };
+
+    function toggleButton() {
+        if (listID.length == 0) {
+            $('#deleteByID').prop('disabled', true);
+        } else {
+            $('#deleteByID').prop('disabled', false);
+        }
+    };
+
+    function addIDToArray(ID) {
+        if (!findID(listID, ID)) {
+            listID.push(ID);
+
+            console.log(listID)
+
+        } else {
+            deleteItemInArray(listID, ID);
+        }
+        toggleButton()
+    };
+
+    async function deleteID() {
+        for (var i = 0; i < listID.length; i++) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/Provider/DeleteToProvider/' + listID[i],
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Thanh cong')
+                },
+                error: function () {
+                    console.log('Connect failled');
+                },
+            });
+        }
+        location.reload();
+    }
+
+    async function viewPostDetail(postID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Posts/GetPostByID/' + postID + '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#post-url').attr('href', data.postUrl).children('p').html(data.postUrl);
+                $('#user-url').attr('href', data.userUrl).children('p').html(data.userUrl);
+
+                $('#upload-time').html(data.uploadTime);
+                $('#post-content').html(data.postContent);
+                if (data.filePDF == '...' || data.filePDF == null || data.filePDF == "") {
+                    $('#pdf').attr('href', data.filePDF).hide();
+                    $('#title-pdf').html("Không có PDF")
+                } else {
+                    $('#pdf').attr('href', data.filePDF).show();
+                    $('#title-pdf').html("Xem PDF")
+                }
+                $('#pdf').attr('href', data.filePDF);
+                $('#crawled-time').html(data.crawledTime);
+                $('#like').html(data.totalLikes);
+                $('#comment').html(data.totalComment);
+                $('#share').html(data.totalShare);
+                $('#news-label').html(data.newsLabelName);
+
+                $('#post-ad').html(data.administrativeDivisionName);
+                if (data.report == 0) {
+                    $('#reprot-post').html("Đã lập báo cáo").prop('disabled', true)
+                    $('#sentiment-label').prop('disabled', true)
+
+                } else {
+                    $('#reprot-post').html("Lập báo cáo").prop('disabled', false)
+                    $('#sentiment-label').prop('disabled', false)
+                }
+                if (data.image == '') {
+                    $('#img-name').html("Không có hình ảnh").prop('disabled', false)
+                    $('#image').attr('href', "/assets/img/huy-hieu-cong-an-nhan.png").children('img').attr('src', "/assets/img/huy-hieu-cong-an-nhan.png");
+                }
+                else if (data.image != 'None') {
+                    $('#image').attr('href', data.image).children('img').attr('src', data.image);
+                }
+                if (data.sentimentLabelID == 'NEG') {
+                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-danger');
+                    $('#reprot-post').show();
+                    $('#title-h4').css({
+                        'margin-left': '230px',
+                        'font-size': '28px',
+                        'font-weight': 'bold'
+                    })
+                    $('#sentiment-label').css({
+                        'font-size': '20px',
+                        'color': 'red'
+                    })
+                    $('#news-label').css({
+                        'font-size': '20px',
+                        'color': 'red'
+                    })
+                } else if (data.sentimentLabelID == 'POS') {
+                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-success');
+                    $('#reprot-post').hide();
+                    $('#title-h4').css({
+                        'margin-left': '340px',
+                        'font-size': '28px',
+                        'font-weight': 'bold'
+                    })
+                    $('#sentiment-label').css({
+                        'font-size': '20px',
+                        'color': '#1E90FF'
+                    })
+                    $('#news-label').css({
+                        'font-size': '20px',
+                        'color': '#1E90FF'
+                    })
+                } else {
+                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-primary');
+                    $('#reprot-post').hide();
+                    $('#title-h4').css({
+                        'margin-left': '340px',
+                        'font-size': '28px',
+                        'font-weight': 'bold'
+                    })
+                    $('#sentiment-label').css({
+                        'font-size': '20px',
+                        'color': '#008000'
+                    })
+                    $('#news-label').css({
+                        'font-size': '20px',
+                        'color': '#008000'
+                    })
+                }
+            },
+            error: function () {
+                alert('Lỗi kết nối đến server!');
+            }
+        });
+    }
+
+</script>

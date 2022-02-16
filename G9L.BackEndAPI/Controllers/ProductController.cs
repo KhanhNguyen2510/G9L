@@ -2,7 +2,6 @@
 using G9L.BackEndAPI.Common;
 using G9L.Data.ViewModel.Catalog.Product;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace G9L.BackEndAPI.Controllers
@@ -12,23 +11,23 @@ namespace G9L.BackEndAPI.Controllers
     public class ProductController : ApiControllerBase
     {
         private readonly IProductSevice _productSevice;
-        public ProductController(IServiceProvider pserviceProvider) : base(pserviceProvider)
+        public ProductController(IProductSevice productSevice) : base()
         {
-            _productSevice = TryResolve<IProductSevice>();
+            _productSevice = productSevice;
         }
 
         //Create
-        [HttpPost("CreateToProvider")]
-        public async Task<JsonResult> CreateToProvider([FromForm]GetCreateProductRequest request)
+        [HttpPost("CreateToProduct")]
+        public async Task<JsonResult> CreateToProduct([FromForm]GetCreateProductRequest request)
         {
-            var data = await _productSevice.CreateToProvider(request, _CurrentCompanyIndex, _CurrentUpdateUser);
+            var data = await _productSevice.CreateToProduct(request, _CurrentCompanyIndex, _CurrentUpdateUser);
             return Json(data);
         }
         //Update
-        [HttpPost("UpdateToProvider")]
-        public async Task<JsonResult> UpdateToProvider([FromForm]GetUpdateProductRequest request)
+        [HttpPost("UpdateToProduct")]
+        public async Task<JsonResult> UpdateToProduct([FromForm]GetUpdateProductRequest request)
         {
-            var data = await _productSevice.UpdateToProvider(request, _CurrentCompanyIndex, _CurrentUpdateUser);
+            var data = await _productSevice.UpdateToProduct(request, _CurrentCompanyIndex, _CurrentUpdateUser);
             return Json(data);
         }
         //Delete
@@ -43,6 +42,12 @@ namespace G9L.BackEndAPI.Controllers
         public async Task<JsonResult> GetListToProduct([FromQuery]GetManagerProductRequest request)
         {
             var data = await _productSevice.GetListToProduct(request, _CurrentCompanyIndex);
+            return Json(data);
+        }
+        [HttpGet("GetToProduct/{ProductID}")]
+        public async Task<JsonResult> GetToProduct(int ProductID)
+        {
+            var data = await _productSevice.GetToProduct(ProductID, _CurrentCompanyIndex);
             return Json(data);
         }
 

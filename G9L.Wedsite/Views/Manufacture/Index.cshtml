@@ -1,0 +1,255 @@
+﻿@using G9L.Data.ViewModel.Common
+@using G9L.Common.SystemBase
+@model PagedResult<G9L.Data.ViewModel.Catalog.Mannufacture.GetManufactureViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách nhà sản xuất</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
+                            Thêm
+                        </button>
+                        <button type="button" id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-7">
+                        <div class="form-group">
+                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Nhà cung cấp</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort text-center">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th scope="col" class="sort" data-sort="budget">STT</th>
+                                    <th scope="col" class="sort" data-sort="name">Tên</th>
+                                    <th scope="col" class="sort" data-sort="name">Địa chỉ</th>
+                                    <th scope="col" class="sort" data-sort="budget">Ngày tạo</th>
+                                    <th scope="col" class="sort" data-sort="status">Người tạo</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <th class="text-center">
+                                            <input type="checkbox">
+                                        </th>
+                                        <td class="budget">
+                                            1
+                                        </td>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.ManufactureName)</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.Local)
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.UpdateDate)
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.UpdateUser)
+                                        </td>
+
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                    data-target="#modal-notification">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Card footer -->
+                    @await Component.InvokeAsync("Pager", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Create content -->
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Thêm nhà sản xuất</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-5">
+                            <form role="form">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà sản xuất</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Update content -->
+    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Chỉnh sửa nhà sản xuất</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-5">
+                            <form role="form">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà sản xuất</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+   BaseLocalhost = '@SystemConnection.UploadImageConnection'
+
+    listID = [];
+
+    function deleteItemInArray(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                arr.splice(i, 1);
+                i--;
+            }
+        }
+    };
+
+    function findID(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+    };
+
+    function toggleButton() {
+        if (listID.length == 0) {
+            $('#deleteByID').prop('disabled', true);
+        } else {
+            $('#deleteByID').prop('disabled', false);
+        }
+    };
+
+    function addIDToArray(ID) {
+        if (!findID(listID, ID)) {
+            listID.push(ID);
+
+            console.log(listID)
+
+        } else {
+            deleteItemInArray(listID, ID);
+        }
+        toggleButton()
+    };
+
+    async function deletePost() {
+        for (var i = 0; i < listID.length; i++) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/Manufacture/DeleteToManufacture/' + listID[i],
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Thanh cong')
+                },
+                error: function () {
+                    console.log('Connect failled');
+                },
+            });
+        }
+        location.reload();
+    }
+</script>

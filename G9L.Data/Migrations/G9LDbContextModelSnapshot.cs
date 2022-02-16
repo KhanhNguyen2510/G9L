@@ -67,7 +67,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime");
@@ -119,7 +119,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime");
@@ -144,7 +144,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CostPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<int>("IsUnit")
                         .HasColumnType("int");
@@ -223,9 +223,18 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CostPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image3")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ManufactureID")
@@ -235,7 +244,10 @@ namespace G9L.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("ProductTypeID")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantily")
                         .HasColumnType("int");
@@ -252,6 +264,33 @@ namespace G9L.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("G9L.Data.Entities.ProductType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CompanyIndex")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ProductType");
                 });
 
             modelBuilder.Entity("G9L.Data.Entities.Provider", b =>

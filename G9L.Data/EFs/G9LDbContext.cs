@@ -5,11 +5,11 @@ namespace G9L.Data.EFs
 {
     public class G9LDbContext : DbContext
     {
-        public G9LDbContext(DbContextOptions<G9LDbContext> options) : base(options)
+        public G9LDbContext(DbContextOptions options) : base(options)
         {
 
         }
-        protected string DefaultConnection = @"Server=.;Database=G9L;Trusted_Connection=True;";
+
         public DbSet<Import> Imports { get; set; }
         public DbSet<ImportDetails> ImportDetails { get; set; }
         public DbSet<Export> Exports { get; set; }
@@ -20,6 +20,8 @@ namespace G9L.Data.EFs
         public DbSet<Provider> Providers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserPrivilege> UserPrivileges { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -37,12 +39,6 @@ namespace G9L.Data.EFs
                 table.ProductID,
                 table.ManufactureID
             });
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseSqlServer(DefaultConnection);// thiết lập làm việc với SqlServer
         }
     }
 }

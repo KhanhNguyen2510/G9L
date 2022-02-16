@@ -13,9 +13,9 @@ namespace G9L.BackEndAPI.Controllers
     public class ManufactureController : ApiControllerBase
     {
         private readonly IManufactureSevice _manufactureSevice;
-        public ManufactureController(IServiceProvider pserviceProvider) : base(pserviceProvider)
+        public ManufactureController(IManufactureSevice manufactureSevice) : base()
         {
-            _manufactureSevice = TryResolve<IManufactureSevice>();
+            _manufactureSevice = manufactureSevice;
         }
         //Create
         [HttpPost("CreateToManufacture")]
@@ -43,6 +43,12 @@ namespace G9L.BackEndAPI.Controllers
         public async Task<JsonResult> GetListToManufacture([FromQuery]GetManagerManufactureRequest request)
         {
             var data = await _manufactureSevice.GetListToManufacture(request, _CurrentCompanyIndex);
+            return Json(data);
+        }
+        [HttpGet("GetToManufacture/{ManufactureID}")]
+        public async Task<JsonResult> GetToManufacture(int ManufactureID)
+        {
+            var data = await _manufactureSevice.GetToManufacture(ManufactureID, _CurrentCompanyIndex);
             return Json(data);
         }
     }

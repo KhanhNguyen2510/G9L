@@ -13,6 +13,7 @@ namespace G9L.Data.Entities
         public int ProviderID { get; set; }//nhà cung cấp
         [Column(TypeName = ("datetime"))]
         public DateTime ImportDate { get; set; }// ngày thêm
+        [Column(TypeName = "decimal(18,3)")]
         public decimal TotalAmount { get; set; }// tổng tiền
 
         public string UpdateUser { get; set; }

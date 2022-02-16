@@ -15,4 +15,8 @@
     <ProjectReference Include="..\G9L.Data\G9L.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

@@ -13,9 +13,9 @@ namespace G9L.BackEndAPI.Controllers
     {
         private readonly IProviderSevice _providerSevice;
 
-        public ProviderController(IServiceProvider pServiceProvider) : base(pServiceProvider)
+        public ProviderController(IProviderSevice providerSevice) : base()
         {
-            _providerSevice = TryResolve<IProviderSevice>();
+            _providerSevice = providerSevice;
         }
         //Check 
         //Create
@@ -44,6 +44,12 @@ namespace G9L.BackEndAPI.Controllers
         public async Task<JsonResult> GetListToProvider([FromQuery]GetManagerProviderRequest request)
         {
             var data = await _providerSevice.GetListToProvider(request, _CurrentCompanyIndex);
+            return Json(data);
+        }
+        [HttpGet("GetToProvider/{ProviderID}")]
+        public async Task<JsonResult> GetToProvider(int ProviderID)
+        {
+            var data = await _providerSevice.GetToProvider(ProviderID, _CurrentCompanyIndex);
             return Json(data);
         }
     }

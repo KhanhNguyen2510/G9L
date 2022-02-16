@@ -122,5 +122,26 @@ namespace G9L.Aplication.Catalog.Manufacture
                 return null;
             }
         }
+        public async Task<GetManufactureViewModel> GetToManufacture(int ManufactureID, int CompanyIndex)
+        {
+            try
+            {
+                var query = await _context.Manufactures.Where(x => x.CompanyIndex == CompanyIndex && x.ID == ManufactureID).FirstOrDefaultAsync();
+
+                var data = new GetManufactureViewModel()
+                {
+                    ManufactureID = query.ID,
+                    ManufactureName = query.Name,
+                    Local = query.Local,
+                    UpdateDate = query.UpdateDate,
+                    UpdateUser = query.UpdateUser
+                };
+                return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

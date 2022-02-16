@@ -1,25 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace G9L.BackEndAPI.Common
 {
     public class ApiControllerBase : Controller
     {
-        private readonly IServiceProvider _ServiceProvider;
+        //private readonly IServiceProvider _ServiceProvider;
         protected readonly int _CurrentCompanyIndex;
         protected readonly string _CurrentUpdateUser;
 
-        public ApiControllerBase(IServiceProvider pServiceProvider)
+        public ApiControllerBase()
         {
-            _ServiceProvider = pServiceProvider;
+            //_ServiceProvider = pServiceProvider;
             _CurrentCompanyIndex = GetCurrentCompanyIndex();
             _CurrentUpdateUser = GetCurrentUpdateUser();
         }
-        protected T TryResolve<T>()
-        {
-            return _ServiceProvider.GetService<T>();
-        }
+        //protected T TryResolve<T>()
+        //{
+        //    return _ServiceProvider.GetService<T>();
+        //}
 
         protected string GetCurrentUpdateUser()
         {

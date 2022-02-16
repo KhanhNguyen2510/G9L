@@ -12,9 +12,9 @@ namespace G9L.BackEndAPI.Controllers
     public class ImportController : ApiControllerBase
     {
         private readonly IImportSevice _importSevice;
-        public ImportController(IServiceProvider pserviceProvider) : base(pserviceProvider)
+        public ImportController(IImportSevice importSevice) : base()
         {
-            _importSevice = TryResolve<IImportSevice>();
+            _importSevice = importSevice;
         }
         //Create
         [HttpPost("CreateToImport")]

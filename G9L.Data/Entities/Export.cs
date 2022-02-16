@@ -13,6 +13,7 @@ namespace G9L.Data.Entities
         public int ID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime ExportDate { get; set; }// ngày thêm
+        [Column(TypeName = "decimal(18,3)")]
         public decimal TotalAmount { get; set; }// tổng tiền
         public IsExport IsExport { get; set; }
 
