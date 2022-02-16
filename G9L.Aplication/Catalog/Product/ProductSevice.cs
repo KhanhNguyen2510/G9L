@@ -231,5 +231,33 @@ namespace G9L.Aplication.Catalog.Product
                 return null;
             }
         }
+        public async Task<List<GetProduct>> GetToProductToNameAndID(int CompanyIndex)
+        {
+            try
+            {
+                var data = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).Select(x => new GetProduct()
+                {
+                    ProductID = x.ID,
+                    ProductName = x.Name
+                }).ToListAsync();
+
+                return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<List<GetProductByName>> GetToProductToName(int CompanyIndex)
+        {
+            var data = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).Select(x => x.StorageLocations).Distinct().ToListAsync();
+
+            var rs = data.Select(x => new GetProductByName()
+            {
+                ProductName = x
+            }).ToList();
+
+            return rs;
+        }
     }
 }

@@ -15,7 +15,6 @@ namespace G9L.Wedsite.Controllers
 
         public async Task<IActionResult> Index(string KeyWord, int PageIndex = 1, int PageSize = 1)
         {
-
             var request = new GetManagerProductTypeRequest()
             {
                 KeyWord = KeyWord,

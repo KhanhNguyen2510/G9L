@@ -15,3 +15,20 @@ E:\Garage 9 Lành Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.csp
 E:\Garage 9 Lành Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.dll
 E:\Garage 9 Lành Manager\G9L\G9L.Aplication\obj\Debug\net5.0\ref\G9L.Aplication.dll
 E:\Garage 9 Lành Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.pdb
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Aplication.deps.json
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Aplication.dll
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\ref\G9L.Aplication.dll
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Aplication.pdb
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Common.dll
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Data.dll
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Common.pdb
+D:\G9L Manager\G9L\G9L.Aplication\bin\Debug\net5.0\G9L.Data.pdb
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.csproj.AssemblyReference.cache
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.GeneratedMSBuildEditorConfig.editorconfig
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.AssemblyInfoInputs.cache
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.AssemblyInfo.cs
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.csproj.CoreCompileInputs.cache
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.csproj.CopyComplete
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.dll
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\ref\G9L.Aplication.dll
+D:\G9L Manager\G9L\G9L.Aplication\obj\Debug\net5.0\G9L.Aplication.pdb

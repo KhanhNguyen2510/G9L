@@ -4,6 +4,7 @@ using G9L.Data.ViewModel.Common;
 using G9L.Data.ViewModel.Mannufacture;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,6 +24,11 @@ namespace G9L.IntergrationAPI.Manufacture
         public async Task<PagedResult<GetManufactureViewModel>> GetListToManufacture(GetManagerManufactureRequest request)
         {
             var data = await GetAsync<PagedResult<GetManufactureViewModel>>($"/api/Manufacture/GetListToManufacture?KeyWord={request.KeyWord}&PageIndex={request.PageIndex}&PageSize={request.PageSize}");
+            return data;
+        }
+        public async Task<List<GetManufacture>> GetToManufacturesOnNameAndID()
+        {
+            var data = await GetAsync<List<GetManufacture>>($"/api/Manufacture/GetToManufacturesOnNameAndID");
             return data;
         }
         public async Task<bool> CreateToManufacture(GetCreateManufactureRequest request)

@@ -23,57 +23,47 @@
                         <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
                             Thêm
                         </button>
-                        <button type="button" id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
+                        <button  id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
             <div class="header-body">
-                <div class="row align-items-center">
-                    <div class="col-lg-2 col-7">
-                        <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
-                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                <form method="get" asp-controller="Product" asp-action="Index">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Nhà cung cấp</label>
+                                <select name="ManufactureID" onchange="this.form.submit()" asp-items="@ViewBag.Manufactures" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Loại sản phẩm</label>
+                                <select name="ProductTypeID" onchange="this.form.submit()" asp-items="@ViewBag.ProductTypeID" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Vị trí</label>
+                                <select name="StorageLocations" onchange="this.form.submit()" asp-items="@ViewBag.Product" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-7">
-                        <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Nhà cung cấp</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-7">
-                        <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Loại sản phẩm</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-7">
-                        <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Vị trí</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

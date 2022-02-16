@@ -1,6 +1,7 @@
 ﻿using G9L.Data.ViewModel.Catalog.Mannufacture;
 using G9L.Data.ViewModel.Common;
 using G9L.Data.ViewModel.Mannufacture;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace G9L.Aplication.Catalog.Manufacture
@@ -16,5 +17,6 @@ namespace G9L.Aplication.Catalog.Manufacture
         //List
         Task<PagedResult<GetManufactureViewModel>> GetListToManufacture(GetManagerManufactureRequest request, int CompanyIndex);
         Task<GetManufactureViewModel> GetToManufacture(int ManufactureID, int CompanyIndex);
+        Task<List<GetManufacture>> GetToManufacturesOnNameAndID(int CompanyIndex);
     }
 }

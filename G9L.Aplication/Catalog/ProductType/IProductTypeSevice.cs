@@ -1,5 +1,6 @@
 ﻿using G9L.Data.ViewModel.Catalog.ProductType;
 using G9L.Data.ViewModel.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace G9L.Aplication.Catalog.ProductType
@@ -16,5 +17,6 @@ namespace G9L.Aplication.Catalog.ProductType
         //List
         Task<PagedResult<GetProductTypeViewModel>> GetListToProductType(GetManagerProductTypeRequest request, int CompanyIndex);
         Task<GetProductTypeViewModel> GetToProductType(int ProductTypeID, int CompanyIndex);
+        Task<List<GetProducType>> GetToProducTypeOnNameAndID(int CompanyIndex);
     }
 }

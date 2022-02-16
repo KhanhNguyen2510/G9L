@@ -3,6 +3,7 @@ using G9L.Data.ViewModel.Catalog.ProductType;
 using G9L.Data.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -133,6 +134,24 @@ namespace G9L.Aplication.Catalog.ProductType
                     UpdateUser = query.UpdateUser
                 };
 
+                return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<GetProducType>> GetToProducTypeOnNameAndID(int CompanyIndex)
+        {
+            try
+            {
+                var data = await _context.ProductTypes.Where(x => x.CompanyIndex == CompanyIndex).Select(x =>
+             new GetProducType()
+             {
+                 ProducTypeID = x.ID,
+                 ProducTypeName = x.Name
+             }).ToListAsync();
                 return data;
             }
             catch

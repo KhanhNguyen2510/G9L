@@ -3,6 +3,7 @@ using G9L.Data.ViewModel.Catalog.Product;
 using G9L.Data.ViewModel.Common;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -25,6 +26,16 @@ namespace G9L.IntergrationAPI.Product
                 $"?KeyWord={request.KeyWord}&ManufactureID={request.ManufactureID}" +
                 $"&ProductTypeID={request.ProductTypeID}&StorageLocations={request.StorageLocations}" +
                 $"&PageIndex={request.PageIndex}&PageSize={request.PageSize}");
+            return data;
+        }
+        public async Task<List<GetProduct>> GetToProductToNameAndID()
+        {
+            var data = await GetAsync<List<GetProduct>>($"/api/Product/GetToProductToNameAndID");
+            return data;
+        }
+        public async Task<List<GetProductByName>> GetToProductToName()
+        {
+            var data = await GetAsync<List<GetProductByName>>($"/api/Product/GetToProductToName");
             return data;
         }
         public async Task<bool> CreateToProduct(GetCreateProductRequest request)

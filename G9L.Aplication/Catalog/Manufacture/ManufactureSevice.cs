@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using G9L.Data.ViewModel.Common;
 using System.Linq;
 using G9L.Data.ViewModel.Catalog.Mannufacture;
+using System.Collections.Generic;
 
 namespace G9L.Aplication.Catalog.Manufacture
 {
@@ -137,6 +138,24 @@ namespace G9L.Aplication.Catalog.Manufacture
                     UpdateUser = query.UpdateUser
                 };
                 return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<GetManufacture>> GetToManufacturesOnNameAndID(int CompanyIndex)
+        {
+            try
+            {
+                var rs = await _context.Manufactures.Where(x => x.CompanyIndex == CompanyIndex).Select(x => new GetManufacture()
+                {
+                    ManufactureID = x.ID,
+                    ManufactureName = x.Name
+                }).ToListAsync();
+
+                return rs;
             }
             catch
             {

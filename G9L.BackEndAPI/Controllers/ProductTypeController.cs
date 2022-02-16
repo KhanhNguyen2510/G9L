@@ -92,5 +92,11 @@ namespace G9L.BackEndAPI.Controllers
             var data = await _productTypeSevice.GetToProductType(ProductTypeID, _CurrentCompanyIndex);
             return Json(data);
         }
+        [HttpGet("GetToProducTypeOnNameAndID")]
+        public async Task<JsonResult> GetToProducTypeOnNameAndID()
+        {
+            var data = await _productTypeSevice.GetToProducTypeOnNameAndID(_CurrentCompanyIndex);
+            return Json(data);
+        }
     }
 }

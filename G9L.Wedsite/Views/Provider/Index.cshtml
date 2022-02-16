@@ -32,10 +32,12 @@
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center">
-                    <div class="col-lg-3 col-7">
+                    <div class="col-lg-3 col-7">+
                         <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
-                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            <form method="get" asp-controller="Provider" asp-action="Index">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -144,7 +146,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
                                         </div>
-                                        <input type="text" name="NumberPhone" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" name="NumberPhone" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" 
+                                               pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$" 
+                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')"
+                                               >
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
@@ -180,13 +185,21 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-5">
-                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Provider" >
+                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Provider">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã nhà cung cấp</span>
+                                        </div>
+                                        <input id="providerID" type="text" name="ProviderID" class="form-control text-red" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly  value="1">
+                                    </div>
+                                </div>
                                 <div class="form-group mb-5">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="providerName" type="text" name="ProviderName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
@@ -194,7 +207,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="numberPhone" name="NumberPhone" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                               pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$" 
+                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')"
+                                               >
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
@@ -202,7 +218,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="address" name="Address" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
 
@@ -269,107 +285,27 @@
                     alert('Thanh cong')
                 },
                 error: function () {
-                    console.log('Connect failled');
+                    console.log('Connect failed');
                 },
             });
         }
         location.reload();
     }
 
-    async function viewPostDetail(postID) {
+    async function viewtDetail(ID) {
         await $.ajax({
-            url: BaseLocalhost + '/api/Posts/GetPostByID/' + postID + '/',
+            url: BaseLocalhost + '/api/Provider/GetToProvider/' + ID + '/',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
                 console.log(data)
-                $('#post-url').attr('href', data.postUrl).children('p').html(data.postUrl);
-                $('#user-url').attr('href', data.userUrl).children('p').html(data.userUrl);
-
-                $('#upload-time').html(data.uploadTime);
-                $('#post-content').html(data.postContent);
-                if (data.filePDF == '...' || data.filePDF == null || data.filePDF == "") {
-                    $('#pdf').attr('href', data.filePDF).hide();
-                    $('#title-pdf').html("Không có PDF")
-                } else {
-                    $('#pdf').attr('href', data.filePDF).show();
-                    $('#title-pdf').html("Xem PDF")
-                }
-                $('#pdf').attr('href', data.filePDF);
-                $('#crawled-time').html(data.crawledTime);
-                $('#like').html(data.totalLikes);
-                $('#comment').html(data.totalComment);
-                $('#share').html(data.totalShare);
-                $('#news-label').html(data.newsLabelName);
-
-                $('#post-ad').html(data.administrativeDivisionName);
-                if (data.report == 0) {
-                    $('#reprot-post').html("Đã lập báo cáo").prop('disabled', true)
-                    $('#sentiment-label').prop('disabled', true)
-
-                } else {
-                    $('#reprot-post').html("Lập báo cáo").prop('disabled', false)
-                    $('#sentiment-label').prop('disabled', false)
-                }
-                if (data.image == '') {
-                    $('#img-name').html("Không có hình ảnh").prop('disabled', false)
-                    $('#image').attr('href', "/assets/img/huy-hieu-cong-an-nhan.png").children('img').attr('src', "/assets/img/huy-hieu-cong-an-nhan.png");
-                }
-                else if (data.image != 'None') {
-                    $('#image').attr('href', data.image).children('img').attr('src', data.image);
-                }
-                if (data.sentimentLabelID == 'NEG') {
-                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-danger');
-                    $('#reprot-post').show();
-                    $('#title-h4').css({
-                        'margin-left': '230px',
-                        'font-size': '28px',
-                        'font-weight': 'bold'
-                    })
-                    $('#sentiment-label').css({
-                        'font-size': '20px',
-                        'color': 'red'
-                    })
-                    $('#news-label').css({
-                        'font-size': '20px',
-                        'color': 'red'
-                    })
-                } else if (data.sentimentLabelID == 'POS') {
-                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-success');
-                    $('#reprot-post').hide();
-                    $('#title-h4').css({
-                        'margin-left': '340px',
-                        'font-size': '28px',
-                        'font-weight': 'bold'
-                    })
-                    $('#sentiment-label').css({
-                        'font-size': '20px',
-                        'color': '#1E90FF'
-                    })
-                    $('#news-label').css({
-                        'font-size': '20px',
-                        'color': '#1E90FF'
-                    })
-                } else {
-                    $('#sentiment-label').html(data.sentimentLabelName).addClass('label-primary');
-                    $('#reprot-post').hide();
-                    $('#title-h4').css({
-                        'margin-left': '340px',
-                        'font-size': '28px',
-                        'font-weight': 'bold'
-                    })
-                    $('#sentiment-label').css({
-                        'font-size': '20px',
-                        'color': '#008000'
-                    })
-                    $('#news-label').css({
-                        'font-size': '20px',
-                        'color': '#008000'
-                    })
-                }
+                $('#providerID').html(data.id);
+                $('#providerName').html(data.name);
+                $('#numberPhone').html(data.numberPhone);
+                $('#address').html(data.address);
             },
             error: function () {
-                alert('Lỗi kết nối đến server!');
+                console.log('Connection Fail');
             }
         });
     }

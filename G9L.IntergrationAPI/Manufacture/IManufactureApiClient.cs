@@ -1,6 +1,7 @@
 ﻿using G9L.Data.ViewModel.Catalog.Mannufacture;
 using G9L.Data.ViewModel.Common;
 using G9L.Data.ViewModel.Mannufacture;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace G9L.IntergrationAPI.Manufacture
@@ -10,5 +11,6 @@ namespace G9L.IntergrationAPI.Manufacture
         Task<PagedResult<GetManufactureViewModel>> GetListToManufacture(GetManagerManufactureRequest request);
         Task<bool> CreateToManufacture(GetCreateManufactureRequest request);
         Task<bool> UpdateToManufacture(GetUpdateManufactureRequest request);
+        Task<List<GetManufacture>> GetToManufacturesOnNameAndID();
     }
 }

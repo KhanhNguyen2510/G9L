@@ -4,6 +4,7 @@ using G9L.Data.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -22,6 +23,11 @@ namespace G9L.IntergrationAPI.ProductType
         public async Task<PagedResult<GetProductTypeViewModel>> GetListToProductType(GetManagerProductTypeRequest request)
         {
             var data = await GetAsync<PagedResult<GetProductTypeViewModel>>($"/api/ProductType/GetListToProductType?KeyWord={request.KeyWord}&PageIndex={request.PageIndex}&PageSize={request.PageSize}");
+            return data;
+        }
+        public async Task<List<GetProducType>> GetToProducTypeOnNameAndID()
+        {
+            var data = await GetAsync<List<GetProducType>>($"/api/ProductType/GetToProducTypeOnNameAndID");
             return data;
         }
         public async Task<bool> CreateToProductType(GetCreateProductTypeRequest request, IFormFile formFile)

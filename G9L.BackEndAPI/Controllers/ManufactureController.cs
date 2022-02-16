@@ -51,5 +51,11 @@ namespace G9L.BackEndAPI.Controllers
             var data = await _manufactureSevice.GetToManufacture(ManufactureID, _CurrentCompanyIndex);
             return Json(data);
         }
+        [HttpGet("GetToManufacturesOnNameAndID")]
+        public async Task<JsonResult> GetToManufacturesOnNameAndID()
+        {
+            var data = await _manufactureSevice.GetToManufacturesOnNameAndID(_CurrentCompanyIndex);
+            return Json(data);
+        }
     }
 }
