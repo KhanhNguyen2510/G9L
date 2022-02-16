@@ -124,7 +124,7 @@ namespace G9L.Aplication.Catalog.ProductType
             try
             {
                 var query = await _context.ProductTypes.Where(x => x.CompanyIndex == CompanyIndex && x.ID == ProductTypeID).FirstOrDefaultAsync();
-
+                if (query == null) return null;
                 var data = new GetProductTypeViewModel()
                 {
                     ID = query.ID,

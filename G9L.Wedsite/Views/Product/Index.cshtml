@@ -1,4 +1,5 @@
 ﻿@using G9L.Data.ViewModel.Common
+@using G9L.Common.SystemBase
 @model PagedResult<G9L.Data.ViewModel.Catalog.Product.GetManagerProductViewModel>
 
 @{
@@ -23,7 +24,7 @@
                         <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
                             Thêm
                         </button>
-                        <button  id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
+                        <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@
                         <div class="col-lg-2 col-7">
                             <div class="form-group">
                                 <label for="example-search-input" class="form-control-label text-white">Loại sản phẩm</label>
-                                <select name="ProductTypeID" onchange="this.form.submit()" asp-items="@ViewBag.ProductTypeID" class="form-control" id="exampleFormControlSelect1">
+                                <select name="ProductTypeID" onchange="this.form.submit()" asp-items="@ViewBag.ProductType" class="form-control" id="exampleFormControlSelect1">
                                     <option></option>
                                 </select>
                             </div>
@@ -98,44 +99,44 @@
                             <tbody class="list">
                                 @foreach (var item in Model.Items)
                                 {
-                                    <tr>
-                                        <th class="text-center">
-                                            <input type="checkbox">
-                                        </th>
-                                        <td class="budget">
-                                            1
-                                        </td>
-                                        <th>
-                                            <div class="media align-items-center">
-                                                <div class="media-body">
-                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
-                                                </div>
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" id="@item.ID" onchange="addIDToArray('@item.ID')">
+                                    </td>
+                                    <td >
+                                        
+                                    </td>
+                                    <th>
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
                                             </div>
-                                        </th>
-                                        <td class="budget  text-center text-sm ">
-                                            @Html.DisplayFor(modelItem => item.StorageLocations)
-                                        <td class="budget  text-center">
-                                            @Html.DisplayFor(modelItem => item.ManufactureName)
-                                        </td>
-                                        <td class="budget text-center">
-                                            @Html.DisplayFor(modelItem => item.Quantily)
-                                        </td>
-                                        <td class="budget text-sm">
-                                            @Html.DisplayFor(modelItem => item.Price)0
-                                        </td>
-                                        <td class="budget ">
-                                            @Html.DisplayFor(modelItem => item.ProductTypeName)
-                                        </td>
-                                        <td class="budget">
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-                                        <td class="text-right">
-                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                    data-target="#modal-notification">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </th>
+                                    <td class="budget  text-center text-sm ">
+                                        @Html.DisplayFor(modelItem => item.StorageLocations)
+                                    <td class="budget  text-center">
+                                        @Html.DisplayFor(modelItem => item.ManufactureName)
+                                    </td>
+                                    <td class="budget text-center">
+                                        @Html.DisplayFor(modelItem => item.Quantily)
+                                    </td>
+                                    <td class="budget text-sm">
+                                        @Html.DisplayFor(modelItem => item.Price)0
+                                    </td>
+                                    <td class="budget ">
+                                        @Html.DisplayFor(modelItem => item.ProductTypeName)
+                                    </td>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td class="text-right">
+                                        <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                data-target="#modal-notification">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                                 }
 
                             </tbody>
@@ -160,13 +161,14 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-0">
-                            <form role="form">
+                            <form role="form" method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Product">
                                 <div class="form-group ">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên sản phẩm</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="ProductName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                               required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -174,7 +176,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Vị trí</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" name="StorageLocations" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -182,19 +184,19 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Giá</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input name="Price" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                               required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                         <div class="input-group-append">
                                             <span class="input-group-text">.000</span>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Số lượng</span>
                                         </div>
-                                        <input class="form-control" type="number" value="0" id="example-number-input">
+                                        <input class="form-control" name="Quantily" type="number" value="0" id="example-number-input">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -202,12 +204,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
                                         </div>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select class="form-control" name="ManufactureID" asp-items="@ViewBag.Manufactures" id="exampleFormControlSelect1">
                                         </select>
                                     </div>
                                 </div>
@@ -216,12 +213,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên loại sản phẩm</span>
                                         </div>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select class="form-control" name="ProductTypeID" asp-items="@ViewBag.ProductType" id="exampleFormControlSelect1" \
+                                                required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                         </select>
                                     </div>
                                 </div>
@@ -230,12 +223,12 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Chú thích</span>
                                         </div>
-                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                        <textarea name="Description" class="form-control" aria-label="With textarea"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary ">Thêm</button>
+                                    <button type="submit" class="btn btn-primary ">Thêm</button>
                                 </div>
                             </form>
                         </div>
@@ -257,13 +250,21 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-0">
-                            <form role="form">
+                            <form role="form" method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Product">
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã sản phẩm</span>
+                                        </div>
+                                        <input id="productID" type="text" name="ProductID" value="1" class="form-control text-red" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
+                                    </div>
+                                </div>
                                 <div class="form-group ">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên sản phẩm</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="productName" name="ProductName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -271,7 +272,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Vị trí</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" id="storageLocations" name="StorageLocations" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -279,7 +280,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Giá</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        <input type="text" id="price" name="Price" class="form-control" aria-label="Amount (to the nearest dollar)">
                                         <div class="input-group-append">
                                             <span class="input-group-text">.000</span>
                                         </div>
@@ -291,7 +292,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Số lượng</span>
                                         </div>
-                                        <input class="form-control" type="number" value="0" id="example-number-input">
+                                        <input name="Quantily" class="form-control" type="number" id="quantily">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -299,12 +300,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
                                         </div>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select name="ManufactureID" class="form-control" asp-items="@ViewBag.Manufactures" id="manufactureID">
                                         </select>
                                     </div>
                                 </div>
@@ -313,12 +309,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên loại sản phẩm</span>
                                         </div>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select name="ProductTypeID" class="form-control" asp-items="@ViewBag.ProductType" id="productTypeID">
                                         </select>
                                     </div>
                                 </div>
@@ -327,12 +318,11 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Chú thích</span>
                                         </div>
-                                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                                        <textarea id="description" name="Description" class="form-control" aria-label="With textarea"></textarea>
                                     </div>
                                 </div>
-
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary mb-3">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary mb-3">Cập nhật</button>
                                 </div>
                             </form>
                         </div>
@@ -342,3 +332,86 @@
         </div>
     </div>
 </main>
+
+<script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+    listID = [];
+
+    function deleteItemInArray(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                arr.splice(i, 1);
+                i--;
+            }
+        }
+    };
+
+    function findID(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+    };
+
+    function toggleButton() {
+        if (listID.length == 0) {
+            $('#deleteByID').prop('disabled', true);
+        } else {
+            $('#deleteByID').prop('disabled', false);
+        }
+    };
+
+    function addIDToArray(ID) {
+        if (!findID(listID, ID)) {
+            listID.push(ID);
+
+            console.log(listID)
+
+        } else {
+            deleteItemInArray(listID, ID);
+        }
+        toggleButton()
+    };
+
+    async function deleteID() {
+        for (var i = 0; i < listID.length; i++) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/Product/DeleteToProduct/' + listID[i],
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Thanh cong')
+                },
+                error: function () {
+                    console.log('Connect failed');
+                },
+            });
+        }
+        location.reload();
+    }
+
+    async function viewtDetail(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID + '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#productID').html(data.id);
+                $('#productName').html(data.name);
+                $('#storageLocations').html(data.numberPhone);
+                $('#price').html(data.address);
+                $('#quantily').html(data.id);
+                $('#manufactureID').html(data.name);
+                $('#productTypeID').html(data.numberPhone);
+                $('#description').html(data.address);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    }
+
+</script>

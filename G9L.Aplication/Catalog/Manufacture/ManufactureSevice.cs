@@ -128,7 +128,7 @@ namespace G9L.Aplication.Catalog.Manufacture
             try
             {
                 var query = await _context.Manufactures.Where(x => x.CompanyIndex == CompanyIndex && x.ID == ManufactureID).FirstOrDefaultAsync();
-
+                if (query == null) return null;
                 var data = new GetManufactureViewModel()
                 {
                     ManufactureID = query.ID,

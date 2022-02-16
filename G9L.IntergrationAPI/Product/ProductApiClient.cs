@@ -45,16 +45,23 @@ namespace G9L.IntergrationAPI.Product
 
             var requestContent = new MultipartFormDataContent();
 
-            requestContent.Add(new StringContent(request.StorageLocations.ToString()), "StorageLocations");
-            requestContent.Add(new StringContent(request.ProductTypeID.ToString()), "ProductTypeID");
-            requestContent.Add(new StringContent(request.Price.ToString()), "Price");
-            requestContent.Add(new StringContent(request.Quantily.ToString()), "Quantily");
-            requestContent.Add(new StringContent(request.Image1.ToString()), "Image1");
-            requestContent.Add(new StringContent(request.Image2.ToString()), "Image2");
-            requestContent.Add(new StringContent(request.Image3.ToString()), "Image3");
             requestContent.Add(new StringContent(request.ProductName.ToString()), "ProductName");
-            requestContent.Add(new StringContent(request.ManufactureID.ToString()), "ManufactureID");
-            requestContent.Add(new StringContent(request.Description.ToString()), "Description");
+            requestContent.Add(new StringContent(request.Price.ToString()), "Price");
+            requestContent.Add(new StringContent(request.ProductTypeID.ToString()), "ProductTypeID");
+            if (request.StorageLocations != null)
+                requestContent.Add(new StringContent(request.StorageLocations.ToString()), "StorageLocations");
+            if (request.Quantily != null)
+                requestContent.Add(new StringContent(request.Quantily.ToString()), "Quantily");
+            if (request.Image1 != null)
+                requestContent.Add(new StringContent(request.Image1.ToString()), "Image1");
+            if (request.Image2 != null)
+                requestContent.Add(new StringContent(request.Image2.ToString()), "Image2");
+            if (request.Image3 != null)
+                requestContent.Add(new StringContent(request.Image3.ToString()), "Image3");
+            if (request.ManufactureID != null)
+                requestContent.Add(new StringContent(request.ManufactureID.ToString()), "ManufactureID");
+            if (request.Description != null)
+                requestContent.Add(new StringContent(request.Description.ToString()), "Description");
 
             var response = await client.PostAsync($"/api/Product/CreateToProduct", requestContent);
 

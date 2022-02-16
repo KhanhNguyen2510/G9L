@@ -8,7 +8,6 @@
 }
 
 <main>
-    
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
@@ -26,8 +25,7 @@
                         <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
                             Thêm
                         </button>
-                        <button type="button" id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
-
+                        <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
                     </div>
                 </div>
             </div>
@@ -37,8 +35,10 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-7">
                         <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
-                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            <form method="get" asp-controller="ProductType" asp-action="Index">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -72,34 +72,32 @@
                             <tbody class="list">
                                 @foreach (var item in Model.Items)
                                 {
-                                    <tr>
-                                        <th class="text-center">
-                                            <input type="checkbox">
-                                        </th>
-                                        <td class="budget">
-                                            1
-                                        </td>
-                                        <th scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="media-body">
-                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
-                                                </div>
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" id="@item.ID" onchange="addIDToArray('@item.ID')">
+                                    </td>
+                                    <td ></td>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.Name)</span>
                                             </div>
-                                        </th>
-                                        <td class="budget">
-                                            @Html.DisplayFor(modelItem => item.UpdateDate)
-                                        </td>
-                                        <td class="budget">
-                                            @Html.DisplayFor(modelItem => item.UpdateUser)
-                                        </td>
+                                        </div>
+                                    </th>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.UpdateDate)
+                                    </td>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.UpdateUser)
+                                    </td>
 
-                                        <td class="text-right">
-                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                    data-target="#modal-notification">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <td class="text-right">
+                                        <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                data-target="#modal-notification">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                                 }
 
                             </tbody>
@@ -124,18 +122,19 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-5">
-                            <form role="form">
+                            <form role="form" method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="ProductType">
                                 <div class="form-group mb-5">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên loại hàng</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="Name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                                  required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFileLang" lang="en">
+                                        <input name="formFile" type="file" class="custom-file-input" id="customFileLang" lang="en">
                                         <label class="custom-file-label" for="customFileLang">Select file</label>
                                     </div>
                                 </div>
@@ -163,24 +162,31 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-5">
-                            <form role="form">
+                            <form role="form" method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="ProductType">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã loại hàng</span>
+                                        </div>
+                                        <input readonly name="ProcductTypeID" id="procductTypeID" type="text" class="form-control text-red" value="1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
                                 <div class="form-group mb-5">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên loại hàng</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="ProcductTypeName" id="procductTypeName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFileLang" lang="en">
+                                        <input name="Image" type="file" class="custom-file-input" id="image" lang="en">
                                         <label class="custom-file-label" for="customFileLang">Select file</label>
                                     </div>
                                 </div>
-
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
                             </form>
                         </div>
@@ -232,4 +238,39 @@
         }
         toggleButton()
     };
+
+    async function deleteID() {
+        for (var i = 0; i < listID.length; i++) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/ProductType/DeleteToProductType/' + listID[i],
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Thanh cong')
+                },
+                error: function () {
+                    console.log('Connect failed');
+                },
+            });
+        }
+        location.reload();
+    }
+
+    async function viewtDetail(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/ProductType/GetToProductType/' + ID + '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#procductTypeID').html(data.id);
+                $('#procductTypeName').html(data.name);
+                $('#image').html(data.numberPhone);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    }
+
 </script>

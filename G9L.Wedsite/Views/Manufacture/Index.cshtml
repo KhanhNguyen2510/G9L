@@ -20,11 +20,10 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-
                         <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
                             Thêm
                         </button>
-                        <button type="button" id="deleteByID" class="btn btn-sm text-white" style="background-color:#f5365c;">Xóa</button>
+                        <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
                     </div>
                 </div>
             </div>
@@ -34,8 +33,10 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-7">
                         <div class="form-group">
-                            <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
-                            <input class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            <form method="get" asp-controller="Manufacture" asp-action="Index">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -68,15 +69,14 @@
                                 </tr>
                             </thead>
                             <tbody class="list">
+
                                 @foreach (var item in Model.Items)
                                 {
                                     <tr>
-                                        <th class="text-center">
-                                            <input type="checkbox">
-                                        </th>
-                                        <td class="budget">
-                                            1
+                                        <td class="text-center">
+                                            <input type="checkbox" id="@item.ManufactureID" onchange="addIDToArray('@item.ManufactureID')">
                                         </td>
+                                        <td > </td>
                                         <th scope="row">
                                             <div class="media align-items-center">
                                                 <div class="media-body">
@@ -125,13 +125,15 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-5">
-                            <form role="form">
+                            <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Mannufacture">
                                 <div class="form-group mb-5">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà sản xuất</span>
+                                            <span class="input-group-text"  id="inputGroup-sizing-default" >Tên nhà sản xuất</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="Name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                               required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')"
+                                               >
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -139,12 +141,12 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="Local" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
                         </div>
@@ -166,13 +168,22 @@
                             </button>
                         </div>
                         <div class="card-body px-lg-3 py-lg-5">
-                            <form role="form">
+                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Mannufacture">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã nhà sản xuất</span>
+                                        </div>
+                                        <input id="manufactureID" name="ManufactureID" type="text" class="form-control text-red" value="1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
+                                    </div>
+                                </div>
                                 <div class="form-group mb-5">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà sản xuất</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="manufactureName" name="ManufactureName" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                               required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -180,11 +191,11 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input name="Local" id="local" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
                             </form>
                         </div>
@@ -195,7 +206,7 @@
     </div>
 </main>
 <script>
-   BaseLocalhost = '@SystemConnection.UploadImageConnection'
+    BaseLocalhost = '@SystemConnection.BaseConnection'
 
     listID = [];
 
@@ -236,7 +247,7 @@
         toggleButton()
     };
 
-    async function deletePost() {
+    async function deleteID() {
         for (var i = 0; i < listID.length; i++) {
             await $.ajax({
                 url: BaseLocalhost + '/api/Manufacture/DeleteToManufacture/' + listID[i],
@@ -246,10 +257,28 @@
                     alert('Thanh cong')
                 },
                 error: function () {
-                    console.log('Connect failled');
+                    console.log('Connect failed');
                 },
             });
         }
         location.reload();
     }
+
+    async function viewtDetail(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Manufacture/GetToManufacture/' + ID + '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#manufactureID').html(data.id);
+                $('#manufactureName').html(data.id);
+                $('#local').html(data.name);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    }
+
 </script>

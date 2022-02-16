@@ -17,6 +17,16 @@
     <link rel="stylesheet" href="../assets/vendor/nucleo/css/nucleo.css" type="text/css">
     <!-- Argon CSS -->
     <link rel="stylesheet" href="../assets/css/argon.css?v=1.2.0" type="text/css">
+    <style type='text/css'>
+
+        table tr {
+            counter-increment: Rownumber;
+        }
+
+        table td:first-child + td::before {
+            content: counter(Rownumber);
+        }
+    </style>
 </head>
 
 <body>

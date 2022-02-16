@@ -38,8 +38,10 @@ namespace G9L.IntergrationAPI.ProductType
             var requestContent = new MultipartFormDataContent();
 
             requestContent.Add(new StringContent(request.Name.ToString()), "Name");
-            requestContent.Add(new StringContent(request.Image.ToString()), "Image");
-            requestContent.Add(new StringContent(formFile.ToString()), "formFile");
+            if(request.Image != null)
+                requestContent.Add(new StringContent(request.Image.ToString()), "Image");
+            if (formFile != null)
+                requestContent.Add(new StringContent(formFile.ToString()), "formFile");
 
             var response = await client.PostAsync($"/api/ProductType/CreateToProductTyper", requestContent);
 
@@ -53,8 +55,10 @@ namespace G9L.IntergrationAPI.ProductType
             var requestContent = new MultipartFormDataContent();
 
             requestContent.Add(new StringContent(request.ProcductTypeID.ToString()), "ProcductTypeID");
-            requestContent.Add(new StringContent(request.ProcductTypeName.ToString()), "ProcductTypeName");
-            requestContent.Add(new StringContent(request.Image.ToString()), "Image");
+            if (request.ProcductTypeName != null)
+                requestContent.Add(new StringContent(request.ProcductTypeName.ToString()), "ProcductTypeName");
+            if (request.Image != null)
+                requestContent.Add(new StringContent(request.Image.ToString()), "Image");
 
             var response = await client.PostAsync($"/api/ProductType/UpdateToProductType", requestContent);
 

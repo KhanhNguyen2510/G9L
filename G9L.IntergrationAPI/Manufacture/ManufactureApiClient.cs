@@ -39,7 +39,9 @@ namespace G9L.IntergrationAPI.Manufacture
             var requestContent = new MultipartFormDataContent();
 
             requestContent.Add(new StringContent(request.Name.ToString()), "Name");
-            requestContent.Add(new StringContent(request.Local.ToString()), "Local");
+
+            if(request.Local != null)
+                requestContent.Add(new StringContent(request.Local.ToString()), "Local");
 
             var response = await client.PostAsync($"/api/Manufacture/CreateToManufacture", requestContent);
 
@@ -53,8 +55,10 @@ namespace G9L.IntergrationAPI.Manufacture
             var requestContent = new MultipartFormDataContent();
 
             requestContent.Add(new StringContent(request.ManufactureID.ToString()), "ManufactureID");
-            requestContent.Add(new StringContent(request.ManufactureName.ToString()), "ManufactureName");
-            requestContent.Add(new StringContent(request.Local.ToString()), "Local");
+            if(request.ManufactureName != null)
+                requestContent.Add(new StringContent(request.ManufactureName.ToString()), "ManufactureName");
+            if (request.Local != null)
+                requestContent.Add(new StringContent(request.Local.ToString()), "Local");
 
             var response = await client.PostAsync($"/api/Manufacture/UpdateToManufacture", requestContent);
 
