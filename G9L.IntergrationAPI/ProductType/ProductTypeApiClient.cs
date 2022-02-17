@@ -30,7 +30,7 @@ namespace G9L.IntergrationAPI.ProductType
             var data = await GetAsync<List<GetProducType>>($"/api/ProductType/GetToProducTypeOnNameAndID");
             return data;
         }
-        public async Task<bool> CreateToProductType(GetCreateProductTypeRequest request, IFormFile formFile)
+        public async Task<bool> CreateToProductType(GetCreateProductTypeRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemConnection.AppSettings.BaseAddress]);
@@ -38,12 +38,10 @@ namespace G9L.IntergrationAPI.ProductType
             var requestContent = new MultipartFormDataContent();
 
             requestContent.Add(new StringContent(request.Name.ToString()), "Name");
-            if(request.Image != null)
+            if (request.Image != null)
                 requestContent.Add(new StringContent(request.Image.ToString()), "Image");
-            if (formFile != null)
-                requestContent.Add(new StringContent(formFile.ToString()), "formFile");
 
-            var response = await client.PostAsync($"/api/ProductType/CreateToProductTyper", requestContent);
+            var response = await client.PostAsync($"/api/ProductType/CreateToProductType", requestContent);
 
             return response.IsSuccessStatusCode;
         }

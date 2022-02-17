@@ -9,7 +9,7 @@ namespace G9L.IntergrationAPI.ProductType
     public interface IProductTypeApiClient
     {
         Task<PagedResult<GetProductTypeViewModel>> GetListToProductType(GetManagerProductTypeRequest request);
-        Task<bool> CreateToProductType(GetCreateProductTypeRequest request, IFormFile formFile);
+        Task<bool> CreateToProductType(GetCreateProductTypeRequest request);
         Task<bool> UpdateToProductType(GetUpdateProductTypeRequest request);
         Task<List<GetProducType>> GetToProducTypeOnNameAndID();
     }

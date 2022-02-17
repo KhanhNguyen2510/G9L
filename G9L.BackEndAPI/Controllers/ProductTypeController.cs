@@ -25,18 +25,12 @@ namespace G9L.BackEndAPI.Controllers
         }
         //Create
         [HttpPost("CreateToProductType")]
-        public async Task<JsonResult> CreateToProductType([FromForm] GetCreateProductTypeRequest request, IFormFile formFile)
+        public async Task<JsonResult> CreateToProductType([FromForm] GetCreateProductTypeRequest request/*, IFormFile formFile*/)
         {
-            string file = "";
-            if (formFile != null) file = UploadImage(formFile);
+            //string file = "";
+            //if (formFile != null) file = UploadImage(formFile);
 
-            var result = new GetCreateProductTypeRequest()
-            {
-                Name = request.Name,
-                Image = file
-
-            };
-            var data = await _productTypeSevice.CreateToProductType(result, _CurrentCompanyIndex, _CurrentUpdateUser);
+            var data = await _productTypeSevice.CreateToProductType(request, _CurrentCompanyIndex, _CurrentUpdateUser);
             return Json(data);
         }
         //Update
