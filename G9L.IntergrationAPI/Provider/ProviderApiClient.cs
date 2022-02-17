@@ -3,6 +3,7 @@ using G9L.Data.ViewModel.Catalog.Provider;
 using G9L.Data.ViewModel.Common;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -22,6 +23,11 @@ namespace G9L.IntergrationAPI.Provider
         public async Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request)
         {
             var data = await GetAsync<PagedResult<GetManuProviderViewModel>>($"/api/Provider/GetListToProvider?KeyWord={request.KeyWord}&PageIndex={request.PageIndex}&PageSize={request.PageSize}");
+            return data;
+        }
+        public async Task<List<GetProvider>> GetToProvideOnNameAndID()
+        {
+            var data = await GetAsync<List<GetProvider>>($"/api/Provider/GetToProvideOnNameAndID");
             return data;
         }
         public async Task<bool> CreateToProvider(GetCreateProviderRequest request)

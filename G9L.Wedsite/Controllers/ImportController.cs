@@ -1,7 +1,10 @@
 ﻿using G9L.Data.ViewModel.Catalog.Import;
 using G9L.IntergrationAPI.Import;
+using G9L.IntergrationAPI.Provider;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace G9L.Wedsite.Controllers
@@ -9,11 +12,13 @@ namespace G9L.Wedsite.Controllers
     public class ImportController : Controller
     {
         private readonly IImportApiClient _importApiClient;
-        public ImportController(IImportApiClient importApiClient)
+        private readonly IProviderApiClient _providerApiClient;
+        public ImportController(IImportApiClient importApiClient, IProviderApiClient providerApiClient)
         {
+            _providerApiClient = providerApiClient;
             _importApiClient = importApiClient;
         }
-        public async Task<IActionResult> ImportIndex(string KeyWord, int ProviderID, DateTime DateFrom, DateTime DateTo, int PageIndex = 1, int PageSize = 1000)
+        public async Task<IActionResult> Index(string KeyWord, int? ProviderID, DateTime? DateFrom, DateTime? DateTo, int PageIndex = 1, int PageSize = 1000)
         {
 
             var request = new GetManagerImportRequest()
@@ -27,6 +32,14 @@ namespace G9L.Wedsite.Controllers
             };
 
             var data = await _importApiClient.GetListToImport(request);
+
+            var pr = await _providerApiClient.GetToProvideOnNameAndID();
+            ViewBag.Provider = pr.Select(x => new SelectListItem()
+            {
+                Text =x.ProviderName,
+                Value = x.ProviderID.ToString(),
+                Selected = ProviderID == x.ProviderID
+            });
 
             if (TempData["result"] != null)
             {

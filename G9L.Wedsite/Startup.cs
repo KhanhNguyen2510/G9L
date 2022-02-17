@@ -1,3 +1,5 @@
+using G9L.IntergrationAPI.Export;
+using G9L.IntergrationAPI.Import;
 using G9L.IntergrationAPI.Manufacture;
 using G9L.IntergrationAPI.Product;
 using G9L.IntergrationAPI.ProductType;
@@ -31,7 +33,8 @@ namespace G9L.Wedsite
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<IProviderApiClient, ProviderApiClient>();
             services.AddTransient<IManufactureApiClient, ManufactureApiClient>();
-          
+            services.AddTransient<IImportApiClient, ImportApiClient>();
+            services.AddTransient<IExportApiClient, ExportApiClient>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             IMvcBuilder builder = services.AddRazorPages();

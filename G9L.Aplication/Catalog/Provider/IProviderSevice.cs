@@ -1,5 +1,6 @@
 ﻿using G9L.Data.ViewModel.Catalog.Provider;
 using G9L.Data.ViewModel.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace G9L.Aplication.Catalog.Provider
@@ -15,5 +16,6 @@ namespace G9L.Aplication.Catalog.Provider
         //List
         Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request, int CompanyIndex);
         Task<GetManuProviderViewModel> GetToProvider(int ProviderID, int CompanyIndex);
+        Task<List<GetProvider>> GetToProvideOnNameAndID(int CompanyIndex);
     }
 }

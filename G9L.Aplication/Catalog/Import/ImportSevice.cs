@@ -218,11 +218,11 @@ namespace G9L.Aplication.Catalog.Import
                 if (request.DateFrom != null || request.DateTo != null)
                 {
                     if (request.DateFrom == null && request.DateTo != null)
-                        query = query.Where(x => x.ImportDate == request.DateTo).ToList();
+                        query = query.Where(x => x.ImportDate == request.DateTo.Value.Date).ToList();
                     else if (request.DateFrom != null && request.DateTo == null)
-                        query = query.Where(x => x.ImportDate == request.DateFrom).ToList();
+                        query = query.Where(x => x.ImportDate == request.DateFrom.Value.Date).ToList();
                     else
-                        query = query.Where(x => request.DateFrom <= x.ImportDate && x.ImportDate <= request.DateTo).ToList();
+                        query = query.Where(x => request.DateFrom.Value.Date <= x.ImportDate && x.ImportDate <= request.DateTo.Value.Date).ToList();
                 }
 
                 int totalRow = query.Count;
@@ -254,20 +254,28 @@ namespace G9L.Aplication.Catalog.Import
         }
         public async Task<List<GetImportDetailsViewModel>> GetListToImportDetails(int ImportID, int CompanyIndex)
         {
-            var data = await (from id in _context.ImportDetails
-                              join p in _context.Products
-                              on id.ProductID equals p.ID
-                              where id.ImportID == ImportID && id.CompanyIndex == CompanyIndex
-                              select new GetImportDetailsViewModel()
-                              {
-                                  ImportID = id.ImportID,
-                                  ProductID = id.ProductID,
-                                  ProductName = p.Name,
-                                  CostPrice = id.CostPrice,
-                                  IsUnit = id.IsUnit,
-                                  Quantily = id.Quantily
-                              }).ToListAsync();
-            return data;
+            try
+            {
+                var data = await (from id in _context.ImportDetails
+                                  join p in _context.Products
+                                  on id.ProductID equals p.ID
+                                  where id.ImportID == ImportID && id.CompanyIndex == CompanyIndex
+                                  select new GetImportDetailsViewModel()
+                                  {
+                                      ImportID = id.ImportID,
+                                      ProductID = id.ProductID,
+                                      ProductName = p.Name,
+                                      CostPrice = id.CostPrice,
+                                      IsUnit = id.IsUnit,
+                                      Quantily = id.Quantily
+                                  }).ToListAsync();
+
+                return data;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

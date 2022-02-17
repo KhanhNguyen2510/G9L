@@ -3,6 +3,7 @@ using G9L.Data.ViewModel.Catalog.Provider;
 using G9L.Data.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace G9L.Aplication.Catalog.Provider
         }
         //Check
         //Create
-        public async Task<bool> CreateToProvider(GetCreateProviderRequest request , int CompanyIndex , string UpdateUser )
+        public async Task<bool> CreateToProvider(GetCreateProviderRequest request, int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace G9L.Aplication.Catalog.Provider
 
         }
         //Delete
-        public async Task<bool> DeleteToProvider(int ProviderID , int CompanyIndex)
+        public async Task<bool> DeleteToProvider(int ProviderID, int CompanyIndex)
         {
             try
             {
@@ -86,14 +87,14 @@ namespace G9L.Aplication.Catalog.Provider
             }
         }
         //List
-        public async Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request , int CompanyIndex )
+        public async Task<PagedResult<GetManuProviderViewModel>> GetListToProvider(GetManagerProviderRequest request, int CompanyIndex)
         {
             try
             {
                 var query = await _context.Providers.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
 
                 if (request.KeyWord != null)
-                    query = query.Where(x =>x.Name.Contains(request.KeyWord) || x.NumberPhone.Contains(request.KeyWord) || x.Address.Contains(request.KeyWord) || x.ID.ToString().Contains(request.KeyWord)).ToList();
+                    query = query.Where(x => x.Name.Contains(request.KeyWord) || x.NumberPhone.Contains(request.KeyWord) || x.Address.Contains(request.KeyWord) || x.ID.ToString().Contains(request.KeyWord)).ToList();
 
                 int totalRow = query.Count;
 
@@ -127,7 +128,7 @@ namespace G9L.Aplication.Catalog.Provider
             try
             {
                 var query = await _context.Providers.Where(x => x.CompanyIndex == CompanyIndex && x.ID == ProviderID).FirstOrDefaultAsync();
-               
+
                 if (query == null) return null;
 
                 var data = new GetManuProviderViewModel()
@@ -141,6 +142,25 @@ namespace G9L.Aplication.Catalog.Provider
                 };
 
                 return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<GetProvider>> GetToProvideOnNameAndID(int CompanyIndex)
+        {
+            try
+            {
+                var query = await _context.Providers.Where(x => x.CompanyIndex == CompanyIndex).Select(x => new GetProvider()
+                {
+                    ProviderID = x.ID,
+                    ProviderName = x.Name
+                }).ToListAsync();
+
+                return query;
+
             }
             catch
             {

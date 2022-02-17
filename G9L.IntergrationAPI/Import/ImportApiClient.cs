@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace G9L.IntergrationAPI.Import
 {
-    class ImportApiClient : BaseAPIClient, IImportApiClient
+    public class ImportApiClient : BaseAPIClient, IImportApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;

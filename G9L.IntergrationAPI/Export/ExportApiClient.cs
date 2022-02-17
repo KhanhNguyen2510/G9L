@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace G9L.IntergrationAPI.Export
 {
-    class ExportApiClient : BaseAPIClient, IExportApiClient
+   public class ExportApiClient : BaseAPIClient, IExportApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;

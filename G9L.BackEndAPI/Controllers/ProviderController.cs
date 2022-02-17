@@ -52,5 +52,11 @@ namespace G9L.BackEndAPI.Controllers
             var data = await _providerSevice.GetToProvider(ProviderID, _CurrentCompanyIndex);
             return Json(data);
         }
+        [HttpGet("GetToProvideOnNameAndID")]
+        public async Task<IActionResult> GetToProvideOnNameAndID(int CompanyIndex)
+        {
+            var data = await _providerSevice.GetToProvideOnNameAndID(_CurrentCompanyIndex);
+            return Json(data);
+        }
     }
 }

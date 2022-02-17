@@ -97,8 +97,6 @@ namespace G9L.Wedsite.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Update([FromForm] GetUpdateProductRequest request)
         {
-            if (request.Description == null && request.ManufactureID == null && request.Price == null && request.ProductName == null && request.ProductTypeID == null && request.StorageLocations == null)
-                return View();
 
             var result = await _productApiClient.UpdateToProduct(request);
             if (result == true)
