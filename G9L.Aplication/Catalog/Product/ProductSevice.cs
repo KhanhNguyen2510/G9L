@@ -133,7 +133,7 @@ namespace G9L.Aplication.Catalog.Product
                                    }).ToListAsync();
 
                 if (request.KeyWord != null)
-                    query = query.Where(x => x.ID.ToString().Contains(request.KeyWord) || x.Name.Contains(request.KeyWord) || x.Description.Contains(request.KeyWord)).ToList();
+                    query = query.Where(x => x.ID.ToString().Contains(request.KeyWord) || x.Name.ToLower().Contains(request.KeyWord.ToLower()) || x.Description.ToLower().Contains(request.KeyWord.ToLower())).ToList();
 
                 if (request.ManufactureID != null)
                     query = query.Where(x => x.ManufactureID == request.ManufactureID).ToList();
@@ -142,7 +142,7 @@ namespace G9L.Aplication.Catalog.Product
                     query = query.Where(x => x.ProductTypeID == request.ProductTypeID).ToList();
 
                 if (request.StorageLocations != null)
-                    query = query.Where(x => x.StorageLocations == request.StorageLocations).ToList();
+                    query = query.Where(x => x.StorageLocations.ToLower() == request.StorageLocations.ToLower()).ToList();
 
                 int totalRow = query.Count;
 
@@ -221,7 +221,9 @@ namespace G9L.Aplication.Catalog.Product
                     ProductTypeName = query.ProcductTypeName,
                     Image1 = query.Image1,
                     Image2 = query.Image2,
-                    Image3 = query.Image3
+                    Image3 = query.Image3,
+                    ManufactureID = query.ManufactureID,
+                    ProductTypeID = query.ProductTypeID
                 };
 
                 return data;

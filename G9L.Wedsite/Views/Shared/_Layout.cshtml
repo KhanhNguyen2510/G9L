@@ -13,6 +13,7 @@
     <!-- Fonts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
             crossorigin="anonymous"></script>
+
     <!-- Icons -->
     <link rel="stylesheet" href="../assets/vendor/nucleo/css/nucleo.css" type="text/css">
     <!-- Argon CSS -->
@@ -27,6 +28,9 @@
             content: counter(Rownumber);
         }
     </style>
+
+
+
 </head>
 
 <body>
@@ -163,6 +167,34 @@
             </div>
         </nav>
         <main>
+            <script>
+                setTimeout(function () {
+                    $('#msgAlert').fadeOut('slow');
+                }, 600);
+            </script>
+            <div class="row" id="msg">
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <div id="msgAlert" class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                        <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                        <span class="alert-text"><strong>@ViewBag.SuccessMessage</strong></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div id="msgAlert" class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                        <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span class="alert-text"><strong> @ViewBag.ErrorMessage</strong></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+
+            </div>
             @RenderBody()
         </main>
     </div>
@@ -175,6 +207,7 @@
     <script src="../assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
     <script src="../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
     <!-- Argon JS -->
+    <script src="https://kit.fontawesome.com/dcd92f06c4.js" crossorigin="anonymous"></script>
     <script src="../assets/js/argon.js?v=1.2.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 

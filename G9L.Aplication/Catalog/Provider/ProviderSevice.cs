@@ -94,7 +94,7 @@ namespace G9L.Aplication.Catalog.Provider
                 var query = await _context.Providers.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
 
                 if (request.KeyWord != null)
-                    query = query.Where(x => x.Name.Contains(request.KeyWord) || x.NumberPhone.Contains(request.KeyWord) || x.Address.Contains(request.KeyWord) || x.ID.ToString().Contains(request.KeyWord)).ToList();
+                    query = query.Where(x => x.Name.ToLower().Contains(request.KeyWord.ToLower()) || x.NumberPhone.Contains(request.KeyWord) || x.Address.ToLower().Contains(request.KeyWord.ToLower()) || x.ID.ToString().Contains(request.KeyWord)).ToList();
 
                 int totalRow = query.Count;
 

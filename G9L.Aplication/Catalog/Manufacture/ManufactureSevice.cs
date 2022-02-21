@@ -95,7 +95,7 @@ namespace G9L.Aplication.Catalog.Manufacture
                 var query = await _context.Manufactures.Where(x=>x.CompanyIndex == CompanyIndex).ToListAsync();
 
                 if (request.KeyWord != null)
-                    query = query.Where(x => x.Name.Contains(request.KeyWord) || x.Local.Contains(request.KeyWord) || x.ID.ToString().Contains(request.KeyWord)).ToList();
+                    query = query.Where(x => x.Name.ToLower().Contains(request.KeyWord.ToLower()) || x.Local.ToLower().Contains(request.KeyWord.ToLower()) || x.ID.ToString().Contains(request.KeyWord)).ToList();
 
                 int totalRow = query.Count;
 

@@ -1,12 +1,10 @@
 ﻿using G9L.Data.ViewModel.Catalog.Product;
-using G9L.Data.ViewModel.Catalog.ProductType;
 using G9L.IntergrationAPI.Manufacture;
 using G9L.IntergrationAPI.Product;
 using G9L.IntergrationAPI.ProductType;
 using G9L.Wedsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,14 +60,13 @@ namespace G9L.Wedsite.Controllers
                 Selected = StorageLocations == x.ProductName
             });
 
-            if (TempData["result"] != null)
+            if (TempData["Success"] != null)
             {
-                ViewBag.SuccessMsg = TempData["result"];
-
+                ViewBag.SuccessMessage = TempData["Success"];
             }
-            if (TempData["resultError"] != null)
+            if (TempData["Error"] != null)
             {
-                ViewBag.SuccessMsgErro = TempData["resultError"];
+                ViewBag.ErrorMessage = TempData["Error"];
             }
 
             var data = await _productApiClient.GetListToProduct(request);
@@ -82,13 +79,14 @@ namespace G9L.Wedsite.Controllers
         public async Task<IActionResult> Create([FromForm] GetCreateProductRequest request)
         {
             var result = await _productApiClient.CreateToProduct(request);
+
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.AddItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.AddItemFaled();
             }
             return RedirectToAction("Index");
         }
@@ -99,13 +97,14 @@ namespace G9L.Wedsite.Controllers
         {
 
             var result = await _productApiClient.UpdateToProduct(request);
+
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.UpdateItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.UpdateItemFaled();
             }
             return RedirectToAction("Index");
         }

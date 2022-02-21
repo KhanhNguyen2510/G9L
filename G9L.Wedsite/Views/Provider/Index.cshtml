@@ -1,5 +1,6 @@
 ﻿@using G9L.Data.ViewModel.Common
 @using G9L.Common.SystemBase
+@using G9L.Wedsite.Models
 @model PagedResult<G9L.Data.ViewModel.Catalog.Provider.GetManuProviderViewModel>
 
 @{
@@ -59,7 +60,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col" class="sort text-center">
-                                        <input type="checkbox" id="select-all" onclick="toggle(this);">
+                                        <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this)" class="checkbox" />
                                     </th>
                                     <th scope="col" class="sort" data-sort="budget">STT</th>
                                     <th scope="col" class="sort" data-sort="name">Tên</th>
@@ -222,7 +223,7 @@
                                         <input id="address" name="Address" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
-
+                                
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
@@ -267,9 +268,6 @@
     function addIDToArray(ID) {
         if (!findID(listID, ID)) {
             listID.push(ID);
-
-            console.log(listID)
-
         } else {
             deleteItemInArray(listID, ID);
         }
@@ -283,15 +281,54 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
-                    alert('Thanh cong')
+                    document.getElementById('msg').innerHTML =
+                        `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.DeleteItemSuccessful</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    setTimeout(function () { location.reload(); }, 800);
                 },
                 error: function () {
+                    document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
                     console.log('Connect failed');
                 },
             });
         }
-        location.reload();
+
+    };
+    function toggle(source) {
+        $('#select-all').click(function (e) {
+            var table = $(e.target).closest('table');
+            $('td input:checkbox', table).prop('checked', this.checked);
+            $('td input:checkbox', table).each(function () {
+                if (this.checked) {
+                    listID.push($(this).attr('id'));
+                }
+                else {
+                    deleteItemInArray(listID, $(this).attr('id'));
+                }
+            });
+            toggleButton();
+            console.log(listID)
+        });
     }
+
 
     async function viewtDetail(ID) {
         await $.ajax({
@@ -300,13 +337,24 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data)
-                $('#providerID').html(data.id);
-                $('#providerName').html(data.name);
-                $('#numberPhone').html(data.numberPhone);
-                $('#address').html(data.address);
+                $('#providerID').val(data.id)
+                $('#providerName').val(data.name)
+                $('#numberPhone').val(data.numberPhone)
+                $('#address').val(data.address)
             },
             error: function () {
-                console.log('Connection Fail');
+                document.getElementById('msg').innerHTML =
+                    `
+                            <div class="alert alert-default alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.ConnectionFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                console.log('Connect failed');
             }
         });
     }

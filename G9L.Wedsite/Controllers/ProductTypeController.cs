@@ -26,14 +26,13 @@ namespace G9L.Wedsite.Controllers
             var data = await _productTypeApiClient.GetListToProductType(request);
 
 
-            if (TempData["result"] != null)
+            if (TempData["Success"] != null)
             {
-                ViewBag.SuccessMsg = TempData["result"];
-
+                ViewBag.SuccessMessage = TempData["Success"];
             }
-            if (TempData["resultErro"] != null)
+            if (TempData["Error"] != null)
             {
-                ViewBag.SuccessMsgErro = TempData["resultErro"];
+                ViewBag.ErrorMessage = TempData["Error"];
             }
             return View(data);
         }
@@ -47,15 +46,13 @@ namespace G9L.Wedsite.Controllers
             };
             var data = await _productTypeApiClient.GetListToProductType(request);
 
-
-            if (TempData["result"] != null)
+            if (TempData["Success"] != null)
             {
-                ViewBag.SuccessMsg = TempData["result"];
-
+                ViewBag.SuccessMessage = TempData["Success"];
             }
-            if (TempData["resultErro"] != null)
+            if (TempData["Error"] != null)
             {
-                ViewBag.SuccessMsgErro = TempData["resultErro"];
+                ViewBag.ErrorMessage = TempData["Error"];
             }
             return View(data);
         }
@@ -67,11 +64,11 @@ namespace G9L.Wedsite.Controllers
             var result = await _productTypeApiClient.CreateToProductType(request);
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.AddItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.AddItemFaled();
             }
             return RedirectToAction("Table");
         }
@@ -84,11 +81,11 @@ namespace G9L.Wedsite.Controllers
             var result = await _productTypeApiClient.UpdateToProductType(request);
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.UpdateItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.UpdateItemFaled();
             }
             return RedirectToAction("Table");
         }

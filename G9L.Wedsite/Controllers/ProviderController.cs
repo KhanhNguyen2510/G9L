@@ -25,14 +25,13 @@ namespace G9L.Wedsite.Controllers
 
             var data = await _providerApiClient.GetListToProvider(request);
 
-            if (TempData["result"] != null)
+            if (TempData["Success"] != null)
             {
-                ViewBag.SuccessMsg = TempData["result"];
-
+                ViewBag.SuccessMessage = TempData["Success"];
             }
-            if (TempData["resultError"] != null)
+            if (TempData["Error"] != null)
             {
-                ViewBag.SuccessMsgErro = TempData["resultError"];
+                ViewBag.ErrorMessage = TempData["Error"];
             }
             return View(data);
         }
@@ -44,11 +43,11 @@ namespace G9L.Wedsite.Controllers
             var result = await _providerApiClient.CreateToProvider(request);
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.AddItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.AddItemFaled();
             }
             return RedirectToAction("Index");
         }
@@ -63,11 +62,11 @@ namespace G9L.Wedsite.Controllers
             var result = await _providerApiClient.UpdateToProvider(request);
             if (result == true)
             {
-                TempData["result"] = MessageModel.AddItemSuccessful();
+                TempData["Success"] = MessageModel.UpdateItemSuccessful();
             }
             else
             {
-                TempData["resultErro"] = MessageModel.AddItemFaled();
+                TempData["Error"] = MessageModel.UpdateItemFaled();
             }
             return RedirectToAction("Index");
         }

@@ -60,7 +60,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col" class="sort text-center">
-                                        <input type="checkbox">
+                                        <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this)" class="checkbox" />
                                     </th>
                                     <th scope="col" class="sort" data-sort="budget">STT</th>
                                     <th scope="col" class="sort" data-sort="name">Tên</th>
@@ -246,14 +246,51 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
-                    alert('Thanh cong')
+                    document.getElementById('msg').innerHTML =
+                        `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.DeleteItemSuccessful</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    setTimeout(function () { location.reload(); }, 800);
                 },
                 error: function () {
+                    document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
                     console.log('Connect failed');
                 },
             });
         }
-        location.reload();
+    }
+    function toggle(source) {
+        $('#select-all').click(function (e) {
+            var table = $(e.target).closest('table');
+            $('td input:checkbox', table).prop('checked', this.checked);
+            $('td input:checkbox', table).each(function () {
+                if (this.checked) {
+                    listID.push($(this).attr('id'));
+                }
+                else {
+                    deleteItemInArray(listID, $(this).attr('id'));
+                }
+            });
+            toggleButton();
+            console.log(listID)
+        });
     }
 
     async function viewtDetail(ID) {
@@ -263,12 +300,23 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data)
-                $('#procductTypeID').html(data.id);
-                $('#procductTypeName').html(data.name);
-                $('#image').html(data.image);
+                $('#procductTypeID').val(data.id);
+                $('#procductTypeName').val(data.name);
+                $('#image').val(data.image);
             },
             error: function () {
-                console.log('Connection Fail');
+                document.getElementById('msg').innerHTML =
+                    `
+                            <div class="alert alert-default alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.ConnectionFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                console.log('Connect failed');
             }
         });
     }
