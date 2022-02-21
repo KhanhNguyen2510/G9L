@@ -96,7 +96,7 @@
 
                                         <td class="text-right">
                                             <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                    data-target="#modal-notification">
+                                                    data-target="#modal-notification" onclick="viewtDetail('@item.ManufactureID')">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                         </td>
@@ -271,9 +271,9 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data)
-                $('#manufactureID').html(data.id);
-                $('#manufactureName').html(data.id);
-                $('#local').html(data.name);
+                $('#manufactureID').html(data.manufactureID);
+                $('#manufactureName').html(data.manufactureName);
+                $('#local').html(data.local);
             },
             error: function () {
                 console.log('Connection Fail');

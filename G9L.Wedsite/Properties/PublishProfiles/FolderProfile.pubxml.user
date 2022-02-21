@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\New folder</_PublishTargetUrl>
+    <History>True|2022-02-17T09:08:22.9529326Z;True|2022-02-17T16:05:23.6527967+07:00;</History>
+  </PropertyGroup>
+</Project>

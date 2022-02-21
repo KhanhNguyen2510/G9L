@@ -93,7 +93,7 @@
 
                                     <td class="text-right">
                                         <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                data-target="#modal-notification">
+                                                data-target="#modal-notification" onclick="viewtDetail('@item.ID')">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                     </td>
@@ -265,7 +265,7 @@
                 console.log(data)
                 $('#procductTypeID').html(data.id);
                 $('#procductTypeName').html(data.name);
-                $('#image').html(data.numberPhone);
+                $('#image').html(data.image);
             },
             error: function () {
                 console.log('Connection Fail');

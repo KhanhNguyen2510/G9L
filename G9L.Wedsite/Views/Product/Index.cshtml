@@ -132,7 +132,7 @@
                                     </td>
                                     <td class="text-right">
                                         <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                data-target="#modal-notification">
+                                                data-target="#modal-notification" onclick="viewtDetail('@item.ID')">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                     </td>
@@ -401,12 +401,12 @@
                 console.log(data)
                 $('#productID').html(data.id);
                 $('#productName').html(data.name);
-                $('#storageLocations').html(data.numberPhone);
-                $('#price').html(data.address);
-                $('#quantily').html(data.id);
-                $('#manufactureID').html(data.name);
-                $('#productTypeID').html(data.numberPhone);
-                $('#description').html(data.address);
+                $('#storageLocations').html(data.storageLocations);
+                $('#price').html(data.price);
+                $('#quantily').html(data.quantily);
+                $('#manufactureID').html(data.manufactureName);
+                $('#ProductTypeName').html(data.numberPhone);
+                $('#description').html(data.Description);
             },
             error: function () {
                 console.log('Connection Fail');
