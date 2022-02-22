@@ -19,7 +19,7 @@ namespace G9L.Aplication.Catalog.Import
         }
         //Check 
         //Create 
-        public async Task<bool> CreateToImport(int ProviderID, int CompanyIndex, string UpdateUser)
+        public async Task<bool> CreateToImport(int? ProviderID,  int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace G9L.Aplication.Catalog.Import
                 {
                     ID = 0,
                     ImportDate = DateTime.Now,
-                    ProviderID = ProviderID,
+                    ProviderID = (int)(ProviderID != null? ProviderID : 0),
                     TotalAmount = 0,
                     UpdateDate = DateTime.Now,
                     CompanyIndex = CompanyIndex,
@@ -197,7 +197,8 @@ namespace G9L.Aplication.Catalog.Import
                 var query = await ( from i in _context.Imports
                                    join p in _context.Providers
                                    on i.ProviderID equals p.ID
-                                   where i.CompanyIndex == CompanyIndex
+                                   into pt from p in pt.DefaultIfEmpty()
+                                    where i.CompanyIndex == CompanyIndex
                                    select new
                                    {
                                        i.ID,
@@ -248,6 +249,28 @@ namespace G9L.Aplication.Catalog.Import
                 return pagedResult;
             }
             catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<GetImportFinal> GetImportFinalID(int CompanyIndex)
+        {
+            try
+            {
+                var query = await _context.Imports.Where(x => x.CompanyIndex == CompanyIndex).OrderByDescending(x => x.ID).FirstOrDefaultAsync();
+
+                if (query == null) return null;
+
+                var data = new GetImportFinal()
+                {
+                    ID = query.ID,
+                    ImportDate = query.ImportDate
+                };
+
+                return data;
+            }
+            catch (Exception)
             {
                 return null;
             }

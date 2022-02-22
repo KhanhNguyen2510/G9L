@@ -53,7 +53,7 @@ namespace G9L.BackEndAPI.Controllers
             return Json(data);
         }
         [HttpGet("GetToProvideOnNameAndID")]
-        public async Task<IActionResult> GetToProvideOnNameAndID(int CompanyIndex)
+        public async Task<IActionResult> GetToProvideOnNameAndID()
         {
             var data = await _providerSevice.GetToProvideOnNameAndID(_CurrentCompanyIndex);
             return Json(data);

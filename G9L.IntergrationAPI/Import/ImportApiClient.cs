@@ -1,6 +1,8 @@
-﻿using G9L.Data.ViewModel.Catalog.Import;
+﻿using G9L.Common.SystemBase;
+using G9L.Data.ViewModel.Catalog.Import;
 using G9L.Data.ViewModel.Common;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,6 +18,21 @@ namespace G9L.IntergrationAPI.Import
         {
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<bool> CreateToImport(GetCreateImportRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConnection.AppSettings.BaseAddress]);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ProviderID != null)
+                requestContent.Add(new StringContent(request.ProviderID.ToString()), "ProviderID");
+
+            var response = await client.PostAsync($"/api/Import/CreateToImport", requestContent);
+
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request)

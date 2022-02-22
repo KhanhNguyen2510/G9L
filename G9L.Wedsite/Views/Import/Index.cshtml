@@ -24,10 +24,11 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-
-                        <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">
-                            Thêm
-                        </button>
+                       
+                            <button type="submit" class="btn btn-sm btn-neutral" data-toggle="modal" onclick="createImport()" data-target="#modal-form">
+                                Thêm
+                            </button>
+                     
                         <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
                     </div>
                 </div>
@@ -147,7 +148,7 @@
             <div class="modal-content">
                 <div class="text-right m-4">
                     <button type="button" class="btn btn-outline-primary">Lưu</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="closeDialog()">Hủy bỏ</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="closeDialog() , viewtDetailImport()">Hủy bỏ</button>
                 </div>
 
                 <div class="modal-body">
@@ -156,10 +157,10 @@
                         <p class="h1 text-center" id="modal-title-notification">
                             PHIẾU NHẬP HÀNG HÓA
                         </p>
-                        <h4 class="text-right"><strong>Mã số :</strong> 092</h4>
+                        <h4 class="text-right"><strong>Mã số :</strong> <a id="idImport"></a></h4>
                     </div>
                     <div class="py-3 text-center">
-                        Ngày 22 tháng 2 năm 2022
+                        Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year 
                     </div>
 
                     <div class="form-group">
@@ -167,17 +168,12 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" for="exampleFormControlSelect1">
                                     <strong>
-                                        Tên nhà cung
-                                        cấp
+                                        Tên nhà cung cấp
                                     </strong>
                                 </span>
                             </div>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Anh hoàng</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select class="form-control" id="dropboxProvider" onchange="viewtDetailProvider(value)">
+                                    <option value="" hidden></option>
                             </select>
                         </div>
 
@@ -187,9 +183,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-lg"><strong>SĐT và Địa chỉ</strong></span>
                             </div>
-                            <input type="text" aria-label="First name" readonly value="0909123721" class="form-control">
-                            <input type="text" readonly aria-label="Last name"
-                                   value="Ấp long hưng phước thạnh châu thành Tiền Giang" class="form-control ml--9">
+                            <input type="text"  readonly value="" id="sDT" class="form-control">
+                            <input type="text" readonly value="" id="dC" class="form-control ml--9">
                         </div>
                     </div>
                     <div class="table-responsive mt-4">     
@@ -234,7 +229,7 @@
                                         </td>
                                         <td>
                                             <select class="form-control" id="exampleFormControlSelect1">
-                                                <option>Hộp</option>
+                                                <option onchange="viewtDetailProvider(1)">Hộp</option>
                                                 <option>Cái</option>
                                                 <option>Thùng</option>
                                                 <option>Kg</option>
@@ -305,7 +300,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
                                         </div>
-                                        <input id="providerName" type="text" name="ProviderName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input id="providerName" type="text"  name="ProviderName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
@@ -399,6 +394,50 @@
             });
         }
         location.reload();
+    } 
+
+    async function createImport() {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/CreateToImport',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Sussces');
+            },
+            error: function () {
+                console.log('Connect failed');
+            },
+        });
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/GetImportFinalID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#idImport').html(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+        await $.ajax({
+            url: BaseLocalhost + '/api/Provider/GetToProvideOnNameAndID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var options_str = "";
+                data.forEach(element =>
+                    options_str += '<option  value="' + element.providerID + '">' + element.providerName + '</option>'
+                );
+                console.log(options_str)
+                
+                $('#dropboxProvider').append(options_str)
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+
     }
 
     async function viewtDetail(ID) {
@@ -417,7 +456,40 @@
                 console.log('Connection Fail');
             }
         });
+    } 
+
+    async function viewtDetailImport() {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/GetImportFinalID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#idImport').html(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
     }
+
+    async function viewtDetailProvider(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Provider/GetToProvider/'+ ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#sDT').val(data.numberPhone);
+                $('#dC').val(data.address);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+      
+    }
+
 
 </script>
 

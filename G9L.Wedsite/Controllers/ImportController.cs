@@ -1,6 +1,7 @@
 ﻿using G9L.Data.ViewModel.Catalog.Import;
 using G9L.IntergrationAPI.Import;
 using G9L.IntergrationAPI.Provider;
+using G9L.Wedsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -67,6 +68,22 @@ namespace G9L.Wedsite.Controllers
             }
             return View(data);
 
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> CreateImport([FromForm] GetCreateImportRequest request)
+        {
+            var result = await _importApiClient.CreateToImport(request);
+            if (result == true)
+            {
+                TempData["Success"] = MessageModel.AddItemSuccessful();
+            }
+            else
+            {
+                TempData["Error"] = MessageModel.AddItemFaled();
+            }
+            return Content("");
         }
     }
 }

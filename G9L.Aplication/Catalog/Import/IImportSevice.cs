@@ -9,7 +9,7 @@ namespace G9L.Aplication.Catalog.Import
     {
         //Check
         //Create
-        Task<bool> CreateToImport(int ProviderID, int CompanyIndex, string UpdateUser);
+        Task<bool> CreateToImport(int? ProviderID, int CompanyIndex, string UpdateUser);
         Task<bool> CreateToImportDetails(GetCreateImportDetailsRequest request, int CompanyIndex, string UpdateUser);
         //Update
         Task<bool> UpdateToImportByImportDetails(int ImportID, int CompanyIndex, string UpdateUser);
@@ -20,5 +20,6 @@ namespace G9L.Aplication.Catalog.Import
         //List
         Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request, int CompanyIndex);
         Task<List<GetImportDetailsViewModel>> GetListToImportDetails(int ImportID, int CompanyIndex);
+        Task<GetImportFinal> GetImportFinalID(int CompanyIndex);
     }
 }

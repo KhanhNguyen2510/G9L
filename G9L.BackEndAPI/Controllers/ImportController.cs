@@ -17,7 +17,7 @@ namespace G9L.BackEndAPI.Controllers
             _importSevice = importSevice;
         }
         //Create
-        [HttpPost("CreateToImport")]
+        [HttpPost("CreateToImport")]                                                                   
         public async Task<JsonResult> CreateToImport(int ProviderID)
         {
             var data = await _importSevice.CreateToImport(ProviderID, _CurrentCompanyIndex, _CurrentUpdateUser);
@@ -62,6 +62,13 @@ namespace G9L.BackEndAPI.Controllers
             var data = await _importSevice.GetListToImport(request, _CurrentCompanyIndex);
             return Json(data);
         }
+        [HttpGet("GetImportFinalID")]
+        public async Task<JsonResult> GetImportFinalID()
+        {
+            var data = await _importSevice.GetImportFinalID(_CurrentCompanyIndex);
+            return Json(data);
+        }
+
         [HttpGet("GetListToImportDetails")]
         public async Task<JsonResult> GetListToImportDetails(int ImportID)
         {
