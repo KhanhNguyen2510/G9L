@@ -5,7 +5,10 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+
+
 
 <main>
     <div class="header bg-primary pb-6">
@@ -37,7 +40,7 @@
                         <div class="col-lg-2 col-7">
                             <div class="form-group">
                                 <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
-                                <input name="KeyWord" class="form-control" type="search"  placeholder="Bạn cần tìm gì...........">
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
                             </div>
                         </div>
                         <div class="col-lg-2 col-7">
@@ -51,7 +54,7 @@
                         <div class="col-lg-2 col-7">
                             <div class="form-group">
                                 <label for="example-date-input" class="form-control-label text-white">Ngày bắt đầu</label>
-                                <input class="form-control" type="date" name="DateFrom" onchange="this.form.submit()"  id="example-date-input">
+                                <input class="form-control" type="date" name="DateFrom" onchange="this.form.submit()" id="example-date-input">
                             </div>
                         </div>
                         <div class="col-lg-2 col-7">
@@ -139,53 +142,137 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true" >
+        <div class="m-3" id="moad" role="document">
             <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="card bg-secondary border-0 mb-0">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-notification">Thêm loại sản phẩm</h6>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+                <div class="text-right m-4">
+                    <button type="button" class="btn btn-outline-primary">Lưu</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="closeDialog()">Hủy bỏ</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mt--5">
+                        <img alt="Image placeholder" src="../assets/img/brand/Logo9Lanh.png" class="mb--5">
+                        <p class="h1 text-center" id="modal-title-notification">
+                            PHIẾU NHẬP HÀNG HÓA
+                        </p>
+                        <h4 class="text-right"><strong>Mã số :</strong> 092</h4>
+                    </div>
+                    <div class="py-3 text-center">
+                        Ngày 22 tháng 2 năm 2022
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="exampleFormControlSelect1">
+                                    <strong>
+                                        Tên nhà cung
+                                        cấp
+                                    </strong>
+                                </span>
+                            </div>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Anh hoàng</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
                         </div>
-                        <div class="card-body px-lg-3 py-lg-5">
 
-                            <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Provider">
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
-                                        </div>
-                                        <input type="text" name="ProviderName" class="form-control" required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
-                                        </div>
-                                        <input type="text" name="NumberPhone" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                                               pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$"
-                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
-                                        </div>
-                                        <input type="text" name="Address" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Thêm</button>
-                                </div>
-                            </form>
-
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group input-group-lg">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-lg"><strong>SĐT và Địa chỉ</strong></span>
+                            </div>
+                            <input type="text" aria-label="First name" readonly value="0909123721" class="form-control">
+                            <input type="text" readonly aria-label="Last name"
+                                   value="Ấp long hưng phước thạnh châu thành Tiền Giang" class="form-control ml--9">
                         </div>
+                    </div>
+                    <div class="table-responsive mt-4">     
+                        <table class="table align-items-center">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th scope="col" class="sort" data-sort="name">STT</th>
+                                        <th scope="col" class="sort" data-sort="budget">
+                                            Tên nhản hiệu, quy cách, phẩm chất vật tư<br>(sản phẩm, hàng hóa)
+                                        </th>
+                                        <th scope="col" class="sort" data-sort="status">Mã số</th>
+                                        <th scope="col" style="width: 125px;">ĐVT</th>
+                                        <th scope="col" style="width: 100px;">
+                                            Số lượng
+                                        </th>
+                                        <th scope="col">Đơn giá</th>
+                                        <th scope="col">Thành tiền</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    <tr>
+                                        <td class="budget text-center h6">
+                                            1
+                                        </td>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                        <option>Anh hoàng</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            <input class="form-control text-center" type="text" value="M33" id="example-text-input"
+                                                   readonly>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option>Hộp</option>
+                                                <option>Cái</option>
+                                                <option>Thùng</option>
+                                                <option>Kg</option>
+                                            </select>
+                                           
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="number" value="0" id="example-number-input">
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-right"
+                                                       aria-label="Dollar amount (with dot and two decimal places)">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.000</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-right"
+                                                       aria-label="Dollar amount (with dot and two decimal places)">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.000</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-right">
+                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button">
+                                                <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button">
+                                                <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -241,7 +328,7 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary" >Cập nhật</button>
                                 </div>
                             </form>
                         </div>
@@ -256,6 +343,10 @@
 
     listID = [];
 
+   
+    function closeDialog() {
+        location.reload();
+    };
     function deleteItemInArray(arr, item) {
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] === item) {

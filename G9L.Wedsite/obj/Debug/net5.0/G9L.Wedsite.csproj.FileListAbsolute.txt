@@ -857,6 +857,8 @@ D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\scopedcss\bundle\G9L.Wedsite.sty
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.TagHelpers.input.cache
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.TagHelpers.output.cache
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.RazorCoreGenerate.cache
+D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Dashboard\Index.cshtml.g.cs
+D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Import\Index.cshtml.g.cs
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Manufacture\Index.cshtml.g.cs
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\ProductType\Index.cshtml.g.cs
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\ProductType\Table.cshtml.g.cs
@@ -876,5 +878,3 @@ D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.dll
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\ref\G9L.Wedsite.dll
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.pdb
 D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.genruntimeconfig.cache
-D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Dashboard\Index.cshtml.g.cs
-D:\G9L Manager\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Import\Index.cshtml.g.cs
