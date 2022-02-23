@@ -4,14 +4,16 @@ using G9L.Data.EFs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G9L.Data.Migrations
 {
     [DbContext(typeof(G9LDbContext))]
-    partial class G9LDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220223161818_Unit")]
+    partial class Unit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

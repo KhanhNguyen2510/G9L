@@ -1,10 +1,12 @@
-﻿using G9L.Data.ViewModel.Catalog.Product;
+﻿using G9L.Data.Enum;
+using G9L.Data.ViewModel.Catalog.Product;
 using G9L.IntergrationAPI.Manufacture;
 using G9L.IntergrationAPI.Product;
 using G9L.IntergrationAPI.ProductType;
 using G9L.Wedsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +23,12 @@ namespace G9L.Wedsite.Controllers
             _productTypeApiClient = productTypeApiClient;
             _productApiClient = productApiClient;
         }
+
+        public class GetUnitProduct
+        {
+            public IsUnit ID { get; set; }
+            public string Name { get; set; }
+        }
         public async Task<IActionResult> Index(string KeyWord, int? ManufactureID ,int? ProductTypeID,string StorageLocations, int PageIndex = 1, int PageSize = 1000)
         {
             var request = new GetManagerProductRequest()
@@ -29,6 +37,7 @@ namespace G9L.Wedsite.Controllers
                 ManufactureID = ManufactureID,
                 ProductTypeID = ProductTypeID,
                 StorageLocations = StorageLocations,
+
                 PageIndex = PageIndex,
                 PageSize = PageSize
             };
@@ -43,7 +52,6 @@ namespace G9L.Wedsite.Controllers
                 Value = x.ProducTypeID.ToString(),
                 Selected = ProductTypeID == x.ProducTypeID
             });
-
 
             ViewBag.Manufactures = m.Select(x => new SelectListItem()
             {

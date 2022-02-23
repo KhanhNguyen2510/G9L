@@ -6600,11 +6600,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Garage 9 Lành Manager\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
+      "projectUniqueName": "E:\\Garage 9 Lành\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
       "projectName": "G9L.BackEndAPI",
-      "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
+      "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
       "packagesPath": "C:\\Users\\khanh\\.nuget\\packages\\",
-      "outputPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.BackEndAPI\\obj\\",
+      "outputPath": "E:\\Garage 9 Lành\\G9L\\G9L.BackEndAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\khanh\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6621,14 +6621,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "E:\\Garage 9 Lành Manager\\G9L\\G9L.Aplication\\G9L.Aplication.csproj": {
-              "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Aplication\\G9L.Aplication.csproj"
+            "E:\\Garage 9 Lành\\G9L\\G9L.Aplication\\G9L.Aplication.csproj": {
+              "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Aplication\\G9L.Aplication.csproj"
             },
-            "E:\\Garage 9 Lành Manager\\G9L\\G9L.Common\\G9L.Common.csproj": {
-              "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Common\\G9L.Common.csproj"
+            "E:\\Garage 9 Lành\\G9L\\G9L.Common\\G9L.Common.csproj": {
+              "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Common\\G9L.Common.csproj"
             },
-            "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj": {
-              "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj"
+            "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj": {
+              "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj"
             }
           }
         }

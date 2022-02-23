@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4G8PWuHs8YuWa3pz3XT/RIPYzHtS++QXrqd4ttxMwDU0jGXpteXOrXR8KK1c7RXS9CP1HpLQu42wg+PdFKojjw==",
+  "dgSpecHash": "5PBJsLQyGTyMrmoBoYoSkAYaI6en0hGPP/2Jdinse9zD6H9Tftm3bO5h//S/Pm935ezbxOvQrjsry0cyBu1FAg==",
   "success": true,
-  "projectFilePath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
+  "projectFilePath": "E:\\Garage 9 Lành\\G9L\\G9L.BackEndAPI\\G9L.BackEndAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\khanh\\.nuget\\packages\\autofac\\6.0.0\\autofac.6.0.0.nupkg.sha512",
     "C:\\Users\\khanh\\.nuget\\packages\\autofac.extensions.dependencyinjection\\7.2.0\\autofac.extensions.dependencyinjection.7.2.0.nupkg.sha512",

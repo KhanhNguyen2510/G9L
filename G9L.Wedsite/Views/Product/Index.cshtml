@@ -1,5 +1,6 @@
 ﻿@using G9L.Data.ViewModel.Common
 @using G9L.Common.SystemBase
+@using G9L.Data.Enum
 @model PagedResult<G9L.Data.ViewModel.Catalog.Product.GetManagerProductViewModel>
 
 @{
@@ -179,12 +180,38 @@
                                         <input type="text" name="StorageLocations" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                     </div>
                                 </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Đơn vị tính</span>
+                                        </div>
+                                        <select class="form-control" name="IsUnit" id="exampleFormControlSelect1">
+                                            <option value="" hidden></option>
+                                            <option value="1">Cái</option>
+                                            <option value="2">Lon</option>
+                                            <option value="3">Bộ</option>
+                                            <option value="4">Hộp</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số lượng sản phẩm</span>
+                                        </div>
+                                        <input type="number" name="NumberInBarrel" class="form-control text-right" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">/ Thùng</span>
+                                        </div>
+                                    </div>
+                                </div>
+                               
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Giá</span>
                                         </div>
-                                        <input name="Price" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                        <input name="Price" type="number" min="0" max="99999999" class="form-control text-right" aria-label="Amount (to the nearest dollar)"
                                                required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="this.setCustomValidity('')">
                                         <div class="input-group-append">
                                             <span class="input-group-text">.000</span>
@@ -273,6 +300,31 @@
                                             <span class="input-group-text" id="inputGroup-sizing-default">Vị trí</span>
                                         </div>
                                         <input type="text" id="storageLocations" name="StorageLocations" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Đơn vị tính</span>
+                                        </div>
+                                        <select class="form-control" name="IsUnit" id="unitProduct">
+                                            <option value="" hidden></option>
+                                            <option value="1">Cái</option>
+                                            <option value="2">Lon</option>
+                                            <option value="3">Bộ</option>
+                                            <option value="4">Hộp</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số lượng sản phẩm</span>
+                                        </div>
+                                        <input type="number" name="NumberInBarrel" id="numberInBarrel" class="form-control text-right" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">/ Thùng</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -444,7 +496,9 @@
                 $('#quantily').val(data.quantily);
                 $('#manufactureID').val(data.manufactureID);
                 $('#description').val(data.description);
-                $('#productTypeID').val(data.productTypeID);
+                $('#productTypeID').val(data.productTypeID); 
+                $('#unitProduct').val(data.isUnit);
+                $('#numberInBarrel').val(data.numberInBarrel);
             },
             error: function () {
                 document.getElementById('msg').innerHTML =

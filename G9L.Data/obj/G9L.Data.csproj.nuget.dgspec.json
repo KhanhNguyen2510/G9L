@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj": {}
+    "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj": {}
   },
   "projects": {
-    "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj": {
+    "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj",
+        "projectUniqueName": "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj",
         "projectName": "G9L.Data",
-        "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\G9L.Data.csproj",
+        "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Data\\G9L.Data.csproj",
         "packagesPath": "C:\\Users\\khanh\\.nuget\\packages\\",
-        "outputPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Data\\obj\\",
+        "outputPath": "E:\\Garage 9 Lành\\G9L\\G9L.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\khanh\\AppData\\Roaming\\NuGet\\NuGet.Config",

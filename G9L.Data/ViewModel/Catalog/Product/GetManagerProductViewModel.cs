@@ -1,4 +1,6 @@
-﻿namespace G9L.Data.ViewModel.Catalog.Product
+﻿using G9L.Data.Enum;
+
+namespace G9L.Data.ViewModel.Catalog.Product
 {
     public class GetManagerProductViewModel
     {
@@ -9,6 +11,8 @@
         public string Local { get; set; }
         public int Quantily { get; set; }//số lượng
         public decimal CostPrice { get; set; }
+        public IsUnit IsUnit { get; set; }
+        public int NumberInBarrel { get; set; }
         public decimal Price { get; set; }
         public string StorageLocations { get; set; }//vị trí lưu kho
         public string ProductTypeName { get; set; }

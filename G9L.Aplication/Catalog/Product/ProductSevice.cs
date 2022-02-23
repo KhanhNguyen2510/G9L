@@ -26,15 +26,16 @@ namespace G9L.Aplication.Catalog.Product
                 var data = new Data.Entities.Product()
                 {
                     ID = 0,
-                    Name = !string.IsNullOrEmpty(request.ProductName) ? request.ProductName : "",
                     CostPrice = 0,
+                    IsUnit = (Data.Enum.IsUnit)(request.IsUnit != null ? request.IsUnit : Data.Enum.IsUnit.Item),
+                    Name = !string.IsNullOrEmpty(request.ProductName) ? request.ProductName : "",
                     Price = (decimal)(request.Price != null ? request.Price : 0),
-                    ManufactureID = (int)(request.ManufactureID != null ? request.ManufactureID : null),
                     Quantily = (int)(request.Quantily != null ? request.Quantily : 0),
                     StorageLocations = !string.IsNullOrEmpty(request.StorageLocations) ? request.StorageLocations : "",
                     Description = !string.IsNullOrEmpty(request.Description) ? request.Description : "",
                     ProductTypeID = request.ProductTypeID,
-                    Image1 = !string.IsNullOrEmpty(request.Image1)? request.Image1:"",
+                    ManufactureID = request.ManufactureID,
+                    Image1 = !string.IsNullOrEmpty(request.Image1) ? request.Image1 : "",
                     Image2 = !string.IsNullOrEmpty(request.Image2) ? request.Image2 : "",
                     Image3 = !string.IsNullOrEmpty(request.Image3) ? request.Image3 : "",
 
@@ -44,13 +45,40 @@ namespace G9L.Aplication.Catalog.Product
                 };
                 _context.Products.Add(data);
                 await _context.SaveChangesAsync();
+
+                var dummy = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefaultAsync();
+
+                var rs = new GetCreateUnitProductRequest()
+                {
+                    ProductID = dummy,
+                    NumberInBarrel = (int)(request.NumberInBarrel != null ? request.NumberInBarrel : 1)
+                };
+                await CreateUnitProduct(rs);
+
                 return true;
             }
             catch (Exception)
             {
                 return false;
             }
+        }
 
+        public async Task<bool> CreateUnitProduct(GetCreateUnitProductRequest request)
+        {
+            var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == request.ProductID);
+
+            if (data == null) return false;
+
+            var rs = new Data.Entities.UnitProduct()
+            {
+                ProductID = request.ProductID,
+                NumberInBarrel = (int)(request.NumberInBarrel != null ? request.NumberInBarrel : 1)
+            };
+
+            _context.UnitProducts.Add(rs);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
         //Update
         public async Task<bool> UpdateToProduct(GetUpdateProductRequest request, int CompanyIndex, string UpdateUser)
@@ -187,6 +215,8 @@ namespace G9L.Aplication.Catalog.Product
                                    on p.ManufactureID equals m.ID
                                    join pt in _context.ProductTypes
                                    on p.ProductTypeID equals pt.ID
+                                   join u in _context.UnitProducts
+                                   on p.ID equals u.ProductID
                                    where p.CompanyIndex == CompanyIndex && p.ID == ProductID
                                    select new
                                    {
@@ -204,7 +234,9 @@ namespace G9L.Aplication.Catalog.Product
                                        ProductTypeID = pt.ID,
                                        p.Image1,
                                        p.Image2,
-                                       p.Image3
+                                       p.Image3,
+                                       u.NumberInBarrel,
+                                       p.IsUnit
                                    }).FirstOrDefaultAsync();
 
                 var data = new GetManagerProductViewModel()
@@ -223,7 +255,9 @@ namespace G9L.Aplication.Catalog.Product
                     Image2 = query.Image2,
                     Image3 = query.Image3,
                     ManufactureID = query.ManufactureID,
-                    ProductTypeID = query.ProductTypeID
+                    ProductTypeID = query.ProductTypeID,
+                    NumberInBarrel = query.NumberInBarrel,
+                     IsUnit = query.IsUnit
                 };
 
                 return data;

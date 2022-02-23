@@ -1,4 +1,5 @@
-﻿using System;
+﻿using G9L.Data.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,8 +18,12 @@ namespace G9L.Data.Entities
         [Column(TypeName = "decimal(18,3)")]
         public decimal CostPrice { get; set; } // giá mua vào
         [Column(TypeName = "decimal(18,3)")]
-        public decimal Price { get; set; } // giá bán 
-        public string StorageLocations { get; set; }//vị trí lưu kho
+        public decimal Price { get; set; } // giá bán
+        /// <summary>
+        /// vị trí lưu kho
+        /// </summary>
+        public string StorageLocations { get; set; }
+        public IsUnit IsUnit { get; set; }
         public string Image1 { get; set; } 
         public string Image2 { get; set; }
         public string Image3 { get; set; }

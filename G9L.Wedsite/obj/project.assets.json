@@ -9291,11 +9291,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
+      "projectUniqueName": "E:\\Garage 9 Lành\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
       "projectName": "G9L.Wedsite",
-      "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
+      "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
       "packagesPath": "C:\\Users\\khanh\\.nuget\\packages\\",
-      "outputPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Wedsite\\obj\\",
+      "outputPath": "E:\\Garage 9 Lành\\G9L\\G9L.Wedsite\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\khanh\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9312,11 +9312,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "E:\\Garage 9 Lành Manager\\G9L\\G9L.Common\\G9L.Common.csproj": {
-              "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Common\\G9L.Common.csproj"
+            "E:\\Garage 9 Lành\\G9L\\G9L.Common\\G9L.Common.csproj": {
+              "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.Common\\G9L.Common.csproj"
             },
-            "E:\\Garage 9 Lành Manager\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj": {
-              "projectPath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj"
+            "E:\\Garage 9 Lành\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj": {
+              "projectPath": "E:\\Garage 9 Lành\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj"
             }
           }
         }

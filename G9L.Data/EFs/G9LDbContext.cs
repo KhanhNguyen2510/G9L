@@ -21,6 +21,7 @@ namespace G9L.Data.EFs
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserPrivilege> UserPrivileges { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<UnitProduct> UnitProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,6 +39,11 @@ namespace G9L.Data.EFs
             {
                 table.ProductID,
                 table.ManufactureID
+            });
+            builder.Entity<UnitProduct>().HasKey(table => new
+            {
+                table.ProductID,
+                table.NumberInBarrel
             });
         }
     }

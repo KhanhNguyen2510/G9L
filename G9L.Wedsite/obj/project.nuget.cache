@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ML+v8ostCzbaBhlLAWvOAq8PU2SmNZuESIxr8hKwmhcUzv9qqRZxe+v5m1fyguX366FSqGprcn55L6Vwcm8YzQ==",
+  "dgSpecHash": "siDCyQ2fYox2ezK5JeVx+AhP69powv1XL6TmorYe5gxoBBzNZmNeTViQyly5SvxgPlGKUXmxSO6Wvamwg/bAYg==",
   "success": true,
-  "projectFilePath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
+  "projectFilePath": "E:\\Garage 9 Lành\\G9L\\G9L.Wedsite\\G9L.Wedsite.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\khanh\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\khanh\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",

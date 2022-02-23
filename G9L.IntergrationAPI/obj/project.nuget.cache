@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zMq3mag2c4pj/7xQTV/A4dKQ4ivEoWw9g95BiJjLp3iFJTo0xm8/4zpYCsmajIOHLxnXfgxvfBaHpYYdxulp+w==",
+  "dgSpecHash": "vyy38PravWgCDYHl0plfC5uQgPpw1523mcjoXbPcdIrps7O8s3uf6abZ6OadzYh+HKdRRHW/hKqc+8Gq3eVaBQ==",
   "success": true,
-  "projectFilePath": "E:\\Garage 9 Lành Manager\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj",
+  "projectFilePath": "E:\\Garage 9 Lành\\G9L\\G9L.IntergrationAPI\\G9L.IntergrationAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\khanh\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.14\\microsoft.aspnetcore.http.features.5.0.14.nupkg.sha512",
     "C:\\Users\\khanh\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

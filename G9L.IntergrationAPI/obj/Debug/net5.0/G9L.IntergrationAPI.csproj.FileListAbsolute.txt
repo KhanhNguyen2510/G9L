@@ -32,3 +32,20 @@ D:\G9L Manager\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.cspr
 D:\G9L Manager\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.dll
 D:\G9L Manager\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\ref\G9L.IntergrationAPI.dll
 D:\G9L Manager\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.pdb
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.IntergrationAPI.deps.json
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.IntergrationAPI.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\ref\G9L.IntergrationAPI.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.IntergrationAPI.pdb
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.Common.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.Data.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.Common.pdb
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\bin\Debug\net5.0\G9L.Data.pdb
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.csproj.AssemblyReference.cache
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.AssemblyInfoInputs.cache
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.AssemblyInfo.cs
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.csproj.CoreCompileInputs.cache
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.csproj.CopyComplete
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\ref\G9L.IntergrationAPI.dll
+E:\Garage 9 Lành\G9L\G9L.IntergrationAPI\obj\Debug\net5.0\G9L.IntergrationAPI.pdb

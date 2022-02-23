@@ -48,6 +48,8 @@ namespace G9L.IntergrationAPI.Product
             requestContent.Add(new StringContent(request.ProductName.ToString()), "ProductName");
             requestContent.Add(new StringContent(request.Price.ToString()), "Price");
             requestContent.Add(new StringContent(request.ProductTypeID.ToString()), "ProductTypeID");
+            requestContent.Add(new StringContent(request.ManufactureID.ToString()), "ManufactureID");
+            requestContent.Add(new StringContent(request.IsUnit.ToString()), "IsUnit");
             if (request.StorageLocations != null)
                 requestContent.Add(new StringContent(request.StorageLocations.ToString()), "StorageLocations");
             if (request.Quantily != null)
@@ -58,10 +60,10 @@ namespace G9L.IntergrationAPI.Product
                 requestContent.Add(new StringContent(request.Image2.ToString()), "Image2");
             if (request.Image3 != null)
                 requestContent.Add(new StringContent(request.Image3.ToString()), "Image3");
-            if (request.ManufactureID != null)
-                requestContent.Add(new StringContent(request.ManufactureID.ToString()), "ManufactureID");
             if (request.Description != null)
                 requestContent.Add(new StringContent(request.Description.ToString()), "Description");
+             if(request.NumberInBarrel != null)
+                requestContent.Add(new StringContent(request.NumberInBarrel.ToString()), "NumberInBarrel");
 
             var response = await client.PostAsync($"/api/Product/CreateToProduct", requestContent);
 

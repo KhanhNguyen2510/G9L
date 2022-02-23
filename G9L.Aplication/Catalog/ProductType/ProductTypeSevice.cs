@@ -114,7 +114,7 @@ namespace G9L.Aplication.Catalog.ProductType
                 };
                 return pagedResult;
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }
