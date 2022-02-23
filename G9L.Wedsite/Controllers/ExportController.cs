@@ -2,7 +2,10 @@
 using G9L.Data.ViewModel.Catalog.Export;
 using G9L.IntergrationAPI.Export;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace G9L.Wedsite.Controllers
@@ -14,7 +17,8 @@ namespace G9L.Wedsite.Controllers
         {
             _exportApiClient = exportApiClient;
         }
-        public async Task<IActionResult> ExportIndex(string KeyWord , IsExport IsExport, int ProviderID, DateTime DateFrom, DateTime DateTo, int PageIndex = 1, int PageSize = 1000)
+
+        public async Task<IActionResult> Index(string KeyWord, IsExport? IsExport, DateTime? DateFrom, DateTime? DateTo, int PageIndex = 1, int PageSize = 1000)
         {
 
             var request = new GetManagerExportRequest()
@@ -29,32 +33,29 @@ namespace G9L.Wedsite.Controllers
 
             var data = await _exportApiClient.GetListToExport(request);
 
-            if (TempData["result"] != null)
-            {
-                ViewBag.SuccessMsg = TempData["result"];
 
-            }
-            if (TempData["resultError"] != null)
+            var rs = new List<GetIsExport>()
             {
-                ViewBag.SuccessMsgErro = TempData["resultError"];
-            }
-            return View(data);
-        }
-        public async Task<IActionResult> ExportDetailsIndex(int ExportID)
-        {
-            var data = await _exportApiClient.GetListToExportDetails(ExportID);
+                 new GetIsExport(){ ID = Data.Enum.IsExport.SuccessExport , Name = "Đã duyệt đơn hàng"},
+                 new GetIsExport(){ ID = Data.Enum.IsExport.UnSuccessExport , Name = "Chưa duyệt đơn hàng"}
+            };
 
-            if (TempData["result"] != null)
+            ViewBag.IsExport = rs.Select(x => new SelectListItem()
             {
-                ViewBag.SuccessMsg = TempData["result"];
+                Text = x.Name,
+                Value = x.ID.ToString(),
+                Selected = IsExport == x.ID
+            });
 
-            }
-            if (TempData["resultError"] != null)
+            if (TempData["Success"] != null)
             {
-                ViewBag.SuccessMsgErro = TempData["resultError"];
+                ViewBag.SuccessMessage = TempData["Success"];
+            }
+            if (TempData["Error"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["Error"];
             }
             return View(data);
-
         }
     }
 }

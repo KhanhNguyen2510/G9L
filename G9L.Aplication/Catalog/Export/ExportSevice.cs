@@ -199,11 +199,11 @@ namespace G9L.Aplication.Catalog.Export
                 if (request.DateFrom != null || request.DateTo != null)
                 {
                     if (request.DateFrom == null && request.DateTo != null)
-                        query = query.Where(x => x.ExportDate == request.DateTo).ToList();
+                        query = query.Where(x => x.ExportDate.Date == request.DateTo.Value.Date).ToList();
                     else if (request.DateFrom != null && request.DateTo == null)
-                        query = query.Where(x => x.ExportDate == request.DateFrom).ToList();
+                        query = query.Where(x => x.ExportDate.Date == request.DateFrom.Value.Date).ToList();
                     else
-                        query = query.Where(x => request.DateFrom <= x.ExportDate && x.ExportDate <= request.DateTo).ToList();
+                        query = query.Where(x => request.DateFrom.Value.Date <= x.ExportDate.Date && x.ExportDate.Date <= request.DateTo.Value.Date).ToList();
                 }
 
                 int totalRow = query.Count;
@@ -214,6 +214,7 @@ namespace G9L.Aplication.Catalog.Export
                         ID = x.ID,
                         ExportDate = x.ExportDate,
                         TotalAmount = x.TotalAmount,
+                        IsExport = x.IsExport,
                         UpdateDate = x.UpdateDate,
                         UpdateUser = x.UpdateUser
                     }).ToList();

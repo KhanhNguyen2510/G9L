@@ -1,0 +1,504 @@
+﻿@using G9L.Data.ViewModel.Common
+@using G9L.Common.SystemBase
+@model PagedResult<G9L.Data.ViewModel.Catalog.Export.GetExportViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách nhà cung cấp</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="submit" class="btn btn-sm btn-neutral" data-toggle="modal" onclick="createImport()" data-target="#modal-form">
+                            Thêm
+                        </button>
+
+                        <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <form method="get" asp-controller="Export" asp-action="Index">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Trang thái đơn hàng</label>
+                                <select name="IsExport" onchange="this.form.submit()" asp-items="@ViewBag.IsExport" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-date-input" class="form-control-label text-white">Ngày bắt đầu</label>
+                                <input class="form-control" type="date" name="DateFrom" onchange="this.form.submit()" id="example-date-input">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-date-input" class="form-control-label text-white">Ngày kết thúc</label>
+                                <input class="form-control" type="date" name="DateTo" onchange="this.form.submit()" id="example-date-input">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Nhà cung cấp</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort text-center">
+                                        <input type="checkbox" id="select-all" onclick="toggle(this);">
+                                    </th>
+                                    <th scope="col" class="sort" data-sort="budget">STT</th>
+                                    <th scope="col" class="sort" data-sort="name">Tổng tiền</th>
+                                    <th scope="col" class="sort text-center" data-sort="name">Trạng thái đơn</th>
+                                    <th scope="col" class="sort" data-sort="name">Ngày bán hàng</th>
+                                    <th scope="col" class="sort" data-sort="budget">Ngày tạo</th>
+                                    <th scope="col" class="sort" data-sort="status">Người tạo</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @foreach (var item in Model.Items)
+                                {
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" id="@item.ID" onchange="addIDToArray('@item.ID')">
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.TotalAmount)0</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td class="budget text-center ">
+                                        @if (item.IsExport == G9L.Data.Enum.IsExport.UnSuccessExport)
+                                        {
+                                            <span class="badge badge-primary ">Chưa duyệt</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-info">Đã duyệt</span>
+                                        }
+
+                                    </td>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.ExportDate)
+                                    </td>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.UpdateDate)
+                                    </td>
+                                    <td class="budget">
+                                        @Html.DisplayFor(modelItem => item.UpdateUser)
+                                    </td>
+
+                                    <td class="text-right">
+                                        <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
+                                                data-target="#modal-notification">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Card footer -->
+                    @await Component.InvokeAsync("Pager", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="m-3" id="moad" role="document">
+            <div class="modal-content">
+                <div class="text-right m-4">
+                    <button type="button" class="btn btn-outline-primary">Lưu</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="closeDialog() , viewtDetailImport()">Hủy bỏ</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mt--5">
+                        <img alt="Image placeholder" src="../assets/img/brand/Logo9Lanh.png" class="mb--5">
+                        <p class="h1 text-center" id="modal-title-notification">
+                            PHIẾU NHẬP HÀNG HÓA
+                        </p>
+                        <h4 class="text-right"><strong>Mã số :</strong> <a id="idImport"></a></h4>
+                    </div>
+                    <div class="py-3 text-center">
+                        Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="exampleFormControlSelect1">
+                                    <strong>
+                                        Tên nhà cung cấp
+                                    </strong>
+                                </span>
+                            </div>
+                            <select class="form-control" id="dropboxProvider" onchange="viewtDetailProvider(value)">
+                                <option value="" hidden></option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group input-group-lg">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-lg"><strong>SĐT và Địa chỉ</strong></span>
+                            </div>
+                            <input type="text" readonly value="" id="sDT" class="form-control">
+                            <input type="text" readonly value="" id="dC" class="form-control ml--9">
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table align-items-center">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th scope="col" class="sort" data-sort="name">STT</th>
+                                    <th scope="col" class="sort" data-sort="budget">
+                                        Tên nhản hiệu, quy cách, phẩm chất vật tư<br>(sản phẩm, hàng hóa)
+                                    </th>
+                                    <th scope="col" class="sort" data-sort="status">Mã số</th>
+                                    <th scope="col" style="width: 125px;">ĐVT</th>
+                                    <th scope="col" style="width: 100px;">
+                                        Số lượng
+                                    </th>
+                                    <th scope="col">Đơn giá</th>
+                                    <th scope="col">Thành tiền</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr>
+                                    <td class="budget text-center h6">
+                                        1
+                                    </td>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <select class="form-control" id="exampleFormControlSelect1">
+                                                    <option>Anh hoàng</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td class="budget">
+                                        <input class="form-control text-center" type="text" value="M33" id="example-text-input"
+                                               readonly>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option onchange="viewtDetailProvider(1)">Hộp</option>
+                                            <option>Cái</option>
+                                            <option>Thùng</option>
+                                            <option>Kg</option>
+                                        </select>
+
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="number" value="0" id="example-number-input">
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control text-right"
+                                                   aria-label="Dollar amount (with dot and two decimal places)">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.000</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control text-right"
+                                                   aria-label="Dollar amount (with dot and two decimal places)">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.000</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-icon btn-sm btn-outline-success" type="button">
+                                            <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
+                                        </button>
+                                        <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button">
+                                            <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">Chỉnh sửa nhà cung cấp</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="card-body px-lg-3 py-lg-5">
+                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Provider">
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã nhà cung cấp</span>
+                                        </div>
+                                        <input id="providerID" type="text" name="ProviderID" class="form-control text-red" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly value="1">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
+                                        </div>
+                                        <input id="providerName" type="text" name="ProviderName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
+                                        </div>
+                                        <input id="numberPhone" name="NumberPhone" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                                               pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$"
+                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
+                                        </div>
+                                        <input id="address" name="Address" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+    listID = [];
+
+
+    function closeDialog() {
+        location.reload();
+    };
+    function deleteItemInArray(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                arr.splice(i, 1);
+                i--;
+            }
+        }
+    };
+
+    function findID(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+    };
+
+    function toggleButton() {
+        if (listID.length == 0) {
+            $('#deleteByID').prop('disabled', true);
+        } else {
+            $('#deleteByID').prop('disabled', false);
+        }
+    };
+
+    function addIDToArray(ID) {
+        if (!findID(listID, ID)) {
+            listID.push(ID);
+
+            console.log(listID)
+
+        } else {
+            deleteItemInArray(listID, ID);
+        }
+        toggleButton()
+    };
+
+    async function deleteID() {
+        for (var i = 0; i < listID.length; i++) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/Provider/DeleteToProvider/' + listID[i],
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Thanh cong')
+                },
+                error: function () {
+                    console.log('Connect failed');
+                },
+            });
+        }
+        location.reload();
+    }
+
+    async function createImport() {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/CreateToImport',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Sussces');
+            },
+            error: function () {
+                console.log('Connect failed');
+            },
+        });
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/GetImportFinalID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#idImport').html(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+        await $.ajax({
+            url: BaseLocalhost + '/api/Provider/GetToProvideOnNameAndID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var options_str = "";
+                data.forEach(element =>
+                    options_str += '<option  value="' + element.providerID + '">' + element.providerName + '</option>'
+                );
+                console.log(options_str)
+
+                $('#dropboxProvider').append(options_str)
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+
+    }
+
+    async function viewtDetail(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Provider/GetToProvider/' + ID + '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#providerID').html(data.id);
+                $('#providerName').html(data.name);
+                $('#numberPhone').html(data.numberPhone);
+                $('#address').html(data.address);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    }
+
+    async function viewtDetailImport() {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Import/GetImportFinalID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#idImport').html(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    }
+
+    async function viewtDetailProvider(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Provider/GetToProvider/'+ ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $('#sDT').val(data.numberPhone);
+                $('#dC').val(data.address);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+
+    }
+
+
+</script>
+
+
