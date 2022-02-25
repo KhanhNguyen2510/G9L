@@ -40,11 +40,7 @@ namespace G9L.Data.EFs
                 table.ProductID,
                 table.ManufactureID
             });
-            builder.Entity<UnitProduct>().HasKey(table => new
-            {
-                table.ProductID,
-                table.NumberInBarrel
-            });
+           
         }
     }
 }

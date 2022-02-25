@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G9L.Data.Migrations
 {
     [DbContext(typeof(G9LDbContext))]
-    [Migration("20220215141553_New")]
-    partial class New
+    [Migration("20220224144355_UpdateOldPrice")]
+    partial class UpdateOldPrice
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -239,10 +239,16 @@ namespace G9L.Data.Migrations
                     b.Property<string>("Image3")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IsUnit")
+                        .HasColumnType("int");
+
                     b.Property<int>("ManufactureID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldPrice")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
@@ -323,6 +329,21 @@ namespace G9L.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Provider");
+                });
+
+            modelBuilder.Entity("G9L.Data.Entities.UnitProduct", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("NumberInBarrel")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.ToTable("UnitProduct");
                 });
 
             modelBuilder.Entity("G9L.Data.Entities.UserPrivilege", b =>

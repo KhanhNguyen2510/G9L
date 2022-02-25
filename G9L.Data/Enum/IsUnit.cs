@@ -18,5 +18,9 @@
         /// Hộp
         /// </summary>
         Box = 4,
+        /// <summary>
+        /// Thùng
+        /// </summary>
+        Barrel = 5
     }
 }

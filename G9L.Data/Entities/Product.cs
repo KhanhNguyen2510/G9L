@@ -19,6 +19,7 @@ namespace G9L.Data.Entities
         public decimal CostPrice { get; set; } // giá mua vào
         [Column(TypeName = "decimal(18,3)")]
         public decimal Price { get; set; } // giá bán
+        public string OldPrice { get; set; }
         /// <summary>
         /// vị trí lưu kho
         /// </summary>

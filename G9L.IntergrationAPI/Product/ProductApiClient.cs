@@ -97,6 +97,10 @@ namespace G9L.IntergrationAPI.Product
                 requestContent.Add(new StringContent(request.Price.ToString()), "Price");
             if (request.ProductTypeID != null)
                 requestContent.Add(new StringContent(request.ProductTypeID.ToString()), "ProductTypeID");
+            if (request.IsUnit != null)
+                requestContent.Add(new StringContent(request.IsUnit.ToString()), "IsUnit");
+            if (request.NumberInBarrel != null)
+                requestContent.Add(new StringContent(request.NumberInBarrel.ToString()), "NumberInBarrel");
 
             var response = await client.PostAsync($"/api/Product/UpdateToProduct", requestContent);
 

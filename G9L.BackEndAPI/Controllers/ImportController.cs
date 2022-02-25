@@ -2,7 +2,6 @@
 using G9L.BackEndAPI.Common;
 using G9L.Data.ViewModel.Catalog.Import;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace G9L.BackEndAPI.Controllers
@@ -30,16 +29,10 @@ namespace G9L.BackEndAPI.Controllers
             return Json(data);
         }
         //Update
-        [HttpPost("UpdateToImportByImportDetails")]
-        public async Task<JsonResult> UpdateToImportByImportDetails(int ImportID)
+        [HttpPost("UpdateImportDetailByID")]
+        public async Task<JsonResult> UpdateImportDetailByID([FromForm] GetUpdateToImportDetailsRequest request)
         {
-            var data = await _importSevice.UpdateToImportByImportDetails(ImportID, _CurrentCompanyIndex, _CurrentUpdateUser);
-            return Json(data);
-        }
-        [HttpPost("UpdateToImport")]
-        public async Task<JsonResult> UpdateToImport([FromForm] GetUpdateImportRequest request)
-        {
-            var data = await _importSevice.UpdateToImport(request, _CurrentCompanyIndex, _CurrentUpdateUser);
+            var data = await _importSevice.UpdateImportDetailByID(request, _CurrentCompanyIndex, _CurrentUpdateUser);
             return Json(data);
         }
         //Delete

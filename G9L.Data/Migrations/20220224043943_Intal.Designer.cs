@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G9L.Data.Migrations
 {
     [DbContext(typeof(G9LDbContext))]
-    [Migration("20220212151352_Intal")]
+    [Migration("20220224043943_Intal")]
     partial class Intal
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime");
@@ -121,7 +121,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime");
@@ -146,7 +146,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CostPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<int>("IsUnit")
                         .HasColumnType("int");
@@ -225,7 +225,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CostPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -239,6 +239,9 @@ namespace G9L.Data.Migrations
                     b.Property<string>("Image3")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IsUnit")
+                        .HasColumnType("int");
+
                     b.Property<int>("ManufactureID")
                         .HasColumnType("int");
 
@@ -246,7 +249,7 @@ namespace G9L.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<int>("ProductTypeID")
                         .HasColumnType("int");
@@ -323,6 +326,21 @@ namespace G9L.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Provider");
+                });
+
+            modelBuilder.Entity("G9L.Data.Entities.UnitProduct", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("NumberInBarrel")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.ToTable("UnitProduct");
                 });
 
             modelBuilder.Entity("G9L.Data.Entities.UserPrivilege", b =>

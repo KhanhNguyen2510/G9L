@@ -1,5 +1,6 @@
 ﻿using G9L.Data.EFs;
 using G9L.Data.Entities;
+using G9L.Data.Enum;
 using G9L.Data.ViewModel.Catalog.Import;
 using G9L.Data.ViewModel.Common;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,35 @@ namespace G9L.Aplication.Catalog.Import
             _context = context;
         }
         //Check 
+        public async Task<bool> MinusQuantilyProduct(int ImportID, int ProductID, int CompanyIndex)
+        {
+            try
+            {
+                var rs = await _context.ImportDetails.FirstOrDefaultAsync(x => x.ImportID == ImportID && x.ProductID == ProductID);
+                var result = await _context.Products.FirstOrDefaultAsync(x => x.ID == rs.ProductID && x.CompanyIndex == CompanyIndex);
+                var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == ProductID);
+
+                if (rs == null || result == null || data == null) return false;
+
+                if (rs.IsUnit == IsUnit.Barrel)
+                {
+                    int numberProduct = data.NumberInBarrel * rs.Quantily;
+
+                    result.Quantily = result.Quantily - numberProduct;
+                }
+                else
+                {
+                    result.Quantily = result.Quantily - rs.Quantily;
+                }
+                   
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         //Create 
         public async Task<bool> CreateToImport(int? ProviderID,  int CompanyIndex, string UpdateUser)
         {
@@ -51,31 +81,29 @@ namespace G9L.Aplication.Catalog.Import
 
                 if (dummy == null) return false;
 
-                var listImportDetails = new List<ImportDetails>();
-
-                for (int i = 0; i <= request.ProductID.Length; i++)
+                var rs = new ImportDetails()
                 {
-                    var rs = new ImportDetails()
-                    {
-                        ImportID = dummy.ID,
-                        CostPrice = request.CostPrice[i],
-                        ProductID = request.ProductID[i],
-                        Quantily = request.Quantily[i],
-                        IsUnit = request.IsUnit[i],
+                    ImportID = dummy.ID,
+                    CostPrice = request.CostPrice,
+                    IsUnit = request.IsUnit,
+                    ProductID = request.ProductID,
+                    Quantily = request.Quantily,
 
-                        CompanyIndex = CompanyIndex,
-                        UpdateDate = DateTime.Now,
-                        UpdateUser = UpdateUser
-                    };
-                    listImportDetails.Add(rs);
-                }
-                _context.ImportDetails.AddRange(listImportDetails);
+                    CompanyIndex = CompanyIndex,
+                    UpdateDate = DateTime.Now,
+                    UpdateUser = UpdateUser
+                };
+
+                _context.ImportDetails.Add(rs);
 
                 await _context.SaveChangesAsync();
 
-                await UpdateToImportByImportDetails(request.ImportID, CompanyIndex, UpdateUser);
+                await UpdateTotalAmountInImportByImportID(request.ImportID, CompanyIndex, UpdateUser);//update Totalamount of ImportID
+
+                await UpdateCostPriceAndQuantilyInProductByImportID(request.ImportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily and Price of Product 
 
                 return true;
+
             }
             catch (Exception)
             {
@@ -84,19 +112,93 @@ namespace G9L.Aplication.Catalog.Import
         }
 
         //Update
-        public async Task<bool> UpdateToImportByImportDetails(int ImportID, int CompanyIndex, string UpdateUser)
+
+        
+
+        public async Task<bool> UpdateImportDetailByID(GetUpdateToImportDetailsRequest request, int CompanyIndex, string UpdateUser)
         {
             try
             {
-                var result = await _context.ImportDetails.Where(x => x.ImportID == ImportID && x.CompanyIndex == CompanyIndex).Select(x => x.ProductID).ToListAsync();
+                var rs = await _context.ImportDetails.FirstOrDefaultAsync(x => x.ImportID == request.ImportID && x.ProductID == request.ProductID);
+                if (rs == null) return false;
 
+                var check = await MinusQuantilyProduct(request.ImportID, request.ProductID, CompanyIndex);
+                if (check == false) return false;
+
+                rs.Quantily = (int)(request.Quantily != null ? request.Quantily : rs.Quantily);
+                rs.CostPrice = (decimal)(request.CostPrice != null ? request.CostPrice : rs.CostPrice);
+                rs.IsUnit = (IsUnit)(request.IsUnit != null ? request.IsUnit : rs.IsUnit);
+
+                await _context.SaveChangesAsync();
+
+                await UpdateTotalAmountInImportByImportID(request.ImportID, CompanyIndex, UpdateUser);//update Totalamount of ImportID
+
+                await UpdateCostPriceAndQuantilyInProductByImportID(request.ImportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily and Price of Product 
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateCostPriceAndQuantilyInProductByImportID(int ImportID, int ProductID,  int CompanyIndex, string UpdateUser)
+        {
+            try
+            {
+                var rs = await _context.ImportDetails.FirstOrDefaultAsync(x => x.ImportID == ImportID && x.ProductID == ProductID && x.CompanyIndex == CompanyIndex);
+
+                var result = await _context.Products.FirstOrDefaultAsync(x => x.CompanyIndex == CompanyIndex && x.ID == ProductID);
+
+                var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == ProductID);
+
+                if (rs == null || result == null || data == null) return false;
+
+                result.OldPrice += result.CostPrice + ","; // Save  Old Cost Price 
+
+                ///Check Total by IsUnit 
+                if (rs.IsUnit == IsUnit.Barrel)
+                {
+                    int numberProduct = data.NumberInBarrel * rs.Quantily;
+
+                    result.Quantily = numberProduct + result.Quantily;
+
+                    result.CostPrice = rs.CostPrice / numberProduct; // Đổi giá khi nhập hàng
+                }
+                else
+                {
+                    result.Quantily = rs.Quantily + result.Quantily;
+
+                    result.CostPrice = rs.CostPrice / result.Quantily;
+                }
+
+                result.UpdateUser = UpdateUser;
+                result.UpdateDate = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateTotalAmountInImportByImportID(int ImportID, int CompanyIndex, string UpdateUser)
+        {
+            try
+            {
+                var result = await _context.ImportDetails.Where(x => x.ImportID == ImportID && x.CompanyIndex == CompanyIndex).ToListAsync();
+                
                 var rs = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
 
                 decimal TotalAmount = 0;
-
+               
                 foreach (var item in result)
                 {
-                    TotalAmount += TotalAmount + rs.Where(x => x.ID == item).Select(x => x.Price).FirstOrDefault();
+                    TotalAmount = TotalAmount + item.CostPrice;
                 }
 
                 var card = new GetUpdateImportRequest()
@@ -109,7 +211,7 @@ namespace G9L.Aplication.Catalog.Import
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -123,7 +225,6 @@ namespace G9L.Aplication.Catalog.Import
 
                 if (rs == null) return false;
 
-                rs.ImportDate = DateTime.Now;
                 rs.TotalAmount = (decimal)(request.TotalAmount != null ? request.TotalAmount : rs.TotalAmount);
 
                 rs.UpdateUser = !string.IsNullOrEmpty(UpdateUser) ? UpdateUser : rs.UpdateUser;
@@ -149,7 +250,7 @@ namespace G9L.Aplication.Catalog.Import
 
                 var result = await _context.ImportDetails.Where(x => x.ImportID == ImportID && x.CompanyIndex == CompanyIndex).ToListAsync();
 
-                if (result != null)
+                if (result.Count > 0)
                     _context.ImportDetails.RemoveRange(result);
 
                 _context.Imports.Remove(rs);
@@ -166,21 +267,23 @@ namespace G9L.Aplication.Catalog.Import
         {
             try
             {
-                var rs = await _context.ImportDetails.Where(x => x.ImportID == request.ImportID && x.CompanyIndex == CompanyIndex).ToListAsync();
+                var rs = await _context.ImportDetails.FirstOrDefaultAsync(x => x.ProductID == request.ProductID && x.ImportID == request.ImportID && x.CompanyIndex == CompanyIndex);
 
-                var dummy = new List<ImportDetails>();
 
-                foreach (var item in request.ListProductID)
-                {
-                    var data = rs.FirstOrDefault(x => x.ProductID == item);
-                    dummy.Add(data);
-                }
 
-                _context.ImportDetails.RemoveRange(dummy);
+                if (rs == null) return false;
+
+                var check = await MinusQuantilyProduct(request.ImportID, request.ProductID, CompanyIndex);
+                if (check == false) return false;
+
+                _context.ImportDetails.Remove(rs);
 
                 await _context.SaveChangesAsync();
 
-                await UpdateToImportByImportDetails(request.ImportID, CompanyIndex, UpdateUser);
+                await UpdateTotalAmountInImportByImportID(request.ImportID, CompanyIndex, UpdateUser);//update Totalamount of ImportID
+
+              
+
                 return true;
             }
             catch

@@ -3,6 +3,6 @@
     public class GetDeleteToImportDetails
     {
         public int ImportID { get; set; }
-        public int[] ListProductID { get; set; }
+        public int ProductID { get; set; }
     }
 }

@@ -3,6 +3,6 @@
     public class GetCreateUnitProductRequest
     {
         public int ProductID { get; set; }
-        public int? NumberInBarrel { get; set; }
+        public int NumberInBarrel { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace G9L.Data.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExportDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     IsExport = table.Column<int>(type: "int", nullable: false),
                     UpdateUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -66,7 +66,7 @@ namespace G9L.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProviderID = table.Column<int>(type: "int", nullable: false),
                     ImportDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     UpdateUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     CompanyIndex = table.Column<int>(type: "int", nullable: false)
@@ -83,7 +83,7 @@ namespace G9L.Data.Migrations
                     ImportID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantily = table.Column<int>(type: "int", nullable: false),
-                    CostPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CostPrice = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     IsUnit = table.Column<int>(type: "int", nullable: false),
                     UpdateUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -136,9 +136,10 @@ namespace G9L.Data.Migrations
                     ProductTypeID = table.Column<int>(type: "int", nullable: false),
                     ManufactureID = table.Column<int>(type: "int", nullable: false),
                     Quantily = table.Column<int>(type: "int", nullable: false),
-                    CostPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CostPrice = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     StorageLocations = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUnit = table.Column<int>(type: "int", nullable: false),
                     Image1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -185,6 +186,18 @@ namespace G9L.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Provider", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnitProduct",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    NumberInBarrel = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnitProduct", x => x.ProductID);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,6 +250,9 @@ namespace G9L.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Provider");
+
+            migrationBuilder.DropTable(
+                name: "UnitProduct");
 
             migrationBuilder.DropTable(
                 name: "UserPrivilege");

@@ -7,9 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
-
-
 <main>
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
@@ -84,7 +81,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col" class="sort text-center">
-                                        <input type="checkbox" id="select-all" onclick="toggle(this);">
+                                        <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this)" class="checkbox" />
                                     </th>
                                     <th scope="col" class="sort" data-sort="budget">STT</th>
                                     <th scope="col" class="sort" data-sort="name">Tổng tiền</th>
@@ -150,45 +147,45 @@
                     <button type="button" class="btn btn-outline-primary">Lưu</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="closeDialog() , viewtDetailImport()">Hủy bỏ</button>
                 </div>
+                <form id="myform">
+                    <div class="modal-body">
+                        <div class="mt--5">
+                            <img alt="Image placeholder" src="../assets/img/brand/Logo9Lanh.png" class="mb--5">
+                            <p class="h1 text-center" id="modal-title-notification">
+                                PHIẾU NHẬP HÀNG HÓA
+                            </p>
+                            <h4 class="text-right"><strong>Mã số :</strong> <a id="idImport"></a></h4>
+                        </div>
+                        <div class="py-3 text-center">
+                            Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year
+                        </div>
 
-                <div class="modal-body">
-                    <div class="mt--5">
-                        <img alt="Image placeholder" src="../assets/img/brand/Logo9Lanh.png" class="mb--5">
-                        <p class="h1 text-center" id="modal-title-notification">
-                            PHIẾU NHẬP HÀNG HÓA
-                        </p>
-                        <h4 class="text-right"><strong>Mã số :</strong> <a id="idImport"></a></h4>
-                    </div>
-                    <div class="py-3 text-center">
-                        Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year 
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group input-group-lg">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" for="exampleFormControlSelect1">
-                                    <strong>
-                                        Tên nhà cung cấp
-                                    </strong>
-                                </span>
-                            </div>
-                            <select class="form-control" id="dropboxProvider" onchange="viewtDetailProvider(value)">
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" for="exampleFormControlSelect1">
+                                        <strong>
+                                            Tên nhà cung cấp
+                                        </strong>
+                                    </span>
+                                </div>
+                                <select class="form-control" id="dropboxProvider" onchange="viewtDetailProvider(value)">
                                     <option value="" hidden></option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group input-group-lg">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-lg"><strong>SĐT và Địa chỉ</strong></span>
+                                </select>
                             </div>
-                            <input type="text"  readonly value="" id="sDT" class="form-control">
-                            <input type="text" readonly value="" id="dC" class="form-control ml--9">
+
                         </div>
-                    </div>
-                    <div class="table-responsive mt-4">     
-                        <table class="table align-items-center">
+                        <div class="input-group">
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-lg"><strong>SĐT và Địa chỉ</strong></span>
+                                </div>
+                                <input type="text" readonly value="" id="sDT" class="form-control">
+                                <input type="text" readonly value="" id="dC" class="form-control ml--9">
+                            </div>
+                        </div>
+                        <div class="table-responsive mt-4">
+                            <table class="table align-items-center">
                                 <thead class="thead-light">
                                     <tr class="text-center">
                                         <th scope="col" class="sort" data-sort="name">STT</th>
@@ -213,36 +210,33 @@
                                         <th scope="row">
                                             <div class="media align-items-center">
                                                 <div class="media-body">
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                        <option>Anh hoàng</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
+                                                    <select class="form-control" id="dropboxProduct" onclick="viewtDetailProduct(value)">
+                                                        <option value="" hidden></option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </th>
                                         <td class="budget">
-                                            <input class="form-control text-center" type="text" value="M33" id="example-text-input"
-                                                   readonly>
+                                            <input class="form-control text-center text-red" type="text" value="" id="idProduct" readonly>
                                         </td>
                                         <td>
                                             <select class="form-control" id="exampleFormControlSelect1">
-                                                <option onchange="viewtDetailProvider(1)">Hộp</option>
-                                                <option>Cái</option>
-                                                <option>Thùng</option>
-                                                <option>Kg</option>
+                                                <option value="" hidden></option>
+                                                <option value="1">Cái</option>
+                                                <option value="2">Lon</option>
+                                                <option value="3">Bộ</option>
+                                                <option value="4">Hộp</option>
+                                                <option value="5">Thùng</option>
                                             </select>
-                                           
+
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" value="0" id="example-number-input">
+                                            <input class="form-control" type="number" value="0" name="num1" id="numberProduct" onchange="totalAmount()">
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input type="text" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)">
+                                                <input type="number" class="form-control text-right"
+                                                       aria-label="Dollar amount (with dot and two decimal places)" name="num2" value="0" id="moneyProduct" onchange="totalAmount()">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.000</span>
                                                 </div>
@@ -251,25 +245,82 @@
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)">
+                                                       aria-label="Dollar amount (with dot and two decimal places)" id="total" readonly>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.000</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button">
+                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow1()">
                                                 <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
                                             </button>
-                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button">
+                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow1()" >
+                                                <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="row1" hidden>
+                                        <td class="budget text-center h6">
+                                            2
+                                        </td>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <select class="form-control" id="dropboxProduct1" onclick="viewtDetailProduct1(value)">
+                                                        <option value="" hidden></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            <input class="form-control text-center text-red" type="text" value="" id="idProduct1" readonly>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option value="" hidden></option>
+                                                <option value="1">Cái</option>
+                                                <option value="2">Lon</option>
+                                                <option value="3">Bộ</option>
+                                                <option value="4">Hộp</option>
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="number" value="0" name="num3" id="numberProduct" onchange="totalAmount1()">
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control text-right"
+                                                       aria-label="Dollar amount (with dot and two decimal places)" name="num4" value="0" id="moneyProduct" onchange="totalAmount1()">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.000</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-right"
+                                                       aria-label="Dollar amount (with dot and two decimal places)" id="total1" readonly>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.000</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-right">
+                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow2()">
+                                                <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow1()">
                                                 <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
                                             </button>
                                         </td>
                                     </tr>
                                 </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -337,11 +388,321 @@
     BaseLocalhost = '@SystemConnection.BaseConnection'
 
     listID = [];
+    ///Load tổng tiền hàng
+    function totalAmount() {
+        var num1 = parseInt(document.getElementById("myform").elements["num1"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num2"].value);
+        total = num1 * num2
+        $('#total').val(total);
+    }
+    function totalAmount1() {
+        var num1 = parseInt(document.getElementById("myform").elements["num3"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num4"].value);
+        total = num1 * num2
+        $('#total1').val(total);
+    }
+    function totalAmount2() {
+        var num1 = parseInt(document.getElementById("myform").elements["num5"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num6"].value);
+        total = num1 * num2
+        $('#total2').val(total);
+    }
+    function totalAmount3() {
+        var num1 = parseInt(document.getElementById("myform").elements["num7"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num8"].value);
+        total = num1 * num2
+        $('#total3').val(total);
+    }
+    function totalAmount4() {
+        var num1 = parseInt(document.getElementById("myform").elements["num9"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num10"].value);
+        total = num1 * num2
+        $('#total4').val(total);
+    }
+    function totalAmount5() {
+        var num1 = parseInt(document.getElementById("myform").elements["num11"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num12"].value);
+        total = num1 * num2
+        $('#total5').val(total);
+    }
+    function totalAmount6() {
+        var num1 = parseInt(document.getElementById("myform").elements["num13"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num14"].value);
+        total = num1 * num2
+        $('#total6').val(total);
+    }
+    function totalAmount7() {
+        var num1 = parseInt(document.getElementById("myform").elements["num15"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num16"].value);
+        total = num1 * num2
+        $('#total7').val(total);
+    }
+    function totalAmount8() {
+        var num1 = parseInt(document.getElementById("myform").elements["num17"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num18"].value);
+        total = num1 * num2
+        $('#total8').val(total);
+    }
+    function totalAmount9() {
+        var num1 = parseInt(document.getElementById("myform").elements["num19"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num20"].value);
+        total = num1 * num2
+        $('#total9').val(total);
+    }
+    function totalAmount10() {
+        var num1 = parseInt(document.getElementById("myform").elements["num21"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["num22"].value);
+        total = num1 * num2
+        $('#total10').val(total);
+    }
 
-   
-    function closeDialog() {
-        location.reload();
+
+////----------------------------------
+
+    ///Show cột
+    function showRow1() {
+        $('#row1').prop('hidden', false);
+    }
+    function showRow2() {
+        $('#row2').prop('hidden', false);
+    }
+    function showRow3() {
+        $('#row3').prop('hidden', false);
+    }
+    function showRow4() {
+        $('#row4').prop('hidden', false);
+    }
+    function showRow5() {
+        $('#row5').prop('hidden', false);
+    }
+    function showRow6() {
+        $('#row6').prop('hidden', false);
+    }
+    function showRow7() {
+        $('#row7').prop('hidden', false);
+    }
+    function showRow8() {
+        $('#row8').prop('hidden', false);
+    }
+    function showRow9() {
+        $('#row9').prop('hidden', false);
+    }
+    function showRow10() {
+        $('#row10').prop('hidden', false);
+    }
+    ////Ẩn cột 
+    function unShowRow1() {
+        $('#row1').prop('hidden', true);
+    }
+    function unShowRow2() {
+        $('#row2').prop('hidden', true);
+    }
+    function unShowRow3() {
+        $('#row3').prop('hidden', true);
+    }
+    function unShowRow4() {
+        $('#row4').prop('hidden', true);
+    }
+    function unShowRow5() {
+        $('#row5').prop('hidden', true);
+    }
+    function unShowRow6() {
+        $('#row6').prop('hidden', true);
+    }
+    function unShowRow7() {
+        $('#row7').prop('hidden', true);
+    }
+    function unShowRow8() {
+        $('#row8').prop('hidden', true);
+    }
+    function unShowRow9() {
+        $('#row9').prop('hidden', true);
+    }
+    function unShowRow10() {
+        $('#row10').prop('hidden', true);
+    }
+
+/////-----------------------------------
+
+
+
+
+    ///Hiển thị mã hàng
+    async function viewtDetailProduct(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct').val(data.id);
+
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
     };
+    async function viewtDetailProduct1(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct1').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct2(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct2').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct3(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct3').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct4(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct4').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct5(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct5').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct6(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct6').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct7(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct7').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct8(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct8').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct9(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct9').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+    async function viewtDetailProduct10(ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct10').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+    };
+///////-------------------------------------------
+
+
+
+
+    function closeDialog() {
+        $.ajax({
+            url: BaseLocalhost + '/api/Import/GetImportFinalID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.id);
+                $.ajax({
+                    url: BaseLocalhost + '/api/Import/DeleteToImport?ImportID=' + data.id,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log('Sussces')
+                        location.reload();
+                    },
+                    error: function () {
+                        console.log('Connect failed');
+                    },
+                });
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+        
+    }
     function deleteItemInArray(arr, item) {
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] === item) {
@@ -350,7 +711,6 @@
             }
         }
     };
-
     function findID(arr, item) {
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] === item) {
@@ -358,7 +718,6 @@
             }
         }
     };
-
     function toggleButton() {
         if (listID.length == 0) {
             $('#deleteByID').prop('disabled', true);
@@ -366,7 +725,6 @@
             $('#deleteByID').prop('disabled', false);
         }
     };
-
     function addIDToArray(ID) {
         if (!findID(listID, ID)) {
             listID.push(ID);
@@ -378,24 +736,60 @@
         }
         toggleButton()
     };
-
+    function toggle(source) {
+        $('#select-all').click(function (e) {
+            var table = $(e.target).closest('table');
+            $('td input:checkbox', table).prop('checked', this.checked);
+            $('td input:checkbox', table).each(function () {
+                if (this.checked) {
+                    listID.push($(this).attr('id'));
+                }
+                else {
+                    deleteItemInArray(listID, $(this).attr('id'));
+                }
+            });
+            toggleButton();
+            console.log(listID)
+        });
+    };
     async function deleteID() {
         for (var i = 0; i < listID.length; i++) {
             await $.ajax({
-                url: BaseLocalhost + '/api/Provider/DeleteToProvider/' + listID[i],
+                url: BaseLocalhost + '/api/Import/DeleteToImport?ImportID=' + listID[i],
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
-                    alert('Thanh cong')
+                   document.getElementById('msg').innerHTML =
+                        `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.DeleteItemSuccessful</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    setTimeout(function () { location.reload(); }, 800);
                 },
                 error: function () {
+                    document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
                     console.log('Connect failed');
                 },
             });
         }
         location.reload();
-    } 
-
+    };
     async function createImport() {
         await $.ajax({
             url: BaseLocalhost + '/api/Import/CreateToImport',
@@ -405,7 +799,18 @@
                 console.log('Sussces');
             },
             error: function () {
-                console.log('Connect failed');
+                 document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    console.log('Connect failed');
             },
         });
         await $.ajax({
@@ -429,9 +834,24 @@
                 data.forEach(element =>
                     options_str += '<option  value="' + element.providerID + '">' + element.providerName + '</option>'
                 );
-                console.log(options_str)
-                
+
                 $('#dropboxProvider').append(options_str)
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProductToNameAndID',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var options_str = "";
+                data.forEach(element =>
+                    options_str += '<option  value="' + element.productID + '">' + element.productName + '</option>'
+                );
+                $('#dropboxProduct').append(options_str)
+                $('#dropboxProduct1').append(options_str)
             },
             error: function () {
                 console.log('Connection Fail');
@@ -439,7 +859,6 @@
         });
 
     }
-
     async function viewtDetail(ID) {
         await $.ajax({
             url: BaseLocalhost + '/api/Provider/GetToProvider/' + ID + '/',
@@ -456,30 +875,37 @@
                 console.log('Connection Fail');
             }
         });
-    } 
-
+    }
     async function viewtDetailImport() {
         await $.ajax({
             url: BaseLocalhost + '/api/Import/GetImportFinalID',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 $('#idImport').html(data.id);
             },
             error: function () {
-                console.log('Connection Fail');
+                 document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    console.log('Connect failed');
             }
         });
     }
-
     async function viewtDetailProvider(ID) {
         await $.ajax({
             url: BaseLocalhost + '/api/Provider/GetToProvider/'+ ID,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 $('#sDT').val(data.numberPhone);
                 $('#dC').val(data.address);
             },
@@ -487,9 +913,6 @@
                 console.log('Connection Fail');
             }
         });
-      
-    }
-
-
+    };
 </script>
 

@@ -246,6 +246,9 @@ namespace G9L.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OldPrice")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,3)");
 
@@ -329,12 +332,14 @@ namespace G9L.Data.Migrations
             modelBuilder.Entity("G9L.Data.Entities.UnitProduct", b =>
                 {
                     b.Property<int>("ProductID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("NumberInBarrel")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductID", "NumberInBarrel");
+                    b.HasKey("ProductID");
 
                     b.ToTable("UnitProduct");
                 });

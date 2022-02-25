@@ -27,6 +27,7 @@ namespace G9L.Aplication.Catalog.Product
                 {
                     ID = 0,
                     CostPrice = 0,
+                    OldPrice = "",
                     IsUnit = (Data.Enum.IsUnit)(request.IsUnit != null ? request.IsUnit : Data.Enum.IsUnit.Item),
                     Name = !string.IsNullOrEmpty(request.ProductName) ? request.ProductName : "",
                     Price = (decimal)(request.Price != null ? request.Price : 0),
@@ -65,20 +66,26 @@ namespace G9L.Aplication.Catalog.Product
 
         public async Task<bool> CreateUnitProduct(GetCreateUnitProductRequest request)
         {
-            var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == request.ProductID);
-
-            if (data == null) return false;
-
-            var rs = new Data.Entities.UnitProduct()
+            try
             {
-                ProductID = request.ProductID,
-                NumberInBarrel = (int)(request.NumberInBarrel != null ? request.NumberInBarrel : 1)
-            };
+                var data = await _context.Products.FirstOrDefaultAsync(x => x.ID == request.ProductID);
 
-            _context.UnitProducts.Add(rs);
-            await _context.SaveChangesAsync();
+                if (data == null) return false;
 
-            return true;
+                var rs = new Data.Entities.UnitProduct()
+                {
+                    ProductID = request.ProductID,
+                    NumberInBarrel = request.NumberInBarrel
+                };
+                _context.UnitProducts.Add(rs);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         //Update
         public async Task<bool> UpdateToProduct(GetUpdateProductRequest request, int CompanyIndex, string UpdateUser)
@@ -86,8 +93,9 @@ namespace G9L.Aplication.Catalog.Product
             try
             {
                 var rs = await _context.Products.FirstOrDefaultAsync(x => x.ID == request.ProductID && x.CompanyIndex == CompanyIndex);
+                var result = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == request.ProductID);
 
-                if (rs == null) return false;
+                if (rs == null|| result == null) return false;
 
                 rs.Name = !string.IsNullOrEmpty(request.ProductName) ? request.ProductName : rs.Name;
                 rs.ManufactureID = (int)(request.ManufactureID != null ? request.ManufactureID : rs.ManufactureID);
@@ -102,6 +110,9 @@ namespace G9L.Aplication.Catalog.Product
 
                 rs.UpdateUser = !string.IsNullOrEmpty(UpdateUser) ? UpdateUser : rs.UpdateUser;
                 rs.UpdateDate = DateTime.Now;
+
+                rs.IsUnit = (Data.Enum.IsUnit)(request.IsUnit != null ? request.IsUnit : rs.IsUnit);
+                result.NumberInBarrel = (int)(request.NumberInBarrel != null ? request.NumberInBarrel : result.NumberInBarrel); 
 
                 await _context.SaveChangesAsync();
                 return true;

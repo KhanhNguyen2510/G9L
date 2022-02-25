@@ -12,8 +12,7 @@ namespace G9L.Aplication.Catalog.Import
         Task<bool> CreateToImport(int? ProviderID, int CompanyIndex, string UpdateUser);
         Task<bool> CreateToImportDetails(GetCreateImportDetailsRequest request, int CompanyIndex, string UpdateUser);
         //Update
-        Task<bool> UpdateToImportByImportDetails(int ImportID, int CompanyIndex, string UpdateUser);
-        Task<bool> UpdateToImport(GetUpdateImportRequest request, int CompanyIndex, string UpdateUser);
+        Task<bool> UpdateImportDetailByID(GetUpdateToImportDetailsRequest request, int CompanyIndex, string UpdateUser);
         //Delete
         Task<bool> DeleteToImport(int ImportID, int CompanyIndex);
         Task<bool> DeleteToExportDetails(GetDeleteToImportDetails request, int CompanyIndex, string UpdateUser);

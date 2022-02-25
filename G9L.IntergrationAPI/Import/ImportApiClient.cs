@@ -20,21 +20,6 @@ namespace G9L.IntergrationAPI.Import
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<bool> CreateToImport(GetCreateImportRequest request)
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConnection.AppSettings.BaseAddress]);
-
-            var requestContent = new MultipartFormDataContent();
-
-            if (request.ProviderID != null)
-                requestContent.Add(new StringContent(request.ProviderID.ToString()), "ProviderID");
-
-            var response = await client.PostAsync($"/api/Import/CreateToImport", requestContent);
-
-            return response.IsSuccessStatusCode;
-        }
-
         public async Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request)
         {
             var data = await GetAsync<PagedResult<GetImportViewModel>>($"/api/Import/GetListToImport" +
@@ -48,5 +33,7 @@ namespace G9L.IntergrationAPI.Import
             var data = await GetAsync<List<GetImportDetailsViewModel>>($"/api/Import/GetListToImportDetails?ImportID={ImportID}");
             return data;
         }
+
+
     }
 }

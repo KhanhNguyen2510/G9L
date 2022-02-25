@@ -6,6 +6,7 @@ namespace G9L.Data.Entities
     [Table("UnitProduct")]
     public class UnitProduct
     {
+        [Key]
         public int ProductID { get; set; }
         /// <summary>
         /// Số lượng trong thùng
