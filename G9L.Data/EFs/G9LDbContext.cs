@@ -22,6 +22,7 @@ namespace G9L.Data.EFs
         public DbSet<UserPrivilege> UserPrivileges { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<UnitProduct> UnitProducts { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,7 +41,9 @@ namespace G9L.Data.EFs
                 table.ProductID,
                 table.ManufactureID
             });
-           
+
+            builder.Entity<ShoppingCart>().HasNoKey();
+
         }
     }
 }

@@ -50,5 +50,17 @@ namespace G9L.IntergrationAPI
             }
             throw new Exception(body);
         }
+        public async Task<bool> Delete(string url)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConnection.AppSettings.BaseAddress]);
+
+            var response = await client.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

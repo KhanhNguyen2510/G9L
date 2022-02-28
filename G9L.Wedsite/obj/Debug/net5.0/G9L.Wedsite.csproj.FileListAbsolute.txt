@@ -1323,3 +1323,5 @@ E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.dll
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\ref\G9L.Wedsite.dll
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.pdb
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.genruntimeconfig.cache
+E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Import\IndexUpdate.cshtml.g.cs
+E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Product\IndexProduct.cshtml.g.cs

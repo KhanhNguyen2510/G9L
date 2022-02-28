@@ -329,6 +329,29 @@ namespace G9L.Data.Migrations
                     b.ToTable("Provider");
                 });
 
+            modelBuilder.Entity("G9L.Data.Entities.ShoppingCart", b =>
+                {
+                    b.Property<int>("CompanyIndex")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantily")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("ShoppingCart");
+                });
+
             modelBuilder.Entity("G9L.Data.Entities.UnitProduct", b =>
                 {
                     b.Property<int>("ProductID")

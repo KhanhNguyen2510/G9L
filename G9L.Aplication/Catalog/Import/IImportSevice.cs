@@ -20,5 +20,6 @@ namespace G9L.Aplication.Catalog.Import
         Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request, int CompanyIndex);
         Task<List<GetImportDetailsViewModel>> GetListToImportDetails(int ImportID, int CompanyIndex);
         Task<GetImportFinal> GetImportFinalID(int CompanyIndex);
+        Task<GetImportAndImportDetailsViewModel<GetImportDetailsVM>> GetListImportAndImportDetails(int ImportID, int CompanyIndex);
     }
 }

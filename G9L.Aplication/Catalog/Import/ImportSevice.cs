@@ -39,7 +39,7 @@ namespace G9L.Aplication.Catalog.Import
                 {
                     result.Quantily = result.Quantily - rs.Quantily;
                 }
-                   
+
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -49,7 +49,7 @@ namespace G9L.Aplication.Catalog.Import
             }
         }
         //Create 
-        public async Task<bool> CreateToImport(int? ProviderID,  int CompanyIndex, string UpdateUser)
+        public async Task<bool> CreateToImport(int? ProviderID, int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace G9L.Aplication.Catalog.Import
                 {
                     ID = 0,
                     ImportDate = DateTime.Now,
-                    ProviderID = (int)(ProviderID != null? ProviderID : 0),
+                    ProviderID = (int)(ProviderID != null ? ProviderID : 0),
                     TotalAmount = 0,
                     UpdateDate = DateTime.Now,
                     CompanyIndex = CompanyIndex,
@@ -84,10 +84,10 @@ namespace G9L.Aplication.Catalog.Import
                 var rs = new ImportDetails()
                 {
                     ImportID = dummy.ID,
-                    CostPrice = request.CostPrice,
-                    IsUnit = request.IsUnit,
                     ProductID = request.ProductID,
-                    Quantily = request.Quantily,
+                    CostPrice = (decimal)(request.CostPrice != null ? request.CostPrice : 0),
+                    IsUnit = (IsUnit)(request.IsUnit != null ? request.IsUnit : IsUnit.Item),
+                    Quantily = (int)(request.Quantily != null ? request.Quantily : 0),
 
                     CompanyIndex = CompanyIndex,
                     UpdateDate = DateTime.Now,
@@ -112,9 +112,6 @@ namespace G9L.Aplication.Catalog.Import
         }
 
         //Update
-
-        
-
         public async Task<bool> UpdateImportDetailByID(GetUpdateToImportDetailsRequest request, int CompanyIndex, string UpdateUser)
         {
             try
@@ -143,7 +140,7 @@ namespace G9L.Aplication.Catalog.Import
             }
         }
 
-        public async Task<bool> UpdateCostPriceAndQuantilyInProductByImportID(int ImportID, int ProductID,  int CompanyIndex, string UpdateUser)
+        public async Task<bool> UpdateCostPriceAndQuantilyInProductByImportID(int ImportID, int ProductID, int CompanyIndex, string UpdateUser)
         {
             try
             {
@@ -191,11 +188,11 @@ namespace G9L.Aplication.Catalog.Import
             try
             {
                 var result = await _context.ImportDetails.Where(x => x.ImportID == ImportID && x.CompanyIndex == CompanyIndex).ToListAsync();
-                
+
                 var rs = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
 
                 decimal TotalAmount = 0;
-               
+
                 foreach (var item in result)
                 {
                     TotalAmount = TotalAmount + item.CostPrice;
@@ -226,6 +223,7 @@ namespace G9L.Aplication.Catalog.Import
                 if (rs == null) return false;
 
                 rs.TotalAmount = (decimal)(request.TotalAmount != null ? request.TotalAmount : rs.TotalAmount);
+                rs.ImportDate = DateTime.Now;
 
                 rs.UpdateUser = !string.IsNullOrEmpty(UpdateUser) ? UpdateUser : rs.UpdateUser;
                 rs.UpdateDate = DateTime.Now;
@@ -269,8 +267,6 @@ namespace G9L.Aplication.Catalog.Import
             {
                 var rs = await _context.ImportDetails.FirstOrDefaultAsync(x => x.ProductID == request.ProductID && x.ImportID == request.ImportID && x.CompanyIndex == CompanyIndex);
 
-
-
                 if (rs == null) return false;
 
                 var check = await MinusQuantilyProduct(request.ImportID, request.ProductID, CompanyIndex);
@@ -282,8 +278,6 @@ namespace G9L.Aplication.Catalog.Import
 
                 await UpdateTotalAmountInImportByImportID(request.ImportID, CompanyIndex, UpdateUser);//update Totalamount of ImportID
 
-              
-
                 return true;
             }
             catch
@@ -291,17 +285,18 @@ namespace G9L.Aplication.Catalog.Import
                 return false;
             }
         }
-        
+
         //List
         public async Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request, int CompanyIndex)
         {
             try
             {
-                var query = await ( from i in _context.Imports
+                var query = await (from i in _context.Imports
                                    join p in _context.Providers
                                    on i.ProviderID equals p.ID
-                                   into pt from p in pt.DefaultIfEmpty()
-                                    where i.CompanyIndex == CompanyIndex
+                                   into pt
+                                   from p in pt.DefaultIfEmpty()
+                                   where i.CompanyIndex == CompanyIndex
                                    select new
                                    {
                                        i.ID,
@@ -397,6 +392,53 @@ namespace G9L.Aplication.Catalog.Import
                                   }).ToListAsync();
 
                 return data;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<GetImportAndImportDetailsViewModel<GetImportDetailsVM>> GetListImportAndImportDetails(int ImportID, int CompanyIndex)
+        {
+            try
+            {
+                var query = await (
+                    from i in _context.ImportDetails
+                    join pi in _context.Products
+                    on i.ProductID equals pi.ID
+                    where i.ImportID == ImportID && i.CompanyIndex == CompanyIndex
+                    select new
+                    {
+                        i.ProductID,
+                        pi.Name,
+                        i.IsUnit,
+                        i.Quantily,
+                        i.CostPrice
+                    }).ToListAsync();
+
+                if (query == null) return null;
+
+                var data = query.Select(x => new GetImportDetailsVM()
+                {
+                    ProductID = x.ProductID,
+                    ProductName = x.Name,
+                    CostPrice = x.CostPrice,
+                    IsUnit = x.IsUnit,
+                    Quantily = x.Quantily
+                }).ToList();
+
+                var rs = await _context.Imports.FirstOrDefaultAsync(x => x.ID == ImportID && x.CompanyIndex == CompanyIndex);
+
+                if (rs == null) return null;
+
+                var pagedResult = new GetImportAndImportDetailsViewModel<GetImportDetailsVM>()
+                {
+                    Items = data,
+                    ImportID = rs.ID,
+                    TotalAmount = rs.TotalAmount
+                };
+                return pagedResult;
             }
             catch
             {

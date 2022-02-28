@@ -68,5 +68,11 @@ namespace G9L.BackEndAPI.Controllers
             var data = await _importSevice.GetListToImportDetails(ImportID, _CurrentCompanyIndex);
             return Json(data);
         }
+        [HttpGet("GetListImportAndImportDetails")]
+        public async Task<JsonResult> GetListImportAndImportDetails(int ImportID)
+        {
+            var data = await _importSevice.GetListImportAndImportDetails(ImportID, _CurrentCompanyIndex);
+            return Json(data);
+        }
     }
 }

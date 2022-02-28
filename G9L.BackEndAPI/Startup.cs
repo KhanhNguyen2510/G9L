@@ -4,6 +4,7 @@ using G9L.Aplication.Catalog.Manufacture;
 using G9L.Aplication.Catalog.Product;
 using G9L.Aplication.Catalog.ProductType;
 using G9L.Aplication.Catalog.Provider;
+using G9L.Aplication.Catalog.ShoppingCart;
 using G9L.Data.EFs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,7 @@ namespace G9L.BackEndAPI
             services.AddTransient<IImportSevice, ImportSevice>();
             services.AddTransient<IExportSevice, ExportSevice>();
             services.AddTransient<IProductTypeSevice, ProductTypeSevice>();
+            services.AddTransient<IShoppingCartSevice, ShoppingCartSevice>();
 
             services.AddSwaggerGen(c =>
             {

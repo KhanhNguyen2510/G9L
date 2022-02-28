@@ -20,7 +20,33 @@ namespace G9L.Aplication.Catalog.Export
             _context = context;
         }
         //Check
+        public async Task<bool> MinusQuantilyProduct(int ExportID, int ProductID, int CompanyIndex)
+        {
+            try
+            {
+                var rs = await _context.ExportDetails.FirstOrDefaultAsync(x => x.ExportID == ExportID && x.ProductID == ProductID);
+                var result = await _context.Products.FirstOrDefaultAsync(x => x.ID == rs.ProductID && x.CompanyIndex == CompanyIndex);
+                var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == ProductID);
+                if (rs == null || result == null || data == null) return false;
 
+                if (rs.IsUnit == IsUnit.Barrel)
+                {
+                    int numberProduct = data.NumberInBarrel * rs.Quantily;
+
+                    result.Quantily = result.Quantily - numberProduct;
+                }
+                else
+                {
+                    result.Quantily = result.Quantily - rs.Quantily;
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         //Create
         public async Task<bool> CreateToExport(int CompanyIndex, string UpdateUser)
         {
@@ -46,55 +72,157 @@ namespace G9L.Aplication.Catalog.Export
                 return false;
             }
         }
-        
-        public async Task<bool> CreateToExportDetails(GetCreateExportDetailsRequest request, int CompanyIndex, string UpdateUser)
+
+        public async Task<int> AddShoppingCartInExport(int CompanyIndex, string UpdateUser)
         {
             try
             {
-                var dummy = await _context.Exports.FirstOrDefaultAsync(x=>x.ID == request.ExportID && x.CompanyIndex == CompanyIndex);
+                var data = await _context.ShoppingCarts.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
 
-                if (dummy == null) return false;
-
-                var listExportDetails = new List<ExportDetails>();
-
-                foreach (var item in request.ProductID)
+                if (data.Any())
                 {
-                    var data = new ExportDetails()
+                    await CreateToExport(CompanyIndex, UpdateUser);
+
+                    var rs = await _context.Exports.Where(x => x.CompanyIndex == CompanyIndex).OrderByDescending(x => x.ID).Select(x => x.ID).FirstOrDefaultAsync();
+
+                    foreach (var item in data)
                     {
-                        ExportID = dummy.ID,
-                        ProductID = item,
-                        CompanyIndex = CompanyIndex,
-                        UpdateDate = DateTime.Now,
-                        UpdateUser = UpdateUser
-                    };
-                    listExportDetails.Add(data);
+                        var resul = new GetCreateExportDetailsRequest()
+                        {
+                            ExportID = rs,
+                            ProductID = item.ProductID,
+                            Quantily = item.Quantily,
+                            IsUnit = item.IsUnit
+                        };
+                        var dummy = await CreateToExportDetails(resul, CompanyIndex, UpdateUser);
+                        if (dummy is (int)CheckProductInWarehouse.OutOfStock or (int)CheckProductInWarehouse.Undiscovered)
+                        {
+                            return dummy;
+                        }
+                    }
+                    return (int)CheckProductInWarehouse.Successful;
                 }
-                _context.ExportDetails.AddRange(listExportDetails);
+
+                return (int)CheckProductInWarehouse.Undiscovered;
+            }
+            catch
+            {
+                return (int)CheckProductInWarehouse.Undiscovered;
+            }
+        }
+
+        public async Task<int> CreateToExportDetails(GetCreateExportDetailsRequest request, int CompanyIndex, string UpdateUser)
+        {
+            try
+            {
+                var dummy = await _context.Exports.FirstOrDefaultAsync(x => x.ID == request.ExportID && x.CompanyIndex == CompanyIndex);
+
+                if (dummy == null) return (int)CheckProductInWarehouse.Undiscovered;
+
+                var data = new ExportDetails()
+                {
+                    ExportID = request.ExportID,
+                    ProductID = request.ProductID,
+                    Quantily = request.Quantily,
+                    IsUnit = request.IsUnit ,
+
+                    CompanyIndex = CompanyIndex,
+                    UpdateDate = DateTime.Now,
+                    UpdateUser = UpdateUser
+                };
+
+                _context.ExportDetails.Add(data);
                 await _context.SaveChangesAsync();
 
-                await UpdateToExportByExportDetails(request.ExportID, CompanyIndex , UpdateUser);
-                return true;
+                await UpdateTotalAmountInExportByExportID(request.ExportID, CompanyIndex, UpdateUser); // update Totalamount of ExportID
+
+                var card =  await UpdateQuantilyInProductByExportID(request.ExportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily of Product 
+
+                return (int)card;
             }
             catch (Exception)
             {
-                return false;
+                return (int)CheckProductInWarehouse.Undiscovered;
             }
         }
         //Update
 
-        public async Task<bool> UpdateToExportByExportDetails(int ExportID, int CompanyIndex, string UpdateUser)
+        public async Task<CheckProductInWarehouse> UpdateQuantilyInProductByExportID(int ExportID ,int ProductID, int CompanyIndex, string UpdateUser)
         {
             try
             {
-                var result = await _context.ExportDetails.Where(x => x.ExportID == ExportID && x.CompanyIndex == CompanyIndex).Select(x => x.ProductID).ToListAsync();
+                var rs = await _context.ExportDetails.FirstOrDefaultAsync(x => x.ExportID == ExportID && x.ProductID == ProductID && x.CompanyIndex == CompanyIndex);
+                var result = await _context.Products.FirstOrDefaultAsync(x => x.CompanyIndex == CompanyIndex && x.ID == ProductID);
+                var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == ProductID);
+                if (rs == null || result == null || data == null ) return CheckProductInWarehouse.Undiscovered;
+
+                if (result.Quantily == 0)
+                {
+                    return CheckProductInWarehouse.OutOfStock;
+                }
+                else
+                {
+                    if (rs.IsUnit == IsUnit.Barrel)
+                    {
+                        int numberProduct = data.NumberInBarrel * rs.Quantily;
+
+                        if (numberProduct > result.Quantily )
+                        {
+                            return CheckProductInWarehouse.InsufficientOfStock;
+                        }
+
+                        result.Quantily = result.Quantily - numberProduct;
+                    }
+                    else
+                    {
+                        if (rs.Quantily > result.Quantily)
+                        {
+                            return CheckProductInWarehouse.InsufficientOfStock;
+                        }
+                        result.Quantily = result.Quantily - rs.Quantily;
+                    }
+                    result.UpdateDate = DateTime.Now;
+                    result.UpdateUser = UpdateUser;
+
+                    await _context.SaveChangesAsync();
+                    return CheckProductInWarehouse.SuccessfulSales;
+                }
+            }
+            catch
+            {
+                return CheckProductInWarehouse.Undiscovered;
+            }
+        }
+
+        public async Task<bool> UpdateTotalAmountInExportByExportID(int ExportID, int CompanyIndex, string UpdateUser)
+        {
+            try
+            {
+                var result = await _context.ExportDetails.Where(x => x.ExportID == ExportID && x.CompanyIndex == CompanyIndex).Select(x => new { x.ProductID, x.Quantily, x.IsUnit}).ToListAsync();
 
                 var rs = await _context.Products.Where(x => x.CompanyIndex == CompanyIndex).ToListAsync();
+                var data = await _context.UnitProducts.ToListAsync();
+
+                if (rs == null || result == null || data == null) return false;
 
                 decimal TotalAmount = 0;
 
                 foreach (var item in result)
                 {
-                    TotalAmount += TotalAmount + rs.Where(x => x.ID == item).Select(x => x.Price).FirstOrDefault();
+                    var priceProduct = rs.Where(x => x.ID == item.ProductID).Select(x => x.Price).FirstOrDefault();
+
+                    if (item.IsUnit == IsUnit.Barrel)
+                    {
+                        var numberInBarrel = data.Where(x => x.ProductID == item.ProductID).Select(x => x.NumberInBarrel).FirstOrDefault();
+
+                        int numberProduct =  numberInBarrel * item.Quantily;
+
+                        TotalAmount = TotalAmount + priceProduct * numberProduct;
+                    }
+                    else
+                    {
+                        TotalAmount = TotalAmount + priceProduct * item.Quantily;
+                    }
                 }
 
                 var card = new GetUpdateExportRequest()
@@ -146,7 +274,7 @@ namespace G9L.Aplication.Catalog.Export
 
                 var result = await _context.ExportDetails.Where(x => x.ExportID == ExportID && x.CompanyIndex == CompanyIndex).ToListAsync();
                 
-                if(result != null)
+                if(result.Any()) 
                     _context.ExportDetails.RemoveRange(result);
                 
                 _context.Exports.Remove(rs);
@@ -159,23 +287,23 @@ namespace G9L.Aplication.Catalog.Export
             }
         }
 
-        public async Task<bool> DeleteToExportDetails(GetDeleteToExportDetails request , int CompanyIndex, string UpdateUser)
+        public async Task<bool> DeleteToExportDetails(GetDeleteToExportDetails request , int CompanyIndex , string UpdateUser)
         {
             try
             {
-                var rs = await _context.ExportDetails.Where(x => x.ExportID == request.ExportID && x.CompanyIndex == CompanyIndex).ToListAsync();
+                var rs = await _context.ExportDetails.FirstOrDefaultAsync(x => x.ExportID == request.ExportID && x.ProductID == request.ProductID && x.CompanyIndex == CompanyIndex);
 
-                var dummy = new List<ExportDetails>();
+                if (rs == null) return false;
 
-                foreach (var item in request.ListProductID)
-                {
-                    var data = rs.FirstOrDefault(x => x.ProductID == item);
-                    dummy.Add(data);
-                }
+                var check = await MinusQuantilyProduct(request.ExportID, request.ProductID, CompanyIndex);
+                if (check == false) return false;
 
-                _context.ExportDetails.RemoveRange(dummy);
+                _context.ExportDetails.Remove(rs);
+
                 await _context.SaveChangesAsync();
-                await UpdateToExportByExportDetails(request.ExportID, CompanyIndex, UpdateUser);
+
+                await UpdateTotalAmountInExportByExportID(request.ExportID, CompanyIndex, UpdateUser); // update Totalamount of ExportID
+
                 return true;
             }
             catch

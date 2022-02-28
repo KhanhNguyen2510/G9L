@@ -9,5 +9,8 @@ namespace G9L.IntergrationAPI.Import
     {
         Task<PagedResult<GetImportViewModel>> GetListToImport(GetManagerImportRequest request);
         Task<List<GetImportDetailsViewModel>> GetListToImportDetails(int ImportID);
+        Task<bool> CreateToImportDetails(GetCreateImportDetailsRequest request);
+        Task<bool> DeleteToImport(int ImportID);
+        Task<GetImportAndImportDetailsViewModel<GetImportDetailsVM>> GetListImportAndImportDetails(int ImportID);
     }
 }

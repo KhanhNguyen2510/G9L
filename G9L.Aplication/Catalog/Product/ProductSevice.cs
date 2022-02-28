@@ -88,6 +88,24 @@ namespace G9L.Aplication.Catalog.Product
             }
         }
         //Update
+
+        public async Task<bool> UpdateToIsUnit(GetUpdateIsUnitRequest request)
+        {
+            try
+            {
+                var data = await _context.UnitProducts.FirstOrDefaultAsync(x => x.ProductID == request.ProductID);
+                if (data == null) return false;
+
+                data.NumberInBarrel = (int)(request.NumberInBarrel != null ? request.NumberInBarrel : data.NumberInBarrel);
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public async Task<bool> UpdateToProduct(GetUpdateProductRequest request, int CompanyIndex, string UpdateUser)
         {
             try

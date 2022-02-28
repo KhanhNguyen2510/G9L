@@ -5,6 +5,8 @@
         public static string AddItemSuccessful() => "Thêm thông tin thành công!";
 
         public static string AddItemFaled() => "Thêm thông tin thất bại!";
+        public static string AddImtemFaledDuplicate() => "Thêm thông tin thất bại do giá trị thêm bị trùng";
+        public static string AddItemNoSucces() => "Thêm thông tin không tồn tại";
 
         public static string UpdateItemSuccessful() => "Cập nhật thông tin thành công!";
 

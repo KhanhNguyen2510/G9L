@@ -21,11 +21,11 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                       
-                            <button type="submit" class="btn btn-sm btn-neutral" data-toggle="modal" onclick="createImport()" data-target="#modal-form">
-                                Thêm
-                            </button>
-                     
+
+                        <button type="submit" class="btn btn-sm btn-neutral" data-toggle="modal" onclick="createImport()" data-target="#modal-form">
+                            Thêm
+                        </button>
+
                         <button id="deleteByID" class="btn btn-sm text-white" onclick="deleteID()" style="background-color:#f5365c;" disabled>Xóa</button>
                     </div>
                 </div>
@@ -122,10 +122,12 @@
                                         </td>
 
                                         <td class="text-right">
-                                            <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal"
-                                                    data-target="#modal-notification">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
+                                            <form asp-controller="Import" asp-action="IndexUpdate">
+                                                <button type="submit"  class="btn btn-sm btn-icon-only text-light">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <input hidden type="text" value="@item.ID" name="ImportID" />
+                                            </form>
                                         </td>
                                     </tr>
                                 }
@@ -140,23 +142,33 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true" >
-        <div class="m-3" id="moad" role="document">
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="mt-3 ml-3 mb-3" role="document">
             <div class="modal-content">
-                <div class="text-right m-4">
-                    <button type="button" class="btn btn-outline-primary">Lưu</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="closeDialog() , viewtDetailImport()">Hủy bỏ</button>
-                </div>
-                <form id="myform">
+                <form id="myform" method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Import">
+                    <div class="text-right m-4">
+                        <button type="submit" class="btn btn-outline-primary">Lưu</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="closeDialog()">Hủy bỏ</button>
+                    </div>
+
                     <div class="modal-body">
                         <div class="mt--5">
                             <img alt="Image placeholder" src="../assets/img/brand/Logo9Lanh.png" class="mb--5">
                             <p class="h1 text-center" id="modal-title-notification">
                                 PHIẾU NHẬP HÀNG HÓA
                             </p>
-                            <h4 class="text-right"><strong>Mã số :</strong> <a id="idImport"></a></h4>
+                            <div class="input-group" style="float:right; width:180px">
+                                <div class="input-group ">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-lg"><strong>Mã số </strong></span>
+                                    </div>
+                                    <input type="text" readonly value="" name="ImportID" id="idImport" class="form-control text-red text-center">
+
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="py-3 text-center">
+                        <div class="py-3 mt-5 text-center">
                             Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year
                         </div>
 
@@ -169,11 +181,10 @@
                                         </strong>
                                     </span>
                                 </div>
-                                <select class="form-control" id="dropboxProvider" onchange="viewtDetailProvider(value)">
+                                <select class="form-control" id="dropboxProvider" name="ProviderID" required oninvalid="this.setCustomValidity('Không được để trống thông tin này')" onchange="viewtDetailProvider(value)">
                                     <option value="" hidden></option>
                                 </select>
                             </div>
-
                         </div>
                         <div class="input-group">
                             <div class="input-group input-group-lg">
@@ -203,6 +214,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list">
+                                    <!-- Page content -->
                                     <tr>
                                         <td class="budget text-center h6">
                                             1
@@ -210,17 +222,17 @@
                                         <th scope="row">
                                             <div class="media align-items-center">
                                                 <div class="media-body">
-                                                    <select class="form-control" id="dropboxProduct" onclick="viewtDetailProduct(value)">
+                                                    <select class="form-control" id="dropboxProduct_1" name="ProductID_1" onclick="viewtDetailProduct_1 (value)">
                                                         <option value="" hidden></option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </th>
                                         <td class="budget">
-                                            <input class="form-control text-center text-red" type="text" value="" id="idProduct" readonly>
+                                            <input class="form-control text-center text-red" type="text" value="" id="idProduct_1" readonly>
                                         </td>
                                         <td>
-                                            <select class="form-control" id="exampleFormControlSelect1">
+                                            <select class="form-control" name="IsUnit_1" id="exampleFormControlSelect1">
                                                 <option value="" hidden></option>
                                                 <option value="1">Cái</option>
                                                 <option value="2">Lon</option>
@@ -231,12 +243,12 @@
 
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" value="0" name="num1" id="numberProduct" onchange="totalAmount()">
+                                            <input class="form-control" type="number" value="0" name="Quantily_1" id="numberProduct_1" onchange="totalAmount_1 ()">
                                         </td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="number" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)" name="num2" value="0" id="moneyProduct" onchange="totalAmount()">
+                                                       aria-label="Dollar amount (with dot and two decimal places)" name="CostPrice_1" value="0" id="moneyProduct_1" onchange="totalAmount_1 ()">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.000</span>
                                                 </div>
@@ -245,77 +257,83 @@
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)" id="total" readonly>
+                                                       aria-label="Dollar amount (with dot and two decimal places)" id="total_1" readonly>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.000</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow1()">
+                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow_2 ()">
                                                 <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
                                             </button>
-                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow1()" >
+                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow_2 ()">
                                                 <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr id="row1" hidden>
-                                        <td class="budget text-center h6">
-                                            2
-                                        </td>
-                                        <th scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="media-body">
-                                                    <select class="form-control" id="dropboxProduct1" onclick="viewtDetailProduct1(value)">
-                                                        <option value="" hidden></option>
-                                                    </select>
+                                    <!-- Page content -->
+                                    @for (int i = 2; i <= 10; i++)
+                                    {
+                                        <tr hidden id="row_@i">
+                                            <td class="budget text-center h6">
+                                                @i
+                                            </td>
+                                            <th scope="row">
+                                                <div class="media align-items-center">
+                                                    <div class="media-body">
+                                                        <select class="form-control" id="dropboxProduct_@i" name="ProductID_@i" onclick="viewtDetailProduct_@i (value)">
+                                                            <option value="" hidden></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </th>
-                                        <td class="budget">
-                                            <input class="form-control text-center text-red" type="text" value="" id="idProduct1" readonly>
-                                        </td>
-                                        <td>
-                                            <select class="form-control" id="exampleFormControlSelect1">
-                                                <option value="" hidden></option>
-                                                <option value="1">Cái</option>
-                                                <option value="2">Lon</option>
-                                                <option value="3">Bộ</option>
-                                                <option value="4">Hộp</option>
-                                            </select>
+                                            </th>
+                                            <td class="budget">
+                                                <input class="form-control text-center text-red" type="text" value="" id="idProduct_@i" readonly>
+                                            </td>
+                                            <td>
+                                                <select class="form-control" name="IsUnit_@i" id="exampleFormControlSelect1">
+                                                    <option value="" hidden></option>
+                                                    <option value="1">Cái</option>
+                                                    <option value="2">Lon</option>
+                                                    <option value="3">Bộ</option>
+                                                    <option value="4">Hộp</option>
+                                                    <option value="5">Thùng</option>
+                                                </select>
 
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="number" value="0" name="num3" id="numberProduct" onchange="totalAmount1()">
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)" name="num4" value="0" id="moneyProduct" onchange="totalAmount1()">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.000</span>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number" value="0" name="Quantily_@i" id="numberProduct_@i" onchange="totalAmount_@i ()">
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control text-right"
+                                                           aria-label="Dollar amount (with dot and two decimal places)" name="CostPrice_@i" value="0" id="moneyProduct_@i" onchange="totalAmount_@i ()">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">.000</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control text-right"
-                                                       aria-label="Dollar amount (with dot and two decimal places)" id="total1" readonly>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.000</span>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control text-right"
+                                                           aria-label="Dollar amount (with dot and two decimal places)" id="total_@i" readonly>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">.000</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow2()">
-                                                <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
-                                            </button>
-                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow1()">
-                                                <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td class="text-right">
+                                                <button class="btn btn-icon btn-sm btn-outline-success" type="button" onclick="showRow_@(i+1) ()">
+                                                    <span class="btn-inner--icon"><i class="fas fa-plus"></i></span>
+                                                </button>
+                                                <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="unShowRow_@i ()">
+                                                    <span class="btn-inner--icon"><i class="fas fa-minus"></i></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+
                                 </tbody>
                             </table>
                         </div>
@@ -326,201 +344,82 @@
     </div>
 
     <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="card bg-secondary border-0 mb-0">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-notification">Chỉnh sửa nhà cung cấp</h6>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="card-body px-lg-3 py-lg-5">
-                            <form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Provider">
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Mã nhà cung cấp</span>
-                                        </div>
-                                        <input id="providerID" type="text" name="ProviderID" class="form-control text-red" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly value="1">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Tên nhà cung cấp</span>
-                                        </div>
-                                        <input id="providerName" type="text"  name="ProviderName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
-                                        </div>
-                                        <input id="numberPhone" name="NumberPhone" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                                               pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$"
-                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
-                                        </div>
-                                        <input id="address" name="Address" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary" >Cập nhật</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                ...
             </div>
         </div>
     </div>
+    @for (int i = 2; i <= 10; i++)
+    {
+        <script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+    function totalAmount_@i () {
+        var num1 = parseInt(document.getElementById("myform").elements["Quantily_@i"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["CostPrice_@i"].value);
+        total = num1 * num2
+        $('#total_@i').val(total);
+    }
+    async function viewtDetailProduct_@i (ID) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#idProduct_@i').val(data.id);
+            },
+            error: function () {
+                console.log('Connection Fail');
+            }
+        });
+        };
+        function showRow_@i () {
+            $('#row_@i').prop('hidden', false);
+        }
+        function unShowRow_@i () {
+            $('#row_@i').prop('hidden', true);
+        }
+
+        </script>
+    }
+
+
 </main>
 <script>
     BaseLocalhost = '@SystemConnection.BaseConnection'
 
     listID = [];
     ///Load tổng tiền hàng
-    function totalAmount() {
-        var num1 = parseInt(document.getElementById("myform").elements["num1"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num2"].value);
+    function totalAmount_1 () {
+        var num1 = parseInt(document.getElementById("myform").elements["Quantily_1"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["CostPrice_1"].value);
         total = num1 * num2
-        $('#total').val(total);
+        $('#total_1').val(total);
     }
-    function totalAmount1() {
-        var num1 = parseInt(document.getElementById("myform").elements["num3"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num4"].value);
+    function totalAmount_2 () {
+        var num1 = parseInt(document.getElementById("myform").elements["Quantily_2"].value);
+        var num2 = parseInt(document.getElementById("myform").elements["CostPrice_2"].value);
         total = num1 * num2
-        $('#total1').val(total);
+        $('#total_2').val(total);
     }
-    function totalAmount2() {
-        var num1 = parseInt(document.getElementById("myform").elements["num5"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num6"].value);
-        total = num1 * num2
-        $('#total2').val(total);
-    }
-    function totalAmount3() {
-        var num1 = parseInt(document.getElementById("myform").elements["num7"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num8"].value);
-        total = num1 * num2
-        $('#total3').val(total);
-    }
-    function totalAmount4() {
-        var num1 = parseInt(document.getElementById("myform").elements["num9"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num10"].value);
-        total = num1 * num2
-        $('#total4').val(total);
-    }
-    function totalAmount5() {
-        var num1 = parseInt(document.getElementById("myform").elements["num11"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num12"].value);
-        total = num1 * num2
-        $('#total5').val(total);
-    }
-    function totalAmount6() {
-        var num1 = parseInt(document.getElementById("myform").elements["num13"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num14"].value);
-        total = num1 * num2
-        $('#total6').val(total);
-    }
-    function totalAmount7() {
-        var num1 = parseInt(document.getElementById("myform").elements["num15"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num16"].value);
-        total = num1 * num2
-        $('#total7').val(total);
-    }
-    function totalAmount8() {
-        var num1 = parseInt(document.getElementById("myform").elements["num17"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num18"].value);
-        total = num1 * num2
-        $('#total8').val(total);
-    }
-    function totalAmount9() {
-        var num1 = parseInt(document.getElementById("myform").elements["num19"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num20"].value);
-        total = num1 * num2
-        $('#total9').val(total);
-    }
-    function totalAmount10() {
-        var num1 = parseInt(document.getElementById("myform").elements["num21"].value);
-        var num2 = parseInt(document.getElementById("myform").elements["num22"].value);
-        total = num1 * num2
-        $('#total10').val(total);
-    }
+
 
 
 ////----------------------------------
 
     ///Show cột
-    function showRow1() {
-        $('#row1').prop('hidden', false);
+
+    function showRow_2 () {
+        $('#row_2').prop('hidden', false);
     }
-    function showRow2() {
-        $('#row2').prop('hidden', false);
+
+    ////Ẩn cột
+
+    function unShowRow_2 () {
+        $('#row_2').prop('hidden', true);
     }
-    function showRow3() {
-        $('#row3').prop('hidden', false);
-    }
-    function showRow4() {
-        $('#row4').prop('hidden', false);
-    }
-    function showRow5() {
-        $('#row5').prop('hidden', false);
-    }
-    function showRow6() {
-        $('#row6').prop('hidden', false);
-    }
-    function showRow7() {
-        $('#row7').prop('hidden', false);
-    }
-    function showRow8() {
-        $('#row8').prop('hidden', false);
-    }
-    function showRow9() {
-        $('#row9').prop('hidden', false);
-    }
-    function showRow10() {
-        $('#row10').prop('hidden', false);
-    }
-    ////Ẩn cột 
-    function unShowRow1() {
-        $('#row1').prop('hidden', true);
-    }
-    function unShowRow2() {
-        $('#row2').prop('hidden', true);
-    }
-    function unShowRow3() {
-        $('#row3').prop('hidden', true);
-    }
-    function unShowRow4() {
-        $('#row4').prop('hidden', true);
-    }
-    function unShowRow5() {
-        $('#row5').prop('hidden', true);
-    }
-    function unShowRow6() {
-        $('#row6').prop('hidden', true);
-    }
-    function unShowRow7() {
-        $('#row7').prop('hidden', true);
-    }
-    function unShowRow8() {
-        $('#row8').prop('hidden', true);
-    }
-    function unShowRow9() {
-        $('#row9').prop('hidden', true);
-    }
-    function unShowRow10() {
-        $('#row10').prop('hidden', true);
-    }
+
 
 /////-----------------------------------
 
@@ -528,150 +427,21 @@
 
 
     ///Hiển thị mã hàng
-    async function viewtDetailProduct(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct').val(data.id);
 
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct1(ID) {
+    async function viewtDetailProduct_1 (ID) {
         await $.ajax({
             url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                $('#idProduct1').val(data.id);
+                $('#idProduct_1').val(data.id);
             },
             error: function () {
                 console.log('Connection Fail');
             }
         });
     };
-    async function viewtDetailProduct2(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct2').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct3(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct3').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct4(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct4').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct5(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct5').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct6(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct6').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct7(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct7').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct8(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct8').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct9(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct9').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
-    async function viewtDetailProduct10(ID) {
-        await $.ajax({
-            url: BaseLocalhost + '/api/Product/GetToProduct/' + ID,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#idProduct10').val(data.id);
-            },
-            error: function () {
-                console.log('Connection Fail');
-            }
-        });
-    };
+
 ///////-------------------------------------------
 
 
@@ -701,7 +471,7 @@
                 console.log('Connection Fail');
             }
         });
-        
+
     }
     function deleteItemInArray(arr, item) {
         for (var i = 0; i < arr.length; i++) {
@@ -819,7 +589,7 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data)
-                $('#idImport').html(data.id);
+                $('#idImport').val(data.id);
             },
             error: function () {
                 console.log('Connection Fail');
@@ -850,8 +620,16 @@
                 data.forEach(element =>
                     options_str += '<option  value="' + element.productID + '">' + element.productName + '</option>'
                 );
-                $('#dropboxProduct').append(options_str)
-                $('#dropboxProduct1').append(options_str)
+                $('#dropboxProduct_1').append(options_str)
+                $('#dropboxProduct_2').append(options_str)
+                $('#dropboxProduct_3').append(options_str)
+                $('#dropboxProduct_4').append(options_str)
+                $('#dropboxProduct_5').append(options_str)
+                $('#dropboxProduct_6').append(options_str)
+                $('#dropboxProduct_7').append(options_str)
+                $('#dropboxProduct_8').append(options_str)
+                $('#dropboxProduct_9').append(options_str)
+                $('#dropboxProduct_10').append(options_str)
             },
             error: function () {
                 console.log('Connection Fail');

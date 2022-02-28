@@ -9,11 +9,9 @@ namespace G9L.Aplication.Catalog.Export
     {
         //Check
         //Create
-        Task<bool> CreateToExport(int CompanyIndex, string UpdateUser);
-        Task<bool> CreateToExportDetails(GetCreateExportDetailsRequest request, int CompanyIndex, string UpdateUser);
+        Task<int> AddShoppingCartInExport(int CompanyIndex, string UpdateUser);
         //Update
-        Task<bool> UpdateToExportByExportDetails(int ExportID, int CompanyIndex, string UpdateUser);
-        Task<bool> UpdateToExport(GetUpdateExportRequest request, int CompanyIndex, string UpdateUser);
+
         //Delete
         Task<bool> DeleteToExport(int ExportID, int CompanyIndex);
         Task<bool> DeleteToExportDetails(GetDeleteToExportDetails request, int CompanyIndex, string UpdateUser);

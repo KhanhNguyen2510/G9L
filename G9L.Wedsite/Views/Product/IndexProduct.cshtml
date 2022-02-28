@@ -1,0 +1,158 @@
+﻿@using G9L.Data.ViewModel.Common
+@using G9L.Common.SystemBase
+@using G9L.Data.Enum
+@model PagedResult<G9L.Data.ViewModel.Catalog.Product.GetManagerProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách chi tiết sản phẩm</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="button" class="btn badge-pill badge-primary">
+                            <span> <i class="fa-solid fa-cart-flatbed"></i></span>
+                            <span class="badge badge-md badge-circle badge-floating badge-danger border-white">4</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <form method="get" asp-controller="Product" asp-action="IndexProduct">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" value="@ViewBag.KeyWord" type="search" placeholder="Bạn cần tìm gì...........">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Nhà sản xuất</label>
+                                <select name="ManufactureID" onchange="this.form.submit()" asp-items="@ViewBag.Manufactures" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Loại sản phẩm</label>
+                                <select name="ProductTypeID" onchange="this.form.submit()" asp-items="@ViewBag.ProductType" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-7">
+                            <div class="form-group">
+                                <label for="example-search-input" class="form-control-label text-white">Vị trí</label>
+                                <select name="StorageLocations" onchange="this.form.submit()" asp-items="@ViewBag.Product" class="form-control" id="exampleFormControlSelect1">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt--5">
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+
+                <div class="col-xl-4 order-xl-2 ">
+                    <div class="card card-profile">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="../assets/img/theme/bac_dan_con_lan_NTN.jpg" alt="First slide">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="h4">
+                                            Mã: @item.ID
+                                        </h5>
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="h4" style="float: right;">
+                                            Vị trí: @item.StorageLocations
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <h5 class="h3">
+                                    @item.Name
+                                </h5>
+                                <div class="h5 font-weight-300">
+                                    <i class="ni location_pin mr-2"></i>( <span class="font-weight-bold">ZUZUKI - HUYNHDAI</span> )
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="h4">
+                                                Giá: @item.Price
+                                            </h5>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="h4" style="float: right;">
+
+                                                @if (item.Quantily < 3)
+                                                {
+                                                    <span class="text-red">  SL: @item.Quantily</span>
+                                                }
+                                                else
+                                                {
+                                                    <span> SL: @item.Quantily</span>
+                                                }
+
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <i class="ni education_hat mr-2">Mô tả: @item.Description</i>
+                                </div>
+                            </div>
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-default">Chi tiết</button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" style="float: right;" class="btn btn-default">Mua</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+<script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+
+
+</script>
