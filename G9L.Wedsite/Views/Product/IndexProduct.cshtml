@@ -22,10 +22,10 @@
                     </div>
                     <div class="col-lg-6 col-5 text-right">
 
-                        <button type="button" class="btn badge-pill badge-primary">
-                            <span> <i class="fa-solid fa-cart-flatbed"></i></span>
-                            <span class="badge badge-md badge-circle badge-floating badge-danger border-white">4</span>
-                        </button>
+                            <a asp-controller="ShoppingCard" asp-action="Index" class="btn badge-pill badge-primary">
+                                <span> <i class="fa-solid fa-cart-flatbed"></i></span>
+                                <span class="badge badge-md badge-circle badge-floating badge-danger border-white">@ViewBag.ShoppingCard</span>
+                            </a>
                     </div>
 
                 </div>
@@ -138,8 +138,8 @@
                                     <div class="col">
                                         <button type="button" class="btn btn-default">Chi tiết</button>
                                     </div>
-                                    <div class="col">
-                                        <button type="button" style="float: right;" class="btn btn-default">Mua</button>
+                                    <div class="col" >
+                                        <button type="submit" style="float: right;" onclick="addProductInShoppingCard(@item.ID, 1, @item.IsUnit)" class="btn btn-default">Mua</button>
                                     </div>
                                 </div>
                             </div>
@@ -153,6 +153,40 @@
 <script>
     BaseLocalhost = '@SystemConnection.BaseConnection'
 
-
-
+    async function addProductInShoppingCard(ID, SL, Unit) {
+        await $.ajax({
+            url: BaseLocalhost + '/api/ShoppingCart/CreateOrUpdateToShoppingCart/' + ID + '?Quantily=' + SL + '&IsUnit=' + 1,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                document.getElementById('msg').innerHTML =
+                    `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert" >
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.AddItemSussces</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                /*setTimeout(function () { $('#msg').fadeOut('slow'); }, 900);*/
+               /* setTimeout(function () { location.reload(); }, 800);*/
+                location.reload();
+            },
+            error: function () {
+                document.getElementById('msg').innerHTML =
+                    `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                console.log('Connect failed');
+            },
+        });
+    };
 </script>

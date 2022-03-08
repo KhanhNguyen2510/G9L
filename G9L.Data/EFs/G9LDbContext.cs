@@ -42,8 +42,6 @@ namespace G9L.Data.EFs
                 table.ManufactureID
             });
 
-            builder.Entity<ShoppingCart>().HasNoKey();
-
         }
     }
 }

@@ -1,0 +1,246 @@
+﻿@using G9L.Data.ViewModel.Catalog.ShoppingCart
+@using G9L.Common.SystemBase
+@using G9L.Wedsite.Models
+@model GetShoppingCardViewModel<G9L.Data.ViewModel.Catalog.ShoppingCart.GetShoppingCartViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Product" asp-action="IndexProduct">Danh sách chi tiết các sản phẩm</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm giỏ hàng</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+
+                        <button type="button" class="btn  btn-neutral" onclick="addShoppingCardInExport()">
+                            <i class="fa-solid fa-money-bill-wave mr-1"></i>Tính tiền
+                        </button>
+                        <button type="button" class="btn  btn-default">
+                            <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Ghi nợ
+                        </button>
+                        <button type="button" class="btn  btn-danger">
+                            <i class="fa-solid fa-trash-can mr-1"></i>  Bỏ giỏ hàng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-7">
+                        <div class="form-group">
+                            <form method="get" asp-controller="Provider" asp-action="Index">
+                                <label for="example-search-input" class="form-control-label text-white">Tìm kiếm</label>
+                                <input name="KeyWord" class="form-control" type="search" placeholder="Bạn cần tìm gì...........">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Giỏ Hàng</h3>
+                    </div>
+                    <!-- Light table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort text-center">
+
+                                    </th>
+                                    <th scope="col" class="sort" data-sort="budget">STT</th>
+                                    <th scope="col" class="sort" data-sort="name">Tên</th>
+                                    <th scope="col" class="sort" data-sort="name">Số lượng</th>
+                                    <th scope="col" class="sort" data-sort="name">ĐVT</th>
+                                    
+                                    <th scope="col" class="sort" data-sort="status">Ngày tạo</th>
+                                    <th scope="col" class="sort" data-sort="status">Người thực hiện</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                          
+                                            <label class="custom-toggle">
+                                                <input type="checkbox">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="Ghi nợ" data-label-on=""></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm">@Html.DisplayFor(modelItem => item.ProductName)</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            <input class="form-control" type="number" value="@item.Quantily">
+                                        </td>
+                                        <td class="budget">
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                @if (item.IsUnit == G9L.Data.Enum.IsUnit.Item)
+                                                {
+                                                    <option value="1" hidden>Cái</option>
+                                                }
+                                                else if (item.IsUnit == G9L.Data.Enum.IsUnit.Can)
+                                                {
+                                                    <option value="2">Lon</option>
+                                                }
+                                                else if (item.IsUnit == G9L.Data.Enum.IsUnit.Set)
+                                                {
+                                                    <option value="3">Bộ</option>
+                                                }
+                                                else if (item.IsUnit == G9L.Data.Enum.IsUnit.Box)
+                                                {
+                                                    <option value="4">Hộp</option>
+                                                }
+                                                else if (item.IsUnit == G9L.Data.Enum.IsUnit.Barrel)
+                                                {
+                                                    <option value="5">Thùng</option>
+                                                }
+                                                <option value="1">Cái</option>
+                                                <option value="2">Lon</option>
+                                                <option value="3">Bộ</option>
+                                                <option value="4">Hộp</option>
+                                                <option value="5">Thùng</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.DateCreate)
+                                        </td>
+                                        <td class="budget">
+                                            @Html.DisplayFor(modelItem => item.UpdateUser)
+                                        </td>
+                                        <td class="text-left">
+                                            <button class="btn btn-icon btn-sm btn btn-outline-danger" type="button" onclick="removeProductByID('@item.ProductID')">
+                                                <span class="btn-inner--icon"><i class="fa-solid fa-xmark"></i></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <div class=" text-right m-3">
+                            <strong>Tổng cộng: @Model.TotalAmount</strong>
+
+                        </div>
+                    </div>
+                    <!-- Card footer -->
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    BaseLocalhost = '@SystemConnection.BaseConnection'
+
+    async function removeProductByID(ID) {
+            await $.ajax({
+                url: BaseLocalhost + '/api/ShoppingCart/DeleteToShoppingCart/' + ID,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById('msg').innerHTML =
+                        `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.DeleteItemSuccessful</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                    /*setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);*/
+                    setTimeout(function () { location.reload(); }, 50);
+                },
+                error: function () {
+                    document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    console.log('Connect failed');
+                },
+            });
+    };
+
+    async function addShoppingCardInExport() {
+            await $.ajax({
+                url: BaseLocalhost + '/api/Export/AddShoppingCartInExport',
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+
+                    if (data == 0) {
+                                            document.getElementById('msg').innerHTML =
+                        `
+                             <div class="alert alert-success alert-dismissible fade show mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                 <span class="alert-icon"> <i class="fas fa-check-circle"></i></span>
+                                 <span class="alert-text"><strong>@MessageModel.DeleteItemSuccessful</strong></span>
+                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                        `;
+                    }
+
+
+
+
+
+                    /*setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);*/
+                   /* setTimeout(function () { location.reload(); }, 900);*/
+                },
+                error: function () {
+                    document.getElementById('msg').innerHTML =
+                        `
+                            <div class="alert alert-danger alert-dismissible fade show  mt--6 ml-3 position-absolute opacity-8" role="alert">
+                                <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="alert-text"><strong>@MessageModel.DeleteItemFaled</strong></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `;
+                    setTimeout(function () { $('#msg').fadeOut('slow'); }, 700);
+                    console.log('Connect failed');
+                },
+            });
+    };
+</script>

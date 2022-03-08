@@ -91,6 +91,12 @@ namespace G9L.Data.Migrations
                     b.Property<int>("CompanyIndex")
                         .HasColumnType("int");
 
+                    b.Property<int>("IsUnit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantily")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime");
 
@@ -331,11 +337,19 @@ namespace G9L.Data.Migrations
 
             modelBuilder.Entity("G9L.Data.Entities.ShoppingCart", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("CompanyIndex")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime");
+
+                    b.Property<int>("IsUnit")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
@@ -348,6 +362,8 @@ namespace G9L.Data.Migrations
 
                     b.Property<string>("UpdateUser")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
 
                     b.ToTable("ShoppingCart");
                 });

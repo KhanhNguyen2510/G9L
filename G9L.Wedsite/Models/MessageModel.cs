@@ -15,7 +15,12 @@
         public  const string DeleteItemSuccessful = "Xóa thông tin thành công!";
 
         public const string DeleteItemFaled = "Xóa thông tin thất bại!";
+        public const string AddItemSussces= "Thêm thông tin thành công!";
 
         public const string ConnectionFaled = "Kết nối với dự liệu thất bại!";
+
+        public const string Undiscovered = "Không tìm thấy bất cứ mặt hàng trong giỏ hàng";
+
+        public const string OutOfStock = "Hết hàng ";
     }
 }

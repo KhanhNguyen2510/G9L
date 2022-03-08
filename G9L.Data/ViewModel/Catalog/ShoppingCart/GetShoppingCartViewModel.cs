@@ -10,6 +10,7 @@ namespace G9L.Data.ViewModel.Catalog.ShoppingCart
         public int Quantily { get; set; }
         public IsUnit IsUnit { get; set; }
         public DateTime DateCreate { get; set; }
+        public decimal TotalAmountProduct{get; set;}
         public string UpdateUser { get; set; }
     }
 }

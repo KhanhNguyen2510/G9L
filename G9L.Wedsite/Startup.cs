@@ -1,6 +1,7 @@
 using G9L.IntergrationAPI.Export;
 using G9L.IntergrationAPI.Import;
 using G9L.IntergrationAPI.Manufacture;
+using G9L.IntergrationAPI.NewFolder;
 using G9L.IntergrationAPI.Product;
 using G9L.IntergrationAPI.ProductType;
 using G9L.IntergrationAPI.Provider;
@@ -36,6 +37,7 @@ namespace G9L.Wedsite
             services.AddTransient<IImportApiClient, ImportApiClient>();
             services.AddTransient<IExportApiClient, ExportApiClient>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IShoppingCardApiClient, ShoppingCardApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();
 

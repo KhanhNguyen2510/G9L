@@ -1,12 +1,15 @@
 ﻿using G9L.Data.ViewModel.Catalog.ShoppingCart;
-using G9L.Data.ViewModel.Common;
 using System.Threading.Tasks;
 
 namespace G9L.Aplication.Catalog.ShoppingCart
 {
-   public interface IShoppingCartSevice
+    public interface IShoppingCartSevice
     {
         //Check
+
+        //Count
+        Task<int> CountShoppingCrad(int CompanyIndex);
+
         //Create
 
         Task<bool> CreateOrUpdateToShoppingCart(GetCreateToShoppingCartRequest request, int CompanyIndex, string UpdateUser);
@@ -17,6 +20,6 @@ namespace G9L.Aplication.Catalog.ShoppingCart
         Task<bool> DeleteToShoppingCart(int ProductID, int CompanyIndex);
         Task<bool> DeleteAllToShoppingCart(int CompanyIndex);
         //List
-        Task<PagedResult<GetShoppingCartViewModel>> GetListToShoppingCart(PagingRequestBase request, int CompanyIndex);
+        Task<GetShoppingCardViewModel<GetShoppingCartViewModel>> GetListToShoppingCart(int CompanyIndex);
     }
 }

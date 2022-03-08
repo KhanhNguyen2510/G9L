@@ -18,6 +18,9 @@ namespace G9L.Aplication.Catalog.Product
             _context = context;
         }
         //Check
+
+        
+
         //Create
         public async Task<bool> CreateToProduct(GetCreateProductRequest request, int CompanyIndex, string UpdateUser)
         {

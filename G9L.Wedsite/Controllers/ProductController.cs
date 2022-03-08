@@ -1,12 +1,12 @@
 ﻿using G9L.Data.Enum;
 using G9L.Data.ViewModel.Catalog.Product;
 using G9L.IntergrationAPI.Manufacture;
+using G9L.IntergrationAPI.NewFolder;
 using G9L.IntergrationAPI.Product;
 using G9L.IntergrationAPI.ProductType;
 using G9L.Wedsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,11 +17,13 @@ namespace G9L.Wedsite.Controllers
         private readonly IProductApiClient _productApiClient;
         private readonly IProductTypeApiClient _productTypeApiClient;
         private readonly IManufactureApiClient _manufactureApiClinet;
-        public ProductController(IProductApiClient productApiClient, IProductTypeApiClient productTypeApiClient, IManufactureApiClient manufactureApiClient)
+        private readonly IShoppingCardApiClient _shoppingCardApiClient;
+        public ProductController(IProductApiClient productApiClient, IShoppingCardApiClient shoppingCardApiClient , IProductTypeApiClient productTypeApiClient, IManufactureApiClient manufactureApiClient)
         {
             _manufactureApiClinet = manufactureApiClient;
             _productTypeApiClient = productTypeApiClient;
             _productApiClient = productApiClient;
+            _shoppingCardApiClient = shoppingCardApiClient;
         }
 
         public class GetUnitProduct
@@ -96,9 +98,13 @@ namespace G9L.Wedsite.Controllers
             };
             ViewBag.KeyWord = KeyWord;
 
+            var sc = await _shoppingCardApiClient.CountShoppingCrad();
+
             var st = await _productApiClient.GetToProductToName();
             var pt = await _productTypeApiClient.GetToProducTypeOnNameAndID();
             var m = await _manufactureApiClinet.GetToManufacturesOnNameAndID();
+
+            ViewBag.ShoppingCard = sc;
 
             ViewBag.ProductType = pt.Select(x => new SelectListItem()
             {

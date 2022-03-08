@@ -1,5 +1,6 @@
 ﻿using G9L.Aplication.Catalog.ShoppingCart;
 using G9L.BackEndAPI.Common;
+using G9L.Data.Enum;
 using G9L.Data.ViewModel.Catalog.ShoppingCart;
 using G9L.Data.ViewModel.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,25 @@ namespace G9L.BackEndAPI.Controllers
         }
         //Check
 
-        //Create
-        [HttpPost("CreateOrUpdateToShoppingCart")]
-        public async Task<JsonResult> CreateOrUpdateToShoppingCart([FromForm]GetCreateToShoppingCartRequest  request)
+        //Count 
+        [HttpGet("CountShoppingCrad")]
+        public async Task<JsonResult> CountShoppingCrad()
         {
-            var data = await _shoppingCartSevice.CreateOrUpdateToShoppingCart(request , _CurrentCompanyIndex, _CurrentUpdateUser);
+            var data = await _shoppingCartSevice.CountShoppingCrad(_CurrentCompanyIndex);
+            return Json(data);
+        }
+
+        //Create
+        [HttpPost("CreateOrUpdateToShoppingCart/{ProductID}")]
+        public async Task<JsonResult> CreateOrUpdateToShoppingCart(int ProductID, int? Quantily, IsUnit? IsUnit)
+        {
+            var result = new GetCreateToShoppingCartRequest()
+            {
+                ProductID = ProductID,
+                Quantily = Quantily,
+                IsUnit = IsUnit
+            };
+            var data = await _shoppingCartSevice.CreateOrUpdateToShoppingCart(result, _CurrentCompanyIndex, _CurrentUpdateUser);
             return Json(data);
         }
         //Update
@@ -42,9 +57,9 @@ namespace G9L.BackEndAPI.Controllers
         }
         //List
         [HttpGet("GetListToShoppingCart")]
-        public async Task<JsonResult> DeleteToShoppingCart([FromForm] PagingRequestBase request)
+        public async Task<JsonResult> GetListToShoppingCart()
         {
-            var data = await _shoppingCartSevice.GetListToShoppingCart(request, _CurrentCompanyIndex);
+            var data = await _shoppingCartSevice.GetListToShoppingCart(_CurrentCompanyIndex);
             return Json(data);
         }
     }

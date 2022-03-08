@@ -7,6 +7,8 @@ namespace G9L.Aplication.Catalog.Product
 {
     public interface IProductSevice
     {
+
+
         //Create
         Task<bool> CreateToProduct(GetCreateProductRequest request, int CompanyIndex, string UpdateUser);
         //Update

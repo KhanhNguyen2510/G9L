@@ -128,9 +128,8 @@ namespace G9L.Aplication.Catalog.Import
 
                 await _context.SaveChangesAsync();
 
+                await UpdateCostPriceAndQuantilyInProductByImportID(request.ImportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily and Price of Product
                 await UpdateTotalAmountInImportByImportID(request.ImportID, CompanyIndex, UpdateUser);//update Totalamount of ImportID
-
-                await UpdateCostPriceAndQuantilyInProductByImportID(request.ImportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily and Price of Product 
 
                 return true;
             }

@@ -1,4 +1,5 @@
-﻿using G9L.Data.EFs;
+﻿using G9L.Aplication.Catalog.ShoppingCart;
+using G9L.Data.EFs;
 using G9L.Data.Entities;
 using G9L.Data.Enum;
 using G9L.Data.ViewModel.Catalog.Export;
@@ -14,10 +15,12 @@ namespace G9L.Aplication.Catalog.Export
     public class ExportSevice : IExportSevice
     {
         private readonly G9LDbContext _context;
+        private readonly IShoppingCartSevice _shoppingCartSevice;
 
-        public ExportSevice(G9LDbContext context)
+        public ExportSevice(G9LDbContext context, IShoppingCartSevice shoppingCartSevice)
         {
             _context = context;
+            _shoppingCartSevice = shoppingCartSevice;
         }
         //Check
         public async Task<bool> MinusQuantilyProduct(int ExportID, int ProductID, int CompanyIndex)
@@ -100,6 +103,8 @@ namespace G9L.Aplication.Catalog.Export
                             return dummy;
                         }
                     }
+                    await _shoppingCartSevice.DeleteAllToShoppingCart(CompanyIndex);
+
                     return (int)CheckProductInWarehouse.Successful;
                 }
 
@@ -134,11 +139,14 @@ namespace G9L.Aplication.Catalog.Export
                 _context.ExportDetails.Add(data);
                 await _context.SaveChangesAsync();
 
+                var card = await UpdateQuantilyInProductByExportID(request.ExportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily of Product 
+                if (card != CheckProductInWarehouse.Undiscovered)
+                {
+                    return (int)card;
+                }
                 await UpdateTotalAmountInExportByExportID(request.ExportID, CompanyIndex, UpdateUser); // update Totalamount of ExportID
 
-                var card =  await UpdateQuantilyInProductByExportID(request.ExportID, request.ProductID, CompanyIndex, UpdateUser); //update Quantily of Product 
-
-                return (int)card;
+                return (int)CheckProductInWarehouse.Successful;
             }
             catch (Exception)
             {
