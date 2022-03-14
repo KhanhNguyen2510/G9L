@@ -1326,3 +1326,6 @@ E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\G9L.Wedsite.genruntimeconfig.
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Import\IndexUpdate.cshtml.g.cs
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Product\IndexProduct.cshtml.g.cs
 E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\ShoppingCard\Index.cshtml.g.cs
+E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Shared\_Sidebar.cshtml.g.cs
+E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Shared\_Footer.cshtml.g.cs
+E:\Garage 9 Lành\G9L\G9L.Wedsite\obj\Debug\net5.0\Razor\Views\Shared\_Header.cshtml.g.cs
